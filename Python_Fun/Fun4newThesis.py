@@ -9,10 +9,12 @@ Created on Sun Aug 27 00:02:20 2023
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy import sparse
 from sklearn.decomposition import PCA
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn import linear_model
+
 
 
 #%% Gradientes de color =======================================================
@@ -70,11 +72,13 @@ def RemoveNan(Data,labels):
 #%% ===========================================================================
 def myReshape(array):
     [x,y]=array.shape
-    newarray=np.zeros((606,300,68))
-    for i,j in enumerate(np.arange(0,y,300)):
-        newarray[:,:,i]=array[:,j:j+300]
+    cols=y//68
+    newarray=np.zeros((x,cols,68))
+    for i,j in enumerate(np.arange(0,y,cols)):
+        newarray[:,:,i]=array[:,j:j+cols]
         
     return newarray
+
 
 #%% ===========================================================================
 
@@ -153,3 +157,74 @@ def myPCA (DataFrame,verbose,nPca):
         plt.show()
         
     return pca_df, pro2use, prop_varianza_acum
+
+#%% Build graph knn
+
+def knn_graph(connectome, Nneighbours=8):
+    
+    def build_adjacency(dist, idx):
+        """Return the adjacency matrix of a kNN graph."""
+        M, k = dist.shape
+        assert M,k == idx.shape # comprobaciones para asegurarse de que las dimensiones sean correctas y de que las distancias sean no negativas.
+        assert dist.min() >= 0
+    
+        # Weights.
+        sigma2 = np.mean(dist[:, -1])**2 #Calcula el cuadrado de la media de las distancias a los vecinos más cercanos
+        # dist = np.exp(- dist**2 / sigma2) # Pasamos de correlacion a distancia, entre mayor la correlacion menor la distancia
+    
+        # Weight matrix.
+        I = np.arange(0, M).repeat(k)
+        J = idx.reshape(M*k)
+        V = dist.reshape(M*k)
+        W = sparse.coo_matrix((V, (I, J)), shape=(M, M)) #Crea una matriz de 
+        #coordenadas dispersas (sparse). Es importante para el calculo de los eigenvalues y eigenvectors 
+        # No self-connections.
+        W.setdiag(0)
+        # W= W+W.T
+        # Non-directed graph. Asegura que el grafo sea no dirigido al comparar las
+        #entradas de la matriz W con sus transpuestas y tomando el mínimo entre 
+        #los dos valores. Esto garantiza que las conexiones sean bidireccionales.
+        bigger = W.T > W
+        W = W - W.multiply(bigger) + W.T.multiply(bigger)
+        return W
+    
+    _,_,bands=connectome.shape
+    for band in range(bands):
+        #Making sure that the matrix is actually simetrical
+        conn=connectome[:,:,band]
+        conn=(conn+conn.T)/2
+        #
+        idx = np.argsort(-conn)[:, 0:Nneighbours]#se buscan los k valores mas grandes por fila, se busca a partir de la segunda columns porque se le hincharon sus huevos  
+        dist = np.array([conn[i, idx[i]] for i in range(conn.shape[0])])
+        # dist[dist < 0.1] = 0
+        adj_mat_sp = build_adjacency(dist, idx)
+        connectome[:,:,band]=adj_mat_sp.toarray()
+    
+    return connectome
+    # fig=plt.figure(figsize=(10,4))
+    # fig.add_subplot(121)
+    # plt.imshow(adj_mat_sp.todense(), cmap="jet",vmin=0.1, vmax=0.5);
+    # plt.colorbar()
+    
+    # fig.add_subplot(122)
+    # plt.hist(adj_mat_sp.data)
+    
+#%%
+
+def threshold(connectome, tresh):
+    tresh=1-tresh
+    scaler =MinMaxScaler()
+    _,_,bands=connectome.shape
+    for band in range(bands):
+        bandScaled=scaler.fit_transform(connectome[:,:,band])
+        connectome[bandScaled<tresh]=0
+    return connectome
+
+#%%
+def create_Graphs_Disconnected(fcMat):
+    _,_,bands=fcMat.shape
+    fcDiag=np.zeros((68*bands,68*bands))
+    for i in range(bands):
+        fcDiag[i*68:68+i*68,i*68:68+i*68]=fcMat[:,:,i]
+    
+    return fcDiag

@@ -1,4 +1,4 @@
-path='/home/isaac/Documents/Doctorado_CIC/Internship/Sylvain/New_thesis/camcan_AEC_ortho_Matrix';
+path='/home/isaac/Documents/Doctorado_CIC/NewThesis_db/camcan_AEC_ortho_Matrix';
 Dir=dir(path);
 Dir={Dir(3:end).name};
 

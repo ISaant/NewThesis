@@ -1,0 +1,2 @@
+https://github.com/zhangyu2ustc/gcn_tutorial/blob/master/Tutorials_GCN_practice1_graph-Laplacian.ipynb
+https://github.com/zhangyu2ustc/gcn_tutorial_test/blob/master/notebooks/Tutorials_GCN_practice2_graph-Laplacian_GCN.ipynb

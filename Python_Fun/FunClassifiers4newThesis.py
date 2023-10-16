@@ -64,12 +64,39 @@ def Perceptron_PCA (Input0,numOutputNeurons):
     # print(classification)
     tf.keras.backend.clear_session()
     NN0 = Dense(512, activation='sigmoid')(Input0)
+    NN0 = Dense(512, activation='sigmoid')(Input0)
     NN0 = Dense(256, activation='relu')(NN0)
-    NN0 = Dense(64, activation='relu')(NN0)
-    NN0 = Dense(16, activation='relu')(NN0)
+    NN0 = Dense(64, activation='elu')(NN0)
+    NN0 = Dense(16, activation='selu')(NN0)
+    NN0 = Dense(16, activation='gelu')(NN0)
     # NN0 = Dense(1024, activation='relu')(NN0)
     # NN0 = Dense(32, activation='relu')(NN0)
-    output = Dense(numOutputNeurons, activation='linear')(NN0)
+    output = Dense(numOutputNeurons)(NN0)
+    loss='mean_squared_error',
+    metrics=['mape']
+    model = Model(
+        inputs=Input0,
+        outputs=output)
+    
+    
+    # print(model.summary())
+    model.compile(optimizer=Adam(learning_rate=.0001),
+                  loss=loss,
+                  metrics=metrics)
+
+    return model
+
+#%% ===========================================================================
+
+def Perceptron_Anat (Input0,numOutputNeurons):
+    # print(classification)
+    tf.keras.backend.clear_session()
+    NN0 = Dense(512, activation='sigmoid')(Input0)
+    NN0 = Dense(256, activation='relu')(NN0)
+    NN0 = Dense(64, activation='elu')(NN0)
+    NN0 = Dense(16, activation='selu')(NN0)
+    NN0 = Dense(16, activation='gelu')(NN0)
+    output = Dense(numOutputNeurons)(NN0)
     loss='mean_squared_error',
     metrics=['mape']
     model = Model(
@@ -109,34 +136,28 @@ def Perceptron (Input0,numOutputNeurons):
     return model
 #%% ===========================================================================
 
-def parallelNN (PSD, Anat,Fc,numOutputNeurons):
+def parallelNN (InputPSD, InputAnat,numOutputNeurons):
     
-    InputPSD=tf.keras.Input(shape=(PSD.shape[1],), )
-    InputAnat=tf.keras.Input(shape=(Anat.shape[1],), )
     tf.keras.backend.clear_session()
     NN0 = Dense(512, activation='sigmoid')(InputPSD)
     NN0 = Dense(256, activation='relu')(NN0)
-    NN0 = Dense(64, activation='relu')(NN0)
-    NN0 = Dense(16, activation='relu')(NN0)
+    NN0 = Dense(64, activation='elu')(NN0)
+    NN0 = Dense(16, activation='selu')(NN0)
+    NN0 = Dense(16, activation='gelu')(NN0)
     
-    NN1 = Dense(512, activation='relu')(InputAnat)
+    NN1 = Dense(512, activation='sigmoid')(InputAnat)
     NN1 = Dense(256, activation='relu')(NN1)
-    NN1 = Dense(64, activation='relu')(NN1)
-    NN1 = Dense(16, activation='relu')(NN1)
+    NN1 = Dense(64, activation='elu')(NN1)
+    NN1 = Dense(16, activation='selu')(NN1)
+    NN1 = Dense(16, activation='gelu')(NN1)
     
-    # NN2 = Dense(512, activation='relu')(InputFc)
-    # NN2 = Dense(128, activation='sigmoid')(NN2)
-    # NN2 = Dense(128, activation='relu')(NN2)
-    # NN2 = Dense(128, activation='tanh')(NN2)
-    # NN2 = Dense(64, activation='relu')(NN2)
-    # NN2 = Dense(32, activation='relu')(NN2)
     
     x = concatenate([NN0,NN1])
     
     Prob_Dense = Dense(32, activation='relu',name="Last_NN_Targets")(x)
     # Prob_Dense = Dropout(.3)(Prob_Dense)
     Prob_Dense = Dense(16, activation='relu')(Prob_Dense)
-    output = Dense(numOutputNeurons, activation='linear',name='output')(Prob_Dense)
+    output = Dense(numOutputNeurons,name='output')(Prob_Dense)
     
     model = Model(inputs=[InputPSD,InputAnat],
                 outputs=output)
@@ -144,10 +165,10 @@ def parallelNN (PSD, Anat,Fc,numOutputNeurons):
     loss='mean_squared_error',
     metrics=['mape']
     
-    model.compile(optimizer=Adam(learning_rate=.001),
+    model.compile(optimizer=Adam(learning_rate=.0001),
                   loss=loss,
                   metrics=metrics)
-    keras.utils.plot_model(model, "multi_input_and_output_model_1.png", show_shapes=True)
+    # keras.utils.plot_model(model, "multi_input_and_output_model_1.png", show_shapes=True)
     
     return model
 
@@ -228,8 +249,8 @@ def trainModel(model,x_train,y_train,epochs,plot):
     keras.backend.clear_session()
     history = model.fit(x_train, 
                         y_train, 
-                        validation_split=0.2, 
-                        batch_size=64,
+                        validation_split=0.1, 
+                        batch_size=128,
                         epochs =epochs,
                         verbose=0)
     

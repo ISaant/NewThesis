@@ -372,7 +372,7 @@ sns.lmplot(x ='Age', y ='value', data = df_melt, hue ='variable',
 scoreDf['VSTM']=vstmVsAge['K4']
 #%% Get if we have PSD, Anat and FC
 
-path2fc='/home/isaac/Documents/Doctorado_CIC/Internship/Sylvain/New_thesis/camcan_AEC_ortho_Matrix'
+path2fc='/home/isaac/Documents/Doctorado_CIC/NewThesis_db/camcan_AEC_ortho_AnteroPosterior'
 fcDir=np.sort(os.listdir(path2fc))
 _Pos=fcDir[0].find('-')+1 #find where the subject ID starts 
 
@@ -383,5 +383,5 @@ for files in fcDir:
     
 #%%
 import pickle
-with open('/home/isaac/Documents/Doctorado_CIC/Internship/Sylvain/New_thesis/Python_Fun/scoreDf.pickle', 'wb') as f:
+with open('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun/scoreDf.pickle', 'wb') as f:
     pickle.dump(scoreDf, f)
