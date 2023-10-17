@@ -7,7 +7,7 @@ Created on Wed Sep 20 18:26:29 2023
 """
 
 import os
-os.chdir('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun')
+# os.chdir('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun')
 import pickle
 import pandas as pd
 import numpy as np
@@ -45,7 +45,7 @@ AnatFile=np.sort(os.listdir(path2anat))
 FcFile=np.sort(os.listdir(path2fc))
 mainDir_psd=np.sort(os.listdir(path2psd))
 emptyRoomDir=np.sort(os.listdir(path2psd+mainDir_psd[0]+'/'))
-restStateDir=np.sort(os.listdir(path2psd+mainDir_psd[2]+'/'))
+restStateDir=np.sort(os.listdir(path2psd+mainDir_psd[1]+'/'))
 demoFile=np.sort(os.listdir(path2demo))
 
 
@@ -65,7 +65,7 @@ subjects=demographics['CCID']
 #%% Read PSD
 
 for e,file in enumerate(tqdm(restStateDir)):
-    matrix=myReshape(pd.read_csv(path2psd+mainDir_psd[2]+'/'+file,header=None).to_numpy())[np.newaxis, :]
+    matrix=myReshape(pd.read_csv(path2psd+mainDir_psd[1]+'/'+file,header=None).to_numpy())[np.newaxis, :]
     if e == 0:
         restStateAll=matrix 
         continue
@@ -268,7 +268,7 @@ output_size = labels.shape[1]
 
 #%% NN just for anat
 
-iterations=30
+iterations=3
 
 
 
@@ -511,8 +511,8 @@ def train(loader,epoch):
         optimizer.zero_grad()
         loss.backward()  # Derive gradients.
         optimizer.step()  # Update parameters based on gradients.
-    # if (epoch+1) % 10==0:
-        # print(f'epoch {epoch} / {num_epochs}, step={i+1}/{n_total_steps}, loss= {loss.item():.4f}')
+    if (epoch+1) % 10==0:
+        print(f'epoch {epoch} / {num_epochs}, step={i+1}/{n_total_steps}, loss= {loss.item():.4f}')
     
         # optimizer.zero_grad()  # Clear gradients.
 def test(loader,plot):
@@ -532,7 +532,7 @@ def test(loader,plot):
     return pred,true_label,NNPred  # Derive ratio of correct predictions.
 
 NNPred_list_CustomModel_Fc=[]
-for i in tqdm(range (iterations)):
+for i in range (iterations):
     feat_train,feat_test,alpha_train, alpha_test, y_train,y_test= train_test_split(features_pca,alpha,age,test_size=.3)
     dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train),batch_size=1,shuffle=True)
     dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test),batch_size=1)
