@@ -20,13 +20,18 @@ from tqdm import tqdm
 import torch
 import torch.nn as nn
 import torchvision
-from torch_geometric.utils import add_self_loops
+from torch_geometric.utils import add_self_loops, to_dense_adj, to_dense_batch, dense_to_sparse
 from torch.utils.data import Dataset, DataLoader
 from torch_geometric.utils.convert import from_scipy_sparse_matrix, to_networkx
 from torch_scatter import scatter_add
 import torch.nn.functional as F
 from scipy import sparse
 import time
+from torch.nn import Linear, BatchNorm1d
+import torch.nn.functional as F
+from torch_geometric.nn import GCNConv,BatchNorm,SAGEConv, dense_diff_pool, DenseSAGEConv
+from torch_geometric.nn import global_mean_pool,global_add_pool, global_max_pool
+from math import ceil
 #%% ===========================================================================
 def Scale(Data):
     
@@ -124,6 +129,14 @@ class ToTensor:
         inputs, targets = sample
         return torch.from_numpy(inputs), torch.from_numpy(targets)
 ###    
+
+
+
+
+#%% ===========================================================================
+
+#Crear un dataset usando pytorch funcionara?
+
 
 
 #%% Define first nn
@@ -227,30 +240,36 @@ def Dataset_graph(features, labels, connectome, task):
     data_list=[]
     le = LabelEncoder()
     encoded=le.fit_transform(labels)
+    # task=torch.FloatTensor(task)
+    connectome=connectome.astype('float32')
     task=torch.FloatTensor(task[:,np.newaxis,np.newaxis])
+    # task=torch.FloatTensor(task[:,np.newaxis,])
+
     for i in range(len(features)):
         x=torch.FloatTensor(features[i,:,:].T)
         edge_index,edge_wight=from_scipy_sparse_matrix(sparse.csr_matrix(connectome[i,:,:]))
         edge_index=torch.from_numpy(edge_index.numpy())
         # print(edge_index.shape)
-        edge_wight=torch.from_numpy(edge_wight.numpy())
-        data=Data(x=x,edge_index=edge_index,edge_attr=edge_wight,y=task[i])
+        edge_wight=torch.from_numpy(edge_wight.numpy()).float()
+        adj=torch.FloatTensor(connectome[i,:,:])
+        # t=task[i][np.newaxis,]
+        data=Data(x=x,edge_index=edge_index,edge_attr=edge_wight,adj=adj,y=task[i])
         data_list.append(data)
     # print(data)
-    dataset=Batch.from_data_list(data_list)
+    dataset=Batch().from_data_list(data_list)
     return dataset
 
 #%% Graph neural net w/o pull
-from torch.nn import Linear
-import torch.nn.functional as F
-from torch_geometric.nn import GCNConv
-from torch_geometric.nn import global_mean_pool
+
 class GCN(torch.nn.Module):
     def __init__(self, num_node_features,  hidden_channels):
         super(GCN, self).__init__()
         # torch.manual_seed(12345)
         self.conv1 = GCNConv(num_node_features, hidden_channels)
+        self.bn1 = BatchNorm(hidden_channels)
         self.conv2 = GCNConv(hidden_channels, hidden_channels)
+        self.bn2 = BatchNorm(hidden_channels)
+        self.dropout = torch.nn.Dropout(p=0.3)
         # self.conv3 = GCNConv(hidden_channels, hidden_channels)  
         self.il = nn.Linear(hidden_channels, 64)
         self.hl1 = nn.Linear(64, 16)
@@ -263,12 +282,13 @@ class GCN(torch.nn.Module):
         # self.activation4 = nn.SELU()
         # self.activation5 = nn.GELU()
 
-    def forward(self, x, edge_index, batch):
+    def forward(self, x, edge_index,batch):
         # 1. Obtain node embeddings 
-        x = self.conv1(x, edge_index)
+        x = self.bn1(self.conv1(x, edge_index))
         x = self.activation1(x)
-        x = self.conv2(x, edge_index)
-        x = x.relu()
+        x = self.dropout(x)
+        x = self.bn2(self.conv2(x, edge_index)).relu()
+        x = self.dropout(x)
         # x = self.conv3(x, edge_index)
 
         # 2. Readout layer
@@ -279,10 +299,192 @@ class GCN(torch.nn.Module):
         # x = F.dropout(x, p=0.5, training=self.training)
         out = self.activation1(self.il(x))
         out = self.activation2(self.hl1(out))
+        out = self.activation2(self.hl2(out))
+        out = self.ol(out)
+        
+        return out
+    
+#%%
+
+class GNN(torch.nn.Module):
+    def __init__(self, num_node_features,  hidden_channels):
+        super(GNN, self).__init__()
+        
+        self.lin1 = Linear(num_node_features, 512)
+        self.lin2 = Linear(512, 64)
+        # self.lin3 = Linear(64, 64)
+        
+        
+        self.conv1 = SAGEConv(64, hidden_channels, aggr=['mean', 'max','sum','std', 'var'],normalize=True)
+        self.bn1 = BatchNorm(hidden_channels)
+        self.conv2 = SAGEConv(hidden_channels, hidden_channels, aggr=['mean', 'max','sum','std', 'var'],normalize=True)
+        self.bn2 = BatchNorm(hidden_channels)
+        # self.conv1 = GCNConv(64, hidden_channels)
+        # self.bn1 = BatchNorm(hidden_channels)
+        # self.conv2 = GCNConv(hidden_channels, hidden_channels)
+        # self.bn2 = BatchNorm(hidden_channels)
+        # self.pool2 = DiffPool(hidden_channels, ratio=0.5)
+        # self.conv3 = SAGEConv(hidden_channels, hidden_channels, aggr=['mean', 'max','sum','std', 'var'],normalize=True)
+        # self.bn3 = BatchNorm(hidden_channels)
+        # self.pool3 = DiffPool(hidden_channels, ratio=0.5)
+        self.dropout = torch.nn.Dropout(p=0.3)
+        # self.conv3 = GCNConv(hidden_channels, hidden_channels)  
+        # self.il = Linear(hidden_channels*68*6, 64)
+        self.il = Linear(hidden_channels, 64)
+
+        self.hl1 = Linear(64, 16)
+        self.hl2 = Linear(16, 16)
+        self.ol = Linear(16, 1)
+        self.activation1 = nn.Sigmoid()
+        self.activation2 = nn.ReLU()
+        # self.pooling=nn.AdaptiveAvgPool2d((hidden_channels,2))
+        # self.activation3 = nn.ELU()
+        # self.activation4 = nn.SELU()
+        # self.activation5 = nn.GELU()
+
+    def forward(self, x, edge_index,batch):
+        # 1. Obtain node embeddings 
+        
+        x = self.lin1(x)
+        x= F.sigmoid(x)
+        x = self.lin2(x)
+        x= F.relu(x)
+        # x = self.lin3(x)
+        # x= F.relu(x)
+        x = self.bn1(self.conv1(x, edge_index))
+        x = self.dropout(x)
+        x = F.relu(x)
+        # x, edge_index, batch, perm, score = self.pool1(x, edge_index, batch)
+        
+        x = self.bn2(self.conv2(x, edge_index))
+        x = self.dropout(x)
+        x = F.relu(x)
+        # x, edge_index, batch, perm, score = self.pool2(x, edge_index, batch)
+        
+        # x = self.bn3(self.conv3(x, edge_index))
+        # x = self.dropout(x)
+        # x = F.elu(x)
+        # x, edge_index, batch, perm, score = self.pool3(x, edge_index, batch)
+
+        
+        
+        # x = self.conv3(x, edge_index)
+
+        # 2. Readout layer
+
+        x = global_mean_pool(x, batch)  # [batch_size, hidden_channels]
+        # print(x.shape)
+        # x= x.view(-1,x.shape[0]*x.shape[1])
+        # print(x.shape)
+        # x= self.pooling(x)
+        # print(x.shape)
+        # 3. Apply a final classifier
+        # x = F.dropout(x, p=0.5, training=self.training)
+        out = self.activation1(self.il(x))
+        out = self.activation2(self.hl1(out))
+        out = self.activation2(self.hl2(out))
         out = self.ol(out)
         
         return out
 
 
+#%% 
+max_nodes=68
+class GNN_emb(torch.nn.Module):
+    def __init__(self, num_node_features,  hidden_channels, out_channels, normalize=False, lin=True):
+        super(GNN_emb,self).__init__()
+        
+        self.conv1 = DenseSAGEConv( num_node_features, hidden_channels,normalize=True)
+        self.bn1 = BatchNorm1d(hidden_channels)
+        self.conv2 = DenseSAGEConv(hidden_channels, out_channels,normalize=True)
+        self.bn2 = BatchNorm1d(out_channels)
+        self.activation1 = nn.Sigmoid()
+        self.dropout = torch.nn.Dropout(p=0.3)
+        if lin is True:
+            self.lin = torch.nn.Linear(hidden_channels + out_channels,
+                                       out_channels)
+        else:
+            self.lin = None
+            
+    def bn(self, i, x): #Normalization
+        batch_size, num_nodes, num_channels = x.size()
+        # print('----')
+        # print(x.size())
+        x = x.view(-1, num_channels)
+        # print(x.size())
+        x = getattr(self, f'bn{i}')(x)
+        # print(x.size())
+        x = x.view(batch_size, num_nodes, num_channels)
+        # print(x.size())
+        return x
+        
+    def forward(self, x, adj, mask=None):
+        # 1. Obtain node embeddings 
+        x1 = self.bn(1,self.conv1(x, adj, mask))
+        x1 = self.activation1(x1)
+        x1 = self.dropout(x1)
+        x2 = self.bn(2,self.conv2(x1, adj, mask)).relu()
+        x2 = self.dropout(x2)
+        x = torch.cat([x1, x2], dim=-1)
 
+        if self.lin is not None:
+            x = self.lin(x).relu()
 
+        return x
+    
+    
+class GNN_DiffPool(torch.nn.Module):
+    def __init__(self, num_node_features,  hidden_channels):
+        super(GNN_DiffPool, self).__init__()
+        self.lin1_pre = Linear(num_node_features, 512)
+        self.lin2_pre = Linear(512, num_node_features)
+        
+        num_nodes = ceil(0.5 * max_nodes)
+        self.gnn1_pool = GNN_emb(num_node_features, 64, num_nodes)
+        self.gnn1_embed = GNN_emb(num_node_features, 64, 64, lin=False)
+
+        self.num_nodes = ceil(0.15 * num_nodes)
+        self.gnn2_pool = GNN_emb(2 * 64, 64, self.num_nodes)
+        self.gnn2_embed = GNN_emb(2 * 64, 64, 64, lin=False)
+
+        self.gnn3_embed = GNN_emb(2 * 64, 64, 64, lin=False)
+
+        self.lin1_post = torch.nn.Linear(2 * 64 *self.num_nodes, 64)
+        self.lin2_post = torch.nn.Linear(64, 16)
+        self.lin3_post = torch.nn.Linear(16, 16)
+        self.ol = Linear(16, 1)
+        self.activation1 = nn.Sigmoid()
+        self.activation2 = nn.ReLU()
+
+    def forward(self, x, edge_index, batch):
+        
+        x = self.lin1_pre(x)
+        x= F.sigmoid(x)
+        x = self.lin2_pre(x)
+        x= F.relu(x)
+        
+        out,mask=to_dense_batch(x=x,batch=batch)
+        adj= to_dense_adj(edge_index=edge_index,batch=batch)
+        s = self.gnn1_pool(out, adj, mask)
+        x = self.gnn1_embed(out, adj, mask)
+        # print (s.shape,x.shape)
+        # x = x[None, :]
+        # s = s[None, :]
+        
+        # print (s.shape,x.shape)
+        x, adj, l1, e1 = dense_diff_pool(x, adj, s, mask)
+        # print(x.shape)
+        s = self.gnn2_pool(x, adj)
+        x = self.gnn2_embed(x, adj)
+        
+        
+        x, adj, l2, e2 = dense_diff_pool(x, adj, s)
+        x = self.gnn3_embed(x, adj)
+        # print(x.shape)
+        x = x.view(-1,2 * 64 *self.num_nodes)
+        
+        out = self.activation1(self.lin1_post(x))
+        out = self.activation2(self.lin2_post(out))
+        out = self.activation2(self.lin3_post(out))
+        out = self.ol(out)
+        return out

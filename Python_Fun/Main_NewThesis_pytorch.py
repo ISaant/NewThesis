@@ -7,7 +7,7 @@ Created on Wed Sep 20 18:26:29 2023
 """
 
 import os
-# os.chdir('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun')
+os.chdir('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun')
 import pickle
 import pandas as pd
 import numpy as np
@@ -15,6 +15,7 @@ import copy
 import seaborn as sns
 import scipy
 import torch.optim as optim
+import Conventional_NNs
 from torch.utils.data import random_split
 from tqdm import tqdm
 from matplotlib.pyplot import plot, figure, title
@@ -266,176 +267,11 @@ output_size = labels.shape[1]
 
 
 
-#%% NN just for anat
-
+#%% NN no fc 
 iterations=3
-
-
-
-NNPred_list_anat=[]
-for i in tqdm(range (iterations)):
-    train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
-    train_loader=DataLoader(dataset=train_dataset,batch_size=batch_size,
-                            shuffle=True,num_workers=2)
-
-    test_loader=DataLoader(dataset=test_dataset,batch_size=batch_size,
-                            shuffle=False,num_workers=2)
-    if 'model' in globals():
-        model.apply(weight_reset)
-    model = NeuralNet(input_size_anat, output_size ).to(device)
-    criterion = nn.MSELoss()  # Mean Squared Error loss
-    optimizer = optim.Adam(model.parameters(), lr=lr)
-    
-    # Puedes imprimir el resumen del modelo si lo deseas
-    # print(model)
-    
-    #training loop
-    
-    n_total_steps = len(train_loader) # number of batches
-    for epoch in range (num_epochs):
-        for i, (psd, anat, de, th,al, be, g1, g2, target) in enumerate(train_loader):
-            anat=anat.to(device)
-            target=target.to(device)
-            
-            #forward 
-            outputs=model(anat)
-            loss = criterion(outputs,target)
-            
-            #backward
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            # if (epoch+1) % 10==0:
-            #     print(f'epoch {epoch} / {num_epochs}, step={i+1}/{n_total_steps}, loss= {loss.item():.4f}')
-                
-    
-    #testing and eval
-    pred=[]
-    with torch.no_grad():
-       
-        for psd, anat, de, th,al, be, g1, g2, target in test_loader:
-            anat=anat.to(device)
-            target=target.to(device)
-            outputs=model(anat).to('cpu').numpy()
-            
-            pred.extend(outputs)
-    pred=np.array(pred)
-    y_test=test_dataset[:][-1].numpy()
-    NNPred=plotPredictionsReg(pred.flatten(),y_test.flatten(),False)
-    NNPred_list_anat.append(NNPred)
-
-
-NNPred_list_psd=[]
-for i in tqdm(range (iterations)):
-    train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
-    train_loader=DataLoader(dataset=train_dataset,batch_size=batch_size,
-                            shuffle=True,num_workers=2)
-
-    test_loader=DataLoader(dataset=test_dataset,batch_size=batch_size,
-                            shuffle=False,num_workers=2)
-    if 'model' in globals():
-        model.apply(weight_reset)
-    model = NeuralNet(input_size_psd, output_size ).to(device)
-    criterion = nn.MSELoss()  # Mean Squared Error loss
-    optimizer = optim.Adam(model.parameters(), lr=lr)
-    
-    # Puedes imprimir el resumen del modelo si lo deseas
-    # print(model)
-    
-    #training loop
-    
-    n_total_steps = len(train_loader) # number of batches
-    for epoch in range (num_epochs):
-        for i, (psd, anat, de, th,al, be, g1, g2, target) in enumerate(train_loader):
-            psd=psd.to(device)
-            target=target.to(device)
-            
-            #forward 
-            outputs=model(psd)
-            loss = criterion(outputs,target)
-            
-            #backward
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            # if (epoch+1) % 10==0:
-            #     print(f'epoch {epoch} / {num_epochs}, step={i+1}/{n_total_steps}, loss= {loss.item():.4f}')
-                
-    
-    #testing and eval
-    pred=[]
-    with torch.no_grad():
-       
-        for psd, anat, de, th,al, be, g1, g2, target in test_loader:
-            psd=psd.to(device)
-            target=target.to(device)
-            outputs=model(psd).to('cpu').numpy()
-            
-            pred.extend(outputs)
-    pred=np.array(pred)
-    y_test=test_dataset[:][-1].numpy()
-    NNPred=plotPredictionsReg(pred.flatten(),y_test.flatten(),False)
-    NNPred_list_psd.append(NNPred)
-    
-
-NNPred_list_CustomModel_NoFc=[]
-
-
-for i in tqdm(range (iterations)):
-    train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
-    train_loader=DataLoader(dataset=train_dataset,batch_size=batch_size,
-                            shuffle=True,num_workers=2)
-
-    test_loader=DataLoader(dataset=test_dataset,batch_size=batch_size,
-                            shuffle=False,num_workers=2)
-    if 'model' in globals():
-        model.apply(weight_reset)
-    model = CustomModel_NoFc(input_size_psd,input_size_anat,output_size).to(device)
-    criterion = nn.MSELoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-    
-    # Puedes imprimir el resumen del modelo si lo deseas
-    # print(model)
-    
-    #training loop
-    
-    n_total_steps = len(train_loader) # number of batches
-    for epoch in range (num_epochs):
-        for i, (psd, anat, de, th,al, be, g1, g2, target) in enumerate(train_loader):
-            psd=psd.to(device)
-            anat=anat.to(device)
-            target=target.to(device)
-            
-            #forward 
-            outputs=model(psd,anat)
-            loss = criterion(outputs,target)
-            
-            #backward
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            # if (epoch+1) % 10==0:
-            #     print(f'epoch {epoch} / {num_epochs}, step={i+1}/{n_total_steps}, loss= {loss.item():.4f}')
-                
-    
-    #testing and eval
-    pred=[]
-    with torch.no_grad():
-       
-        for psd, anat, de, th,al, be, g1, g2, target in test_loader:
-            psd=psd.to(device)
-            anat=anat.to(device)
-            target=target.to(device)
-            outputs=model(psd,anat).to('cpu').numpy()
-            
-            pred.extend(outputs)
-    pred=np.array(pred)
-    y_test=test_dataset[:][-1].numpy()
-    NNPred=plotPredictionsReg(pred.flatten(),y_test.flatten(),False)
-    NNPred_list_CustomModel_NoFc.append(NNPred)
-    
-
-
+NNPred_list_psd,NNPred_list_anat,NNPred_list_CustomModel_NoFc=Conventional_NNs.NNs(iterations, num_epochs, dataset, train_size, 
+                     test_size, batch_size, input_size_psd, input_size_anat, 
+                     output_size, device, lr)
 #%% Dataset Graph
 import networkx as nx
 from torch_geometric.utils.convert import to_networkx
@@ -468,7 +304,7 @@ def select_feat_psdPca(psdPCA,anatFeat):
         
         return featlist
     elif len(psdPCA)!=0 and len(anatFeat)==0:
-        return np.log(psdPCA[:,(freqsCropped>=bandOfInt[0])&(freqsCropped<=bandOfInt[1]),:])
+        return psdPCA[:,(freqsCropped>=bandOfInt[0])&(freqsCropped<=bandOfInt[1]),:]
     else:
         return myReshape(anatFeat)
 
@@ -476,8 +312,8 @@ def select_feat_psdPca(psdPCA,anatFeat):
 features_pca= select_feat_psdPca(restStatePCA, anatPCA)
 # feat_train,feat_test,alpha_train, alpha_test, y_train,y_test= train_test_split(features[0],alpha,age,test_size=.3)
 feat_train,feat_test,alpha_train, alpha_test, y_train,y_test= train_test_split(features_pca,alpha,age,test_size=.3)
-dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train),batch_size=1,shuffle=True)
-dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test),batch_size=1)
+dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train),batch_size=6,shuffle=True)
+dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test),batch_size=6)
 dataset_test=Dataset_graph(feat_test, ROIs, alpha_test, y_test)
 data=dataset_test[0]
 print(data.y.shape)
@@ -488,29 +324,36 @@ print(data.y.shape)
 
 for tdata in dataloader_train:
     print(tdata)
-    
     break
 
 #%%
+
+#### 
+
+#Ninguno de tus modelos usa edge_attr. Implementalo mas adelante
+
+####
 if 'model' in globals():
         model.apply(weight_reset)
-model = GCN(data.x.shape[1],hidden_channels=12)
+model = GNN_DiffPool(data.x.shape[1],hidden_channels=12)
 print(model)
 model = model.to(device)
-optimizer = optim.Adam(model.parameters(),lr=0.0001)
+optimizer = optim.Adam(model.parameters(),lr=0.001, weight_decay=5e-4)
 criterion = nn.MSELoss()    
+num_epochs = 300
 
+#%%
 def train(loader,epoch):
     model.train()#More details: model.train() sets the mode to train. You can call either model.eval() or model.train(mode=False) to tell that you are testing. It is somewhat intuitive to expect train function to train model but it does not do that. It just sets the mode.
-    n_total_steps = len(dataloader_train) # number of batches
+    n_total_steps = len(loader) # number of batches
 
     for data in loader:  # Iterate in batches over the training dataset.
         data=data.to(device)
         out = model(data.x, data.edge_index, data.batch)  # Perform a single forward pass. Intenta agregar edge_attr
         loss = criterion(out, data.y)  # Compute the loss.
-        optimizer.zero_grad()
         loss.backward()  # Derive gradients.
         optimizer.step()  # Update parameters based on gradients.
+        optimizer.zero_grad()
     if (epoch+1) % 10==0:
         print(f'epoch {epoch} / {num_epochs}, step={i+1}/{n_total_steps}, loss= {loss.item():.4f}')
     
@@ -522,7 +365,7 @@ def test(loader,plot):
     with torch.no_grad():
         for data in loader:  # Iterate in batches over the training/test dataset.
             data=data.to(device)
-            out = model(data.x, data.edge_index, data.batch).to('cpu').numpy()
+            out = model(data.x, data.edge_index,data.batch).to('cpu').numpy()
             pred.extend(out)
             true_label.extend(data.y.to('cpu').numpy())
         pred=np.array(pred)
@@ -534,24 +377,20 @@ def test(loader,plot):
 NNPred_list_CustomModel_Fc=[]
 for i in range (iterations):
     feat_train,feat_test,alpha_train, alpha_test, y_train,y_test= train_test_split(features_pca,alpha,age,test_size=.3)
-    dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train),batch_size=1,shuffle=True)
-    dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test),batch_size=1)
-    # data=dataset_test[0]
+    dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train),batch_size=30,shuffle=True,num_workers=2)
+    dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test),batch_size=30,num_workers=2)
+
     del model
     if 'model' in globals():
             model.apply(weight_reset)
     
-    model = GCN(data.x.shape[1],hidden_channels=12)
-    # # print(model)
+    model = GNN_DiffPool(data.x.shape[1],hidden_channels=12)
     model = model.to(device)
-    optimizer = optim.Adam(model.parameters(),lr=0.0001)
+    optimizer = optim.Adam(model.parameters(),lr=0.01, weight_decay=5e-4)
     criterion = nn.MSELoss()  
     
-    for epoch in range(1, 150):
+    for epoch in range(1, num_epochs):
         train(dataloader_train,epoch)
-        # _,_,train_acc = test(dataloader_train,False)
-        # pred,true_label,test_acc = test(dataloader_test,False)
-        # print(f'Epoch: {epoch:03d}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
     _,_,train_acc = test(dataloader_train,False)
     pred,true_label,test_acc = test(dataloader_test,False)
     print(f'Epoch: {epoch:03d}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
