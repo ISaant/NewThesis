@@ -9,6 +9,8 @@ Created on Sun Aug 27 00:02:20 2023
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import scipy
+from tqdm import tqdm
 from scipy import sparse
 from sklearn.decomposition import PCA
 from sklearn.pipeline import make_pipeline
@@ -223,6 +225,21 @@ def threshold(connectome, tresh):
     return connectome
 
 #%%
+
+def percentage(connectome, per):
+    x,y,bands=connectome.shape
+    for band in range(bands):
+        upper_triangle=connectome[:,:,band]
+        upper_triangle=upper_triangle[np.triu_indices(upper_triangle.shape[0],k=0)]
+        num_of_nodes=np.ceil(len(upper_triangle)*per).astype(int)
+        idx = np.argsort(-upper_triangle)[num_of_nodes:]
+        upper_triangle[idx]=0
+        X = np.zeros((x,y))
+        X[np.triu_indices(X.shape[0], k = 0)] = upper_triangle
+        connectome[:,:,band]=X + X.T - np.diag(np.diag(X))
+    return connectome
+
+#%%
 def create_Graphs_Disconnected(fcMat):
     _,_,bands=fcMat.shape
     fcDiag=np.zeros((68*bands,68*bands))
@@ -230,3 +247,53 @@ def create_Graphs_Disconnected(fcMat):
         fcDiag[i*68:68+i*68,i*68:68+i*68]=fcMat[:,:,i]
     
     return fcDiag
+
+#%% 
+def CorrHist(FcFile,path):
+    for e,file in enumerate(tqdm(FcFile)):
+        fcMat = scipy.io.loadmat(path+'/'+file)['TF_Expand_Matrix_Sorted']
+        scaler =MinMaxScaler()
+        x,y,bands=fcMat.shape
+        
+        vecs= []
+        for band in range(bands):
+            fcMat_vec = fcMat[:,:,band].reshape([-1,1])
+            # fcMat_vec -= min(fcMat_vec)
+            # fcMat_vec /= max(fcMat_vec)
+            # fcMat_vec = scaler.fit_transform(fcMat_vec)
+            vecs.append(fcMat_vec)
+        vecs=np.array(vecs)
+        if e==0:
+            fcMat_Vec=vecs
+        else: 
+            fcMat_Vec=np.concatenate((fcMat_Vec,vecs),axis=1)
+    fcMat_Vec= np.squeeze(fcMat_Vec)       
+    print (fcMat_Vec.shape)
+            
+    fig, ax = plt.subplots(nrows=2, ncols=3,figsize=(15, 15))
+    
+    count=0
+    title=['delta', 'theta', 'alpha', 'beta', 'gamma_low', 'gamma_high']
+    for row in ax:
+        for col in row:
+            col.hist(fcMat_Vec[count,:], bins=30, range= (0.01,max(fcMat_Vec[count,:])),density=True, )
+            col.hist(fcMat_Vec[count,:], bins=30, range= (0.01,max(fcMat_Vec[count,:])),density=True, cumulative= True, histtype= 'step')
+            col.set_title(title[count])
+            count+=1
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

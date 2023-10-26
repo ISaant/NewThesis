@@ -20,7 +20,8 @@ def Fc_Feat(FcFile,path):
     for e,file in enumerate(tqdm(FcFile)):
         mat = scipy.io.loadmat(path+'/'+file)
         # fcMatrix=np.arctanh(knn_graph(mat['TF_Expand_Matrix_Sorted'],Nneighbours=8))
-        fcMatrix=np.arctanh(threshold(mat['TF_Expand_Matrix_Sorted'],tresh=.4))
+        # fcMatrix=np.arctanh(threshold(mat['TF_Expand_Matrix_Sorted'],tresh=.4))
+        fcMatrix=percentage(mat['TF_Expand_Matrix_Sorted'],per=.25)
     
         if e==0:
             delta=fcMatrix[:,:,0][np.newaxis,:,:]
@@ -36,12 +37,26 @@ def Fc_Feat(FcFile,path):
         beta=np.concatenate((beta,fcMatrix[:,:,3][np.newaxis,:,:]),axis=0)
         gamma_low=np.concatenate((gamma_low,fcMatrix[:,:,4][np.newaxis,:,:]),axis=0)
         gamma_high=np.concatenate((gamma_high,fcMatrix[:,:,5][np.newaxis,:,:]),axis=0)
-        
+    
+    mean_delta=np.nansum(delta,axis=0)
+    mean_theta=np.nansum(theta,axis=0)    
     mean_alpha=np.nansum(alpha,axis=0)
+    mean_beta=np.nansum(beta,axis=0)
+    mean_gamma_low=np.nansum(gamma_low,axis=0)
+    mean_gamma_high=np.nansum(gamma_high,axis=0)
+    plt.figure()
+    sns.heatmap(mean_delta,cmap='jet')
+    plt.figure()
+    sns.heatmap(mean_theta,cmap='jet')
     plt.figure()
     sns.heatmap(mean_alpha,cmap='jet')
     plt.figure()
-    sns.heatmap(alpha[0,:,:],cmap='jet')
+    sns.heatmap(mean_beta,cmap='jet')
+    plt.figure()
+    sns.heatmap(mean_gamma_low,cmap='jet')
+    plt.figure()
+    sns.heatmap(mean_gamma_high,cmap='jet')
+    plt.figure()
     bands_name=[str(x[0]) for x in mat['Freqs'][:,0]]
     bands_freq=np.array([np.array(x[0].split(',')).astype(int) for x in mat['Freqs'][:,1]])
     ROIs=[str(x[0][0]) for x in mat['Rows']]

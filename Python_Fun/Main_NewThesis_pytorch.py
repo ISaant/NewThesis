@@ -7,8 +7,8 @@ Created on Wed Sep 20 18:26:29 2023
 """
 
 import os
-os.chdir('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun')
-# os.chdir('/export03/data/Santiago/NewThesis/Python_Fun')
+# os.chdir('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun')
+os.chdir('/export03/data/Santiago/NewThesis/Python_Fun')
 import pickle
 import pandas as pd
 import numpy as np
@@ -83,6 +83,8 @@ anat2use,Anat_aranged, anatPCA= Anat_Feat(path2anat,AnatFile,row_idx,scoreDf_noN
 
 boolarray=[x[4:-4]==y[4:] for x,y in zip(FcFile,subjects) ]
 print('All the subjects are sorted equal between the datasets: '+str(any(boolarray)) )
+
+CorrHist(FcFile,path2fc)
 
 delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = Fc_Feat(FcFile,path2fc)
 
@@ -182,9 +184,12 @@ features_pca= select_feat_psdPca(restStatePCA, anatPCA)
 feat_train,feat_test,alpha_train, alpha_test, y_train,y_test= train_test_split(features_pca,alpha,age,test_size=.3)
 dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train),batch_size=6,shuffle=True)
 dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test),batch_size=6)
-dataset_test=Dataset_graph(feat_test, ROIs, alpha_test, y_test)
-data=dataset_test[0]
-print(data.y.shape)
+dataset_all=Dataset_graph(features_pca, ROIs, alpha, age)
+
+for i in range(10):
+    data = dataset_all[i]
+    print(data.edge_attr[:5])
+
 # vis = to_networkx(data)
 # node_labels = data.y.numpy()
 # plt.figure(1,figsize=(15,13))
