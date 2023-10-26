@@ -364,7 +364,7 @@ class SAGE_GCN(torch.nn.Module):
         x=data.x
         edge_index=data.edge_index
         batch=data.batch
-        edge_index=add_self_loops(edge_index)
+        # edge_index=add_self_loops(edge_index)
 
         x1 = self.lin1(x)
         x1= F.sigmoid(x1)
@@ -488,7 +488,7 @@ class GNN_DiffPool(torch.nn.Module):
         x=data.x
         edge_index=data.edge_index
         batch=data.batch
-        edge_index=add_self_loops(edge_index)
+        # edge_index=add_self_loops(edge_index)
 
         x = self.lin1_pre(x)
         x= F.sigmoid(x)
@@ -571,7 +571,7 @@ class GNN_GIN(torch.nn.Module):
         self.hl2 = nn.Linear(256, 64)
         self.hl3 = nn.Linear(64, 16)
         self.hl4 = nn.Linear(16, 16)
-        self.ol = nn.Linear(16, output_size)
+        self.ol = nn.Linear(16, 1)
         self.activation1 = nn.Sigmoid()
         self.activation2 = nn.ReLU()
         self.activation3 = nn.ELU()
@@ -581,27 +581,29 @@ class GNN_GIN(torch.nn.Module):
     def forward(self,data):
         x=data.x
         edge_index=data.edge_index
-        edge_index=add_self_loops(edge_index)
-        print(edge_index.shape, edge_index.dtype)
+        batch = data.batch
+        # edge_index=add_self_loops(edge_index)
+        # print(edge_index.shape, edge_index.dtype)
         x = self.lin1_pre(x)
         x= F.sigmoid(x)
         x = self.lin2_pre(x)
         x= F.relu(x)
         x1 = F.sigmoid(self.bn1(self.conv1(x, edge_index)))
         x1 = self.dropout(x1)
-        x2 = F.relu(self.bn1(self.conv1(x1, edge_index)))
+        x2 = F.relu(self.bn2(self.conv2(x1, edge_index)))
         x2 = self.dropout(x2)
-        x3 = F.relu(self.bn1(self.conv1(x2, edge_index)))
+        x3 = F.relu(self.bn3(self.conv3(x2, edge_index)))
         x3 = self.dropout(x3)
         
         x = torch.cat([x1, x2, x3], dim=-1)
+        # print (x.shape)
         # x = x.view(-1,3 * self. output_size *num_nodes)
-        x = global_add_pool(x)
-        
+        x = global_add_pool(x,batch)
+        # print (x.shape)
         out = self.activation1(self.il(x))
         out = self.activation2(self.hl1(out))
         out = self.activation3(self.hl2(out))
-        out = self.activation4(self.hl3(x))
+        out = self.activation4(self.hl3(out))
         out = self.activation5(self.hl4(out))
         out = self.ol(out)
         return out

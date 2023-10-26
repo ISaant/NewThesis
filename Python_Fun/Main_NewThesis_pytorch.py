@@ -7,8 +7,8 @@ Created on Wed Sep 20 18:26:29 2023
 """
 
 import os
-# os.chdir('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun')
-os.chdir('/export03/data/Santiago/NewThesis/Python_Fun')
+os.chdir('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun')
+# os.chdir('/export03/data/Santiago/NewThesis/Python_Fun')
 import pickle
 import pandas as pd
 import numpy as np
@@ -136,7 +136,7 @@ output_size = labels.shape[1]
 
 
 #%% NN no fc 
-iterations=1
+iterations=30
 NNPred_list_psd,NNPred_list_anat,NNPred_list_CustomModel_NoFc=Conventional_NNs.NNs(iterations, num_epochs, dataset, train_size, 
                      test_size, batch_size, input_size_psd, input_size_anat, 
                      output_size, device, lr)
@@ -210,7 +210,7 @@ model3 = GNN_DiffPool(data.x.shape[1])
 
 models = [model1,model2,model3]
 models_acc=[]
-num_epochs= 20
+num_epochs= 200
 models_loss= np.zeros((3,num_epochs))
 
 for mm,model in enumerate(models):
@@ -245,18 +245,7 @@ for mm,model in enumerate(models):
         # print(f'Epoch: {epoch:03d}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
         NNPred_list_CustomModel_Fc.append(test_acc)
     models_acc.append(NNPred_list_CustomModel_Fc)
-PredExperimentsDF=pd.DataFrame({'PSD_PCA':NNPred_list_psd,
-                                'Anat_PCA':NNPred_list_anat,
-                                'Parallel':NNPred_list_CustomModel_NoFc,
-                                'GCN': models_acc[0],
-                                'SAGE_GCN': models_acc[1],
-                                'GNN_Diffpool': models_acc[2]})
 
-figure()
-PredExperimentsDf_melted = PredExperimentsDF.reset_index().melt(id_vars='index')
-sns.boxplot(PredExperimentsDf_melted,y='value',x='variable')
-
-title('Boxplot Acc')
 
 #%%
 
@@ -264,22 +253,38 @@ model = GNN_GIN(data.x.shape[1], train_eps=False, output_size=32)
 model = model.to(device)
 optimizer = optim.Adam(model.parameters(),lr=0.001, weight_decay=5e-4)
 criterion = nn.MSELoss()    
-feat_train,feat_test,alpha_train, alpha_test, y_train,y_test= train_test_split(features_pca,alpha,age,test_size=.3)
-dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train),batch_size=10,shuffle=True,num_workers=2)
-dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test),batch_size=10,num_workers=2)
+NNPred_list_CustomModel_Fc=[]
+for i in tqdm(range (iterations)):
+    feat_train,feat_test,alpha_train, alpha_test, y_train,y_test= train_test_split(features_pca,alpha,age,test_size=.3)
+    dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train),batch_size=10,shuffle=True,num_workers=2)
+    dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test),batch_size=10,num_workers=2)
 
 
-if 'model' in globals():
-    # print('yes')
-    model.apply(weight_reset)
+    if 'model' in globals():
+        # print('yes')
+        model.apply(weight_reset)
+    n_total_steps = len(dataloader_train)
+    for epoch in range(1, num_epochs):
+        loss=train(model,criterion,optimizer,dataloader_train)
+        models_loss[mm,epoch]=loss
+        # if (epoch+1) % 10==0:
+            # print(f'epoch {epoch} / {num_epochs}, step={i+1}/{n_total_steps}, loss= {loss.item():.4f}')
+    _,_,train_acc = test(model,dataloader_train,False)
+    pred,true_label,test_acc = test(model, dataloader_test,False)
+    # print(f'Epoch: {epoch:03d}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
+    NNPred_list_CustomModel_Fc.append(test_acc)
+models_acc.append(NNPred_list_CustomModel_Fc)
 
+PredExperimentsDF=pd.DataFrame({'PSD_PCA':NNPred_list_psd,
+                                'Anat_PCA':NNPred_list_anat,
+                                'Parallel':NNPred_list_CustomModel_NoFc,
+                                'GCN': models_acc[0],
+                                'SAGE_GCN': models_acc[1],
+                                'GNN_Diffpool': models_acc[2],
+                                'GIN':NNPred_list_CustomModel_Fc })
 
-n_total_steps = len(dataloader_train)
-for epoch in range(1, num_epochs):
-    loss=train(model,criterion,optimizer,dataloader_train)
-    models_loss[mm,epoch]=loss
-    if (epoch+1) % 10==0:
-        print(f'epoch {epoch} / {num_epochs}, step={i+1}/{n_total_steps}, loss= {loss.item():.4f}')
-_,_,train_acc = test(model,dataloader_train,False)
-pred,true_label,test_acc = test(model, dataloader_test,False)
-print(f'Epoch: {epoch:03d}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
+figure()
+PredExperimentsDf_melted = PredExperimentsDF.reset_index().melt(id_vars='index')
+sns.boxplot(PredExperimentsDf_melted,y='value',x='variable')
+
+title('Boxplot Acc - threshold')

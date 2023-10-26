@@ -216,8 +216,10 @@ def threshold(connectome, tresh):
     scaler =MinMaxScaler()
     _,_,bands=connectome.shape
     for band in range(bands):
-        bandScaled=scaler.fit_transform(connectome[:,:,band])
-        connectome[bandScaled<tresh]=0
+        X_one_column = connectome[:,:,band].reshape([-1,1])
+        result_one_column = scaler.fit_transform(X_one_column)
+        bandScaled = result_one_column.reshape(connectome[:,:,band].shape)
+        connectome[bandScaled<tresh,band]=0
     return connectome
 
 #%%

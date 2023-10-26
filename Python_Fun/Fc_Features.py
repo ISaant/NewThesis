@@ -19,8 +19,8 @@ def Fc_Feat(FcFile,path):
     '''Aqui debes decidir si usar k vecinos o umbralizar. knn nos dara una matriz sparce uniforme'''
     for e,file in enumerate(tqdm(FcFile)):
         mat = scipy.io.loadmat(path+'/'+file)
-        fcMatrix=np.arctanh(knn_graph(mat['TF_Expand_Matrix_Sorted'],Nneighbours=8))
-        # fcMatrix=np.arctanh(threshold(mat['TF_Expand_Matrix_Sorted'],tresh=.3))
+        # fcMatrix=np.arctanh(knn_graph(mat['TF_Expand_Matrix_Sorted'],Nneighbours=8))
+        fcMatrix=np.arctanh(threshold(mat['TF_Expand_Matrix_Sorted'],tresh=.4))
     
         if e==0:
             delta=fcMatrix[:,:,0][np.newaxis,:,:]
