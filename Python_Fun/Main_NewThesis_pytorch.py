@@ -7,8 +7,8 @@ Created on Wed Sep 20 18:26:29 2023
 """
 
 import os
-# os.chdir('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun')
-os.chdir('/export03/data/Santiago/NewThesis/Python_Fun')
+os.chdir('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun')
+# os.chdir('/export03/data/Santiago/NewThesis/Python_Fun')
 import pickle
 import pandas as pd
 import numpy as np
@@ -17,6 +17,7 @@ import seaborn as sns
 import scipy
 import torch.optim as optim
 import Conventional_NNs
+import matplotlib.pyplot as plt
 from torch.utils.data import random_split
 from tqdm import tqdm
 from matplotlib.pyplot import plot, figure, title
@@ -28,6 +29,9 @@ from sklearn.model_selection import train_test_split
 from PSD_Features import PSD_Feat
 from Anat_Features import Anat_Feat
 from Fc_Features import Fc_Feat
+from Min_Percentage_Test import min_perThresh_test
+from Kill_deadNodes import kill_deadNodes
+from node2vec_embedding import n2v_embedding
 device = torch.device ('cuda' if torch.cuda.is_available() else 'cpu')
 #%% Hyperparameters
 
@@ -68,6 +72,8 @@ age=scoreDf['Age'].to_numpy()
 demographics=pd.read_csv(path2demo+demoFile[0])
 subjects=demographics['CCID']
 
+
+
 #%% Read PSD
 
 psd2use, restStatePCA=PSD_Feat (path2psd,mainDir_psd,restStateDir,emptyRoomDir,columns, row_idx)
@@ -77,16 +83,27 @@ psd2use, restStatePCA=PSD_Feat (path2psd,mainDir_psd,restStateDir,emptyRoomDir,c
 
 anat2use,Anat_aranged, anatPCA= Anat_Feat(path2anat,AnatFile,row_idx,scoreDf_noNan)
 
-
 #%% Read Fc
 # You have to normalize this values for each matrix
 
 boolarray=[x[4:-4]==y[4:] for x,y in zip(FcFile,subjects) ]
 print('All the subjects are sorted equal between the datasets: '+str(any(boolarray)) )
 
-CorrHist(FcFile,path2fc)
+# CorrHist(FcFile,path2fc)
 
-delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = Fc_Feat(FcFile,path2fc)
+
+# min_perThresh_test(FcFile, path2fc) 
+
+
+# delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = Fc_Feat(FcFile,path2fc,thresh_vec[2])
+delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = Fc_Feat(FcFile,path2fc,.25) #nt = no threshold
+delta_mod,detla_idx=kill_deadNodes(delta)
+theta_mod,theta_idx=kill_deadNodes(theta)
+alpha_mod,alpha_idx=kill_deadNodes(alpha)
+beta_mod,beta_idx=kill_deadNodes(beta)
+gamma_low_mod,gl_idx=kill_deadNodes(gamma_low)
+gamma_high_mod,gh_idx=kill_deadNodes(gamma_high)
+
 
 # ToDo hacer una clase con los atributos: num_nodes, num_edges, average node degree, 
 # ToDo Probar si añadiendo una tansformacion laplaciana, la clasificacion mejora
@@ -178,27 +195,25 @@ def select_feat_psdPca(psdPCA,anatFeat):
     else:
         return myReshape(anatFeat)
 
-# features= select_feat(psd2use,bands_freq,anatPCA)
+# features= select_feat(psd2use,np.array([8,12]),anatPCA)
 features_pca= select_feat_psdPca(restStatePCA, anatPCA)
 # feat_train,feat_test,alpha_train, alpha_test, y_train,y_test= train_test_split(features[0],alpha,age,test_size=.3)
-feat_train,feat_test,alpha_train, alpha_test, y_train,y_test= train_test_split(features_pca,alpha,age,test_size=.3)
-dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train),batch_size=6,shuffle=True)
-dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test),batch_size=6)
-dataset_all=Dataset_graph(features_pca, ROIs, alpha, age)
+feat_train,feat_test,alpha_train, alpha_test, y_train,y_test, idx_train, idx_test,= train_test_split(features_pca,alpha_mod,age, alpha_idx, test_size=.3)
+dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train, idx_train),batch_size=1,shuffle=True)
+dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test, idx_test),batch_size=1)
+dataset_all=Dataset_graph(features_pca, ROIs, alpha_mod, age, alpha_idx)
 
 for i in range(10):
     data = dataset_all[i]
-    print(data.edge_attr[:5])
+    print(data, alpha_idx[i].shape)
 
 # vis = to_networkx(data)
 # node_labels = data.y.numpy()
 # plt.figure(1,figsize=(15,13))
 # nx.draw(vis, cmap=plt.get_cmap('Set3'),node_size=70, linewidths=6)
 
-for tdata in dataloader_train:
-    print(tdata)
-    break
 
+n2v_mat=n2v_embedding(dataset_all,device)
 #%%
 
 #### 

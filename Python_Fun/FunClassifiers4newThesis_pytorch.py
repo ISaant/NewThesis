@@ -238,19 +238,28 @@ def weight_reset(m):
 #%% Create Dataset for graph regression
 from torch_geometric.data import Data, Batch
 import networkx as nx
-def Dataset_graph(features, labels, connectome, task):
+def Dataset_graph(features, labels, connectome, task, idx):
     features = np.array(features,dtype=float)
     data_list=[]
     le = LabelEncoder()
     encoded=le.fit_transform(labels)
     # task=torch.FloatTensor(task)
-    connectome=connectome.astype('float32')
+    if type(connectome) == list:
+        for sub in range(len(connectome)):
+            connectome[sub] = connectome[sub].astype('float32')
+    else:
+        connectome=connectome.astype('float32')
     task=torch.FloatTensor(task[:,np.newaxis,np.newaxis])
     # task=torch.FloatTensor(task[:,np.newaxis,])
 
     for i in range(len(features)):
-        x=torch.FloatTensor(features[i,:,:].T)
-        edge_index,edge_wight=from_scipy_sparse_matrix(sparse.csr_matrix(connectome[i,:,:]))
+        x=np.delete(features[i,:,:],idx[i],axis=1).T
+        x=torch.FloatTensor(x)
+        if type(connectome) == list:
+            edge_index,edge_wight=from_scipy_sparse_matrix(sparse.csr_matrix(connectome[i]))
+        else:
+            edge_index,edge_wight=from_scipy_sparse_matrix(sparse.csr_matrix(connectome[i,:,:]))
+
         edge_index=torch.from_numpy(edge_index.numpy())
         # print(edge_index.shape)
         edge_wight=torch.from_numpy(edge_wight.numpy()).float()

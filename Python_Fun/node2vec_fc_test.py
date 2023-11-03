@@ -14,7 +14,8 @@ import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
 from tqdm import tqdm
 import numpy as np
-from torch_geometric.utils.convert import from_scipy_sparse_matrix, to_networkx, to_scipy_sparse_matrix, to_dense_adj
+from torch_geometric.utils.convert import from_scipy_sparse_matrix, to_networkx, to_scipy_sparse_matrix
+from torch_geometric.utils import to_dense_adj
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

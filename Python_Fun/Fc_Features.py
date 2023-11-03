@@ -13,15 +13,15 @@ from Fun4newThesis import *
 from tqdm import tqdm
 from FunClassifiers4newThesis_pytorch import *
 
-def Fc_Feat(FcFile,path):
+def Fc_Feat(FcFile,path,per):
 
     
     '''Aqui debes decidir si usar k vecinos o umbralizar. knn nos dara una matriz sparce uniforme'''
-    for e,file in enumerate(tqdm(FcFile)):
+    for e,file in enumerate(FcFile):
         mat = scipy.io.loadmat(path+'/'+file)
         # fcMatrix=np.arctanh(knn_graph(mat['TF_Expand_Matrix_Sorted'],Nneighbours=8))
         # fcMatrix=np.arctanh(threshold(mat['TF_Expand_Matrix_Sorted'],tresh=.4))
-        fcMatrix=percentage(mat['TF_Expand_Matrix_Sorted'],per=.25)
+        fcMatrix=percentage(mat['TF_Expand_Matrix_Sorted'],per=per)
     
         if e==0:
             delta=fcMatrix[:,:,0][np.newaxis,:,:]
@@ -44,29 +44,29 @@ def Fc_Feat(FcFile,path):
     mean_beta=np.nansum(beta,axis=0)
     mean_gamma_low=np.nansum(gamma_low,axis=0)
     mean_gamma_high=np.nansum(gamma_high,axis=0)
-    plt.figure()
-    sns.heatmap(mean_delta,cmap='jet')
-    plt.figure()
-    sns.heatmap(mean_theta,cmap='jet')
-    plt.figure()
-    sns.heatmap(mean_alpha,cmap='jet')
-    plt.figure()
-    sns.heatmap(mean_beta,cmap='jet')
-    plt.figure()
-    sns.heatmap(mean_gamma_low,cmap='jet')
-    plt.figure()
-    sns.heatmap(mean_gamma_high,cmap='jet')
-    plt.figure()
-    bands_name=[str(x[0]) for x in mat['Freqs'][:,0]]
-    bands_freq=np.array([np.array(x[0].split(',')).astype(int) for x in mat['Freqs'][:,1]])
+    # plt.figure()
+    # sns.heatmap(mean_delta,cmap='jet')
+    # plt.figure()
+    # sns.heatmap(mean_theta,cmap='jet')
+    # plt.figure()
+    # sns.heatmap(mean_alpha,cmap='jet')
+    # plt.figure()
+    # sns.heatmap(mean_beta,cmap='jet')
+    # plt.figure()
+    # sns.heatmap(mean_gamma_low,cmap='jet')
+    # plt.figure()
+    # sns.heatmap(mean_gamma_high,cmap='jet')
+    # plt.figure()
+    # bands_name=[str(x[0]) for x in mat['Freqs'][:,0]]
+    # bands_freq=np.array([np.array(x[0].split(',')).astype(int) for x in mat['Freqs'][:,1]])
     ROIs=[str(x[0][0]) for x in mat['Rows']]
     
-    fcDiagMat=[]
-    for e,file in enumerate(FcFile): #Aqui unimos todos los conectomas en un solo grafo diagonalizado deconexo, la intencion es hacer pruebas mas adelante
-        mat = scipy.io.loadmat(path+'/'+file)
-        fcMatrix=np.arctanh(knn_graph(mat['TF_Expand_Matrix_Sorted'],Nneighbours=67))
-        fcDiag=create_Graphs_Disconnected(fcMatrix)
-        fcDiagMat.append(fcDiag)
-    fcDiagMat=np.array(fcDiagMat)
+    # fcDiagMat=[]
+    # for e,file in enumerate(FcFile): #Aqui unimos todos los conectomas en un solo grafo diagonalizado deconexo, la intencion es hacer pruebas mas adelante
+    #     mat = scipy.io.loadmat(path+'/'+file)
+    #     fcMatrix=np.arctanh(knn_graph(mat['TF_Expand_Matrix_Sorted'],Nneighbours=67))
+    #     fcDiag=create_Graphs_Disconnected(fcMatrix)
+    #     fcDiagMat.append(fcDiag)
+    # fcDiagMat=np.array(fcDiagMat)
     
     return delta, theta, alpha, beta, gamma_low, gamma_high, ROIs

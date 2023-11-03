@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import scipy
+import seaborn as sns
 from tqdm import tqdm
 from scipy import sparse
 from sklearn.decomposition import PCA
@@ -282,8 +283,7 @@ def CorrHist(FcFile,path):
             count+=1
     
         
-        
-        
+
         
         
         
