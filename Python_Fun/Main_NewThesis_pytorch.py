@@ -6,6 +6,7 @@ Created on Wed Sep 20 18:26:29 2023
 @author: isaac
 """
 
+#%%
 import os
 os.chdir('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun')
 # os.chdir('/export03/data/Santiago/NewThesis/Python_Fun')
@@ -28,10 +29,10 @@ from copy import copy
 from sklearn.model_selection import train_test_split
 from PSD_Features import PSD_Feat
 from Anat_Features import Anat_Feat
-from Fc_Features import Fc_Feat
+from read_Fc import read_Fc
 from Min_Percentage_Test import min_perThresh_test
 from Kill_deadNodes import kill_deadNodes
-from node2vec_embedding import n2v_embedding
+import node2vec_embedding
 device = torch.device ('cuda' if torch.cuda.is_available() else 'cpu')
 #%% Hyperparameters
 
@@ -96,7 +97,7 @@ print('All the subjects are sorted equal between the datasets: '+str(any(boolarr
 
 
 # delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = Fc_Feat(FcFile,path2fc,thresh_vec[2])
-delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = Fc_Feat(FcFile,path2fc,.25) #nt = no threshold
+delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = read_Fc(FcFile,path2fc,.25) #nt = no threshold
 delta_mod,detla_idx=kill_deadNodes(delta)
 theta_mod,theta_idx=kill_deadNodes(theta)
 alpha_mod,alpha_idx=kill_deadNodes(alpha)
@@ -107,6 +108,32 @@ gamma_high_mod,gh_idx=kill_deadNodes(gamma_high)
 
 # ToDo hacer una clase con los atributos: num_nodes, num_edges, average node degree, 
 # ToDo Probar si añadiendo una tansformacion laplaciana, la clasificacion mejora
+
+#%%
+emb_dim=128
+
+# for file in listoffiles:
+if os.path.isfile('embeddings.pickle'):
+    print('No need to compute embeddings')
+    with open('embeddings.pickle','rb') as f:
+        emb_loss = pickle.load(f)
+    n2v_mat = emb_loss[0]
+    loss_mat = emb_loss[1]
+
+else:
+    print('Embeddings was not found, starting computation')
+    n2v_mat, loss_mat = node2vec_embedding.n2v_embedding(alpha_mod, device=device, q=1.5, embedding_dim=emb_dim)
+    emb_loss = [n2v_mat, loss_mat]
+    with open('embeddings.pickle', 'wb') as f:
+        pickle.dump(emb_loss, f)
+
+# add cero array to the disjointed nodes
+n2v_mat_mod = []
+for emb, idx in zip(n2v_mat,alpha_idx):
+    for i in idx:
+        emb = np.insert(arr=emb, obj=i, values=0, axis=0)
+    # print(emb.shape)
+    n2v_mat_mod.append(emb)
 #%% Generate labels
 
 # scores=scoreDf_noNan[scoreDf.columns[[1,3,4,5,6,7,8,9,10]]].to_numpy()
@@ -118,52 +145,80 @@ labels= scores
 
 #%% Prepare dataset
 
-dataset=CustomDataset(restStatePCA, anatPCA,delta, theta, 
-                      alpha, beta, gamma_low,gamma_high,
-                      labels, transform=None)
-
-
+dataset=CustomDataset(restStatePCA, anatPCA, n2v_mat, n2v_mat_mod, labels, transform=None)
 
 # making sure the dataset is properlly constructed
 # and that the dataloader returns the proper structure
 dataloader=DataLoader(dataset=dataset,batch_size=200,shuffle=True,num_workers=2)
 dataiter=iter(dataloader)
 data=next(dataiter)
-psd, anat, de, th,al, be, g1, g2, l= data
-print(psd.shape, anat.shape, de.shape, th.shape,\
-      al.shape, be.shape, g1.shape, g2.shape, l.shape)
+#----------------------#
+#For indexing dataset/dataiter: 0:psd,1:anat,2:embeddings,3:tagets
+#----------------------#
+
+psd, anat, emb, emb_z, l= data
+print(psd.shape, anat.shape, emb.shape, emb_z.shape, l.shape)
 
 # Define input/output sizes, batchsize and learning rate
 
-train_size = int(0.7 * len(dataset))
-test_size = len(dataset) - train_size
+train_size = int(0.6 * len(dataset))
+test_size = int(0.9 * len(dataset)) - train_size
+val_size = len(dataset) - train_size - test_size
+
+print(train_size+test_size+val_size == len(dataset))
 
 batch_size=128
 lr = .0001
 num_epochs = 150
 input_size_psd = restStatePCA.shape[1]
 input_size_anat = anatPCA.shape[1]
-input_size_de = delta.shape[1:3]
-input_size_th = theta.shape[1:3]
-input_size_al = alpha.shape[1:3]
-input_size_be = beta.shape[1:3]
-input_size_g1 = gamma_low.shape[1:3]
-input_size_g2 = gamma_high.shape[1:3]
+input_size_emb = emb.shape[1]
+input_size_emb_z = emb_z.shape[1]
 output_size = labels.shape[1]
 
+train_dataset, test_dataset, val_dataset = random_split(dataset, [train_size, test_size, val_size])
+train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size,
+                          shuffle=True, num_workers=2)
 
+test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset),
+                         shuffle=False, num_workers=2)
+
+val_loader = DataLoader(dataset=val_dataset, batch_size=len(val_dataset),
+                         shuffle=False, num_workers=2)
 
 
 #%% NN no fc 
-iterations=30
-NNPred_list_psd,NNPred_list_anat,NNPred_list_CustomModel_NoFc=Conventional_NNs.NNs(iterations, num_epochs, dataset, train_size, 
-                     test_size, batch_size, input_size_psd, input_size_anat, 
+iterations=1
+NNPred_list_psd,NNPred_list_anat,NNPred_list_CustomModel_NoFc=Conventional_NNs.NNs(iterations, num_epochs, dataset, train_size,
+                     test_size, val_size, batch_size, input_size_psd, input_size_anat,
                      output_size, device, lr)
+
+plt.close('all')
+#%% Test NN for graph embeddings
+
+model = NeuralNet4Graph_emb(input_size_emb, output_size).to(device)
+print(model._get_name())
+# Puedes imprimir el resumen del modelo si lo deseas
+# print(model)
+if 'model' in globals():
+    model.apply(weight_reset)
+criterion = nn.MSELoss()  # Mean Squared Error loss
+optimizer = optim.Adam(model.parameters(), lr=.001, weight_decay=5e-4)
+var_pos = 2
+train_ANN(model, criterion, optimizer, train_loader, val_loader, num_epochs, var_pos)
+mse_test, pred = test_ANN(model,test_loader, var_pos)
+pred=np.array(pred)
+y_test = test_dataset[:][-1].numpy()
+NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), True)
+print(f'Test_Acc: {NNPred:4f}, Test_MSE: {mse_test}')
+
+
+
 #%% Dataset Graph
 import networkx as nx
 from torch_geometric.utils.convert import to_networkx
 from torch_geometric.loader import DataLoader
-def select_feat(psdFeat,bandOfInt,anatFeat):
+def select_feat_noPCA(psdFeat,bandOfInt,anatFeat):
     if bandOfInt.ndim ==2:
         numBandsUsed,_=bandOfInt.shape
     else:
@@ -191,17 +246,44 @@ def select_feat_psdPca(psdPCA,anatFeat):
         
         return featlist
     elif len(psdPCA)!=0 and len(anatFeat)==0:
-        return psdPCA[:,(freqsCropped>=bandOfInt[0])&(freqsCropped<=bandOfInt[1]),:]
+        # return psdPCA[:,(freqsCropped>=bandOfInt[0])&(freqsCropped<=bandOfInt[1]),:]
+        return list(psdPCA)
     else:
-        return myReshape(anatFeat)
+        return list(myReshape(anatFeat))
 
-# features= select_feat(psd2use,np.array([8,12]),anatPCA)
+
+def select_feat_emb(emb, anatFeat):
+    if len(emb) != 0 and len(anatFeat) != 0:
+        emb = np.swapaxes(np.array(emb), 1, 2)
+        featlist = list(np.concatenate((emb, myReshape(anatFeat)), axis=1))
+        return featlist
+    elif len(emb) != 0 and len(anatFeat) == 0:
+        emb = np.swapaxes(np.array(emb), 1, 2)
+        return list(emb)
+    else:
+        return list(myReshape(anatFeat))
+
+# features= select_feat_noPCA(psd2use,np.array([8,12]),anatPCA)
 features_pca= select_feat_psdPca(restStatePCA, anatPCA)
+features_emb= select_feat_emb(n2v_mat_mod, [])
 # feat_train,feat_test,alpha_train, alpha_test, y_train,y_test= train_test_split(features[0],alpha,age,test_size=.3)
-feat_train,feat_test,alpha_train, alpha_test, y_train,y_test, idx_train, idx_test,= train_test_split(features_pca,alpha_mod,age, alpha_idx, test_size=.3)
-dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train, idx_train),batch_size=1,shuffle=True)
-dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test, idx_test),batch_size=1)
-dataset_all=Dataset_graph(features_pca, ROIs, alpha_mod, age, alpha_idx)
+# feat_train,feat_test,alpha_train, alpha_test, y_train,y_test, idx_train, idx_test,= train_test_split(features_pca,alpha_mod,age, alpha_idx, test_size=.3)
+# dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train, idx_train),batch_size=2,shuffle=True)
+# dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test, idx_test),batch_size=2)
+# dataset_all=Dataset_graph(features_pca, ROIs, alpha_mod, age, alpha_idx)
+feat_train, feat_test, alpha_train, alpha_test, y_train, y_test, idx_train, idx_test, = train_test_split(
+    features_emb, alpha_mod, age, alpha_idx, test_size=.3,random_state=12)
+
+feat_train, feat_val, alpha_train, alpha_val, y_train, y_val, idx_train, idx_val, = train_test_split(
+    feat_train, alpha_train, y_train, idx_train, test_size=.1, random_state=12)
+
+dataloader_train = DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train, idx_train), batch_size=1,
+                              shuffle=True)
+dataloader_test = DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test, idx_test), batch_size=1)
+
+dataloader_val = DataLoader(Dataset_graph(feat_val, ROIs, alpha_val, y_val, idx_val), batch_size=1)
+
+dataset_all=Dataset_graph(features_emb, ROIs, alpha_mod, age, alpha_idx)
 
 for i in range(10):
     data = dataset_all[i]
@@ -213,7 +295,12 @@ for i in range(10):
 # nx.draw(vis, cmap=plt.get_cmap('Set3'),node_size=70, linewidths=6)
 
 
-n2v_mat=n2v_embedding(dataset_all,device)
+#%%
+# dataloader_rw=DataLoader(dataset=dataset_rw,batch_size=3,shuffle=True,num_workers=2)
+# dataiter=iter(dataloader_rw)
+# data=next(dataiter)
+# added, concat, l= data
+# print(psd.shape, anat.shape,l.shape)
 #%%
 
 #### 
@@ -233,38 +320,37 @@ models_acc=[]
 num_epochs= 200
 models_loss= np.zeros((3,num_epochs))
 
-for mm,model in enumerate(models):
-    # print(model)
-    model = model.to(device)
-    optimizer = optim.Adam(model.parameters(),lr=0.001, weight_decay=5e-4)
-    criterion = nn.MSELoss()    
-   
+for i in tqdm(range(iterations)):
 
+    feat_train, feat_test, alpha_train, alpha_test, y_train, y_test, idx_train, idx_test, = train_test_split(
+        features_emb, alpha_mod, age, alpha_idx, test_size=.3, random_state=12)
 
+    feat_train, feat_val, alpha_train, alpha_val, y_train, y_val, idx_train, idx_val, = train_test_split(
+        feat_train, alpha_train, y_train, idx_train, test_size=.1, random_state=12)
 
-     # Derive ratio of correct predictions.
+    dataloader_train = DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train, idx_train), batch_size=1,
+                                  shuffle=True)
+    dataloader_test = DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test, idx_test), batch_size=1)
+
+    dataloader_val = DataLoader(Dataset_graph(feat_val, ROIs, alpha_val, y_val, idx_val), batch_size=1)
+
+    # Derive ratio of correct predictions.
 
     NNPred_list_CustomModel_Fc=[]
-    for i in tqdm(range (iterations)):
-        feat_train,feat_test,alpha_train, alpha_test, y_train,y_test= train_test_split(features_pca,alpha,age,test_size=.3)
-        dataloader_train=DataLoader(Dataset_graph(feat_train, ROIs, alpha_train, y_train),batch_size=10,shuffle=True,num_workers=2)
-        dataloader_test=DataLoader(Dataset_graph(feat_test, ROIs, alpha_test, y_test),batch_size=10,num_workers=2)
-    
-    
+    for mm, model in enumerate(models):
+        print(model._get_name())
+        model = model.to(device)
+        optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=5e-4)
+        criterion = nn.MSELoss()
         if 'model' in globals():
-            # print('yes')
             model.apply(weight_reset)
-        n_total_steps = len(dataloader_train)
-        for epoch in range(1, num_epochs):
-            loss=train(model,criterion,optimizer,dataloader_train)
-            models_loss[mm,epoch]=loss
-            # if (epoch+1) % 10==0:
-                # print(f'epoch {epoch} / {num_epochs}, step={i+1}/{n_total_steps}, loss= {loss.item():.4f}')
-        _,_,train_acc = test(model,dataloader_train,False)
-        pred,true_label,test_acc = test(model, dataloader_test,False)
-        # print(f'Epoch: {epoch:03d}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
+        train_GNN(model, criterion, optimizer, dataloader_train, dataloader_val, num_epochs)
+        mse_test, pred, test_acc = test_GNN(model, dataloader_test, True)
+        print(f'Test_Acc: {test_acc:4f}, Test_MSE: {mse_test}')
         NNPred_list_CustomModel_Fc.append(test_acc)
     models_acc.append(NNPred_list_CustomModel_Fc)
+
+
 
 
 #%%

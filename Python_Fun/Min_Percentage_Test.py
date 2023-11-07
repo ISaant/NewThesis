@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from Fc_Features import Fc_Feat
+from read_Fc import read_Fc
 from tqdm import tqdm
 
 
@@ -20,7 +20,7 @@ def min_perThresh_test(FcFile,path2fc):
     thresh_vec=np.zeros(6)
     for per in tqdm(np.arange(.2,1,.02)):
         
-        delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = Fc_Feat(FcFile,path2fc,per)
+        delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = read_Fc(FcFile,path2fc,per)
         
         is_zero_delta=np.where(~delta.any(axis=1))[0]
         is_zero_theta=np.where(~theta.any(axis=1))[0]

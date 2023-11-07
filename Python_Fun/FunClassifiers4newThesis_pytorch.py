@@ -14,8 +14,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import Lasso, LinearRegression
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
-from sklearn import metrics as skmetrics
 from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.metrics import mean_squared_error
 from tqdm import tqdm
 import torch
 import torch.nn as nn
@@ -89,7 +89,7 @@ def plotPredictionsReg(predictions,y_test,plot):
 
 class CustomDataset(Dataset):
 
-    def __init__(self,psd,anat,delta_fc,theta_fc,alpha_fc,beta_fc,gamma1_fc,gamma2_fc,labels,transform=None):
+    def __init__(self,psd,anat,emb, emb_zeros,labels,transform=None):
         # Initialize data, download, etc.
         # read with numpy or pandas
         self.n_samples = psd.shape[0]
@@ -98,22 +98,24 @@ class CustomDataset(Dataset):
         # here the first column is the class label, the rest are the features
         self.psd = torch.from_numpy(psd.astype('float32')) # size [n_samples, n_features]
         self.anat = torch.from_numpy(anat.astype('float32'))
-        self.delta = torch.from_numpy(delta_fc)
-        self.theta = torch.from_numpy(theta_fc)
-        self.alpha = torch.from_numpy(alpha_fc)
-        self.beta = torch.from_numpy(beta_fc)
-        self.gamma1 = torch.from_numpy(gamma1_fc)
-        self.gamma2 = torch.from_numpy(gamma2_fc)
+        added = []
+        concat=[]
+        for sub in range(len(emb)):
+            added.append(np.sum(emb[sub], axis=0))
+            concat.append(emb_zeros[sub].flatten())
+        added = np.array(added)
+        concat=np.array(concat)
+        scaler = MinMaxScaler()
+        # transform data
+        scaled = scaler.fit_transform(added)
+        self.added=torch.from_numpy(added.astype('float32'))
+        self.concat=torch.from_numpy(concat)
         self.labels = torch.from_numpy(labels.astype('float32'))
         
         self.transform=transform
     # support indexing such that dataset[i] can be used to get i-th sample
     def __getitem__(self, idx):
-        sample = (self.psd[idx], self.anat[idx],
-                  self.delta[idx], self.theta[idx],
-                  self.alpha[idx], self.beta[idx], 
-                  self.gamma1[idx], self.gamma2[idx],
-                  self.labels [idx])
+        sample = [self.psd[idx], self.anat[idx], self.added[idx], self.concat[idx], self.labels[idx]]
         if self.transform:
             sample = self.transform(sample)
         
@@ -131,16 +133,7 @@ class ToTensor:
         return torch.from_numpy(inputs), torch.from_numpy(targets)
 ###    
 
-
-
-
-#%% ===========================================================================
-
-#Crear un dataset usando pytorch funcionara?
-
-
-
-#%% Define first nn
+    #%% Define first nn
 
 class NeuralNet(nn.Module):
     def __init__(self,input_size, output_size):
@@ -166,6 +159,41 @@ class NeuralNet(nn.Module):
         out = self.ol(out)
         return out
 
+#%% Define nn for graph embeddings
+
+class NeuralNet4Graph_emb(nn.Module):
+    def __init__(self,input_size, output_size):
+        super(NeuralNet4Graph_emb,self).__init__()
+        self.il = nn.Linear(input_size, 512)
+        self.hl1 = nn.Linear(512, 256)
+        self.hl2 = nn.Linear(256, 64)
+        self.hl3 = nn.Linear(64, 16)
+        self.hl4 = nn.Linear(16, 16)
+        self.ol = nn.Linear(16, output_size)
+        self.dropout1 = torch.nn.Dropout(p=0.3)
+        self.dropout2 = torch.nn.Dropout(p=0.3)
+        self.dropout3 = torch.nn.Dropout(p=0.3)
+        self.dropout4 = torch.nn.Dropout(p=0.3)
+        self.dropout5 = torch.nn.Dropout(p=0.3)
+        self.activation1 = nn.Sigmoid()
+        self.activation2 = nn.ReLU()
+        self.activation3 = nn.ELU()
+        self.activation4 = nn.SELU()
+        self.activation5 = nn.GELU()
+
+    def forward(self, x):
+        out = self.activation1(self.il(x))
+        # out = self.dropout1(out)
+        out = self.activation2(self.hl1(out))
+        # out = self.dropout2(out)
+        out = self.activation3(self.hl2(out))
+        # out = self.dropout3(out)
+        out = self.activation4(self.hl3(out))
+        # out = self.dropout4(out)
+        out = self.activation5(self.hl4(out))
+        # out = self.dropout5(out)
+        out = self.ol(out)
+        return out
 
 #%%
 
@@ -211,7 +239,9 @@ class CustomModel_NoFc(nn.Module):
             nn.Linear(16, output_size)
         )
 
-    def forward(self, input_psd, input_anat):
+    def forward(self, inputs):
+        input_psd = inputs[0]
+        input_anat = inputs[1]
         # Propagación a través de las capas correspondientes a InputPSD
         out0 = self.NN0(input_psd)
 
@@ -238,7 +268,7 @@ def weight_reset(m):
 #%% Create Dataset for graph regression
 from torch_geometric.data import Data, Batch
 import networkx as nx
-def Dataset_graph(features, labels, connectome, task, idx):
+def Dataset_graph(features, labels, connectome, task, idx=None):
     features = np.array(features,dtype=float)
     data_list=[]
     le = LabelEncoder()
@@ -253,7 +283,8 @@ def Dataset_graph(features, labels, connectome, task, idx):
     # task=torch.FloatTensor(task[:,np.newaxis,])
 
     for i in range(len(features)):
-        x=np.delete(features[i,:,:],idx[i],axis=1).T
+        if idx:
+            x=np.delete(features[i,:,:],idx[i],axis=1).T
         x=torch.FloatTensor(x)
         if type(connectome) == list:
             edge_index,edge_wight=from_scipy_sparse_matrix(sparse.csr_matrix(connectome[i]))
@@ -310,7 +341,7 @@ class GCN(torch.nn.Module):
         x1 = self.activation1(x1)
         x1 = self.dropout(x1)
         x2 = self.bn2(self.conv2(x1, edge_index,edge_attr)).relu()
-        x2 = self.dropout(x1)
+        x2 = self.dropout(x2)
         x = torch.cat([x1, x2], dim=-1)
         # x = self.conv3(x, edge_index)
         
@@ -394,7 +425,7 @@ class SAGE_GCN(torch.nn.Module):
         # print(x.shape)
 
         # x = self.bn3(self.conv3(x, edge_index))
-        # x = self.dropout(x)
+        x = self.dropout(x)
         # x = F.elu(x)
         # x, edge_index, batch, perm, score = self.pool3(x, edge_index, batch)
         
@@ -598,11 +629,11 @@ class GNN_GIN(torch.nn.Module):
         x = self.lin2_pre(x)
         x= F.relu(x)
         x1 = F.sigmoid(self.bn1(self.conv1(x, edge_index)))
-        x1 = self.dropout(x1)
+        # x1 = self.dropout(x1)
         x2 = F.relu(self.bn2(self.conv2(x1, edge_index)))
-        x2 = self.dropout(x2)
+        # x2 = self.dropout(x2)
         x3 = F.relu(self.bn3(self.conv3(x2, edge_index)))
-        x3 = self.dropout(x3)
+        # x3 = self.dropout(x3)
         
         x = torch.cat([x1, x2, x3], dim=-1)
         # print (x.shape)
@@ -617,32 +648,87 @@ class GNN_GIN(torch.nn.Module):
         out = self.ol(out)
         return out
 #%%
-def train(model,criterion,optimizer,loader):
-    model.train()#More details: model.train() sets the mode to train. You can call either model.eval() or model.train(mode=False) to tell that you are testing. It is somewhat intuitive to expect train function to train model but it does not do that. It just sets the mode.
-     # number of batches
+def train_ANN(model, criterion,optimizer, train, val, epochs, var_pos):
+    n_total_steps = len(train)  # number of batches
+    for epoch in range(epochs):
+        for i, data in enumerate(train):
+            targets = data[-1].to(device)
+            if type(var_pos) == int:
+                var = data[var_pos].to(device)
+                outputs = model(var)
+            else:
+                vars=[]
+                for pos in var_pos:
+                    vars.append(data[pos].to(device))
+                outputs = model(vars)
+            loss = criterion(outputs, targets)
 
-    for data in loader:  # Iterate in batches over the training dataset.
-        data=data.to(device)
-        out = model(data)  # Perform a single forward pass. Intenta agregar edge_attr
-        loss = criterion(out, data.y)  # Compute the loss.
-        loss.backward()  # Derive gradients.
-        optimizer.step()  # Update parameters based on gradients.
-        optimizer.zero_grad()
-    return loss
-    
-        # optimizer.zero_grad()  # Clear gradients.
-def test(model,loader,plot):
+            # backward
+            loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
+            # if epoch % 10 == 0:
+            #     mse_val, _ = test_ANN(model, val, var_pos)
+            #     mse_train, _ = test_ANN(model, train, var_pos)
+            #     print(f'Epoch: {epoch:02d}, : MSE_train: {mse_train:.4f}, MSE_val: {mse_val:.4F}')
+    outputs= outputs.detach().to('cpu').numpy().flatten()
+    targets= targets.detach().to('cpu').numpy().flatten()
+    mse_train, _ = test_ANN(model, train, var_pos)
+    NNPred = plotPredictionsReg(outputs,targets, True)
+    print(f'Train_Acc: {NNPred:4f}, Train_MSE: {mse_train}')
+# testing and eval
+
+def test_ANN(model, loader, var_pos):
     model.eval()
-    pred=[]
-    true_label=[]
+    pred = []
     with torch.no_grad():
-        for data in loader:  # Iterate in batches over the training/test dataset.
-            data=data.to(device)
+        for data in loader:
+            targets = data[-1].to('cpu').numpy().flatten()
+            if type(var_pos) == int:
+                var = data[var_pos].to(device)
+                outputs = model(var).to('cpu').numpy().flatten()
+            else:
+                vars = []
+                for pos in var_pos:
+                    vars.append(data[pos].to(device))
+                outputs = model(vars).to('cpu').numpy().flatten()
+            mse = mean_squared_error(targets,outputs)
+            pred.extend(outputs)
+    return mse, pred
+
+#%%
+
+def train_GNN(model, criterion,optimizer, train, val, epochs):
+    n_total_steps = len(train)  # number of batches
+    for epoch in range(epochs+1):
+        for i, data in enumerate(train):
+            data = data.to(device)
+            out = model(data)  # Perform a single forward pass. Intenta agregar edge_attr
+            loss = criterion(out, data.y)  # Compute the loss.
+            loss.backward()  # Derive gradients.
+            optimizer.step()  # Update parameters based on gradients.
+            optimizer.zero_grad()
+            targets = data.y.to('cpu').numpy()
+            if epoch % 10 == 0 and i == 0:
+                mse_val, _, _ = test_GNN(model, val, False)
+                mse_train, _, _ = test_GNN(model, train, False)
+                print(f'Epoch: {epoch:02d}, : MSE_train: {mse_train:.4f}, MSE_val: {mse_val:.4F}')
+    mse_train, _, Acc = test_GNN(model, train, True)
+    print(f'Train_Acc: {Acc:4f}, Train_MSE: {mse_train}')
+# testing and evalS
+
+def test_GNN(model, loader, plot):
+    pred = []
+    true_label = []
+    with torch.no_grad():
+        for data in loader:
+            data = data.to(device)
             out = model(data).to('cpu').numpy()
             pred.extend(out)
             true_label.extend(data.y.to('cpu').numpy())
-        pred=np.array(pred)
-        true_label=np.array(true_label)
+        pred = np.array(pred)
+        true_label = np.array(true_label)
+        mse = mean_squared_error(np.array(true_label),pred)
         NNPred=plotPredictionsReg(pred.flatten(),true_label.flatten(),plot)# Check against ground-truth labels.
-        
-        return pred,true_label,NNPred 
+
+    return mse, pred ,NNPred
