@@ -12,38 +12,50 @@ import matplotlib.pyplot as plt
 from Fun4newThesis import *
 from tqdm import tqdm
 from FunClassifiers4newThesis_pytorch import *
+from netneurotools.networks import threshold_network as threshNet
 
-def read_Fc(FcFile,path,per):
+def read_Fc(FcFile,path,subjects, per=40):
 
     
     '''Aqui debes decidir si usar k vecinos o umbralizar. knn nos dara una matriz sparce uniforme'''
-    for e,file in enumerate(FcFile):
-        mat = scipy.io.loadmat(path+'/'+file)
-        # fcMatrix=np.arctanh(knn_graph(mat['TF_Expand_Matrix_Sorted'],Nneighbours=8))
-        # fcMatrix=np.arctanh(threshold(mat['TF_Expand_Matrix_Sorted'],tresh=.4))
-        fcMatrix=percentage(mat['TF_Expand_Matrix_Sorted'],per=per)
-    
-        if e==0:
-            delta=fcMatrix[:,:,0][np.newaxis,:,:]
-            theta=fcMatrix[:,:,1][np.newaxis,:,:]
-            alpha=fcMatrix[:,:,2][np.newaxis,:,:]
-            beta=fcMatrix[:,:,3][np.newaxis,:,:]
-            gamma_low=fcMatrix[:,:,4][np.newaxis,:,:]
-            gamma_high=fcMatrix[:,:,5][np.newaxis,:,:]
+    cont = 0
+    for file in tqdm(FcFile):
+        if len(np.argwhere(subjects == file[:-7])) == 0:
             continue
-        delta=np.concatenate((delta,fcMatrix[:,:,0][np.newaxis,:,:]),axis=0)
-        theta=np.concatenate((theta,fcMatrix[:,:,1][np.newaxis,:,:]),axis=0)
-        alpha=np.concatenate((alpha,fcMatrix[:,:,2][np.newaxis,:,:]),axis=0)
-        beta=np.concatenate((beta,fcMatrix[:,:,3][np.newaxis,:,:]),axis=0)
-        gamma_low=np.concatenate((gamma_low,fcMatrix[:,:,4][np.newaxis,:,:]),axis=0)
-        gamma_high=np.concatenate((gamma_high,fcMatrix[:,:,5][np.newaxis,:,:]),axis=0)
-    
-    mean_delta=np.nansum(delta,axis=0)
-    mean_theta=np.nansum(theta,axis=0)    
-    mean_alpha=np.nansum(alpha,axis=0)
-    mean_beta=np.nansum(beta,axis=0)
-    mean_gamma_low=np.nansum(gamma_low,axis=0)
-    mean_gamma_high=np.nansum(gamma_high,axis=0)
+        mat = scipy.io.loadmat(path+'/'+file)
+        # fcMatrix=knn_graph(mat['TF_Expand_Matrix_Sorted'],Nneighbours=67)
+        # fcMatrix=np.arctanh(threshold(mat['TF_Expand_Matrix_Sorted'],tresh=.4))
+        # fcMatrix=percentage(mat['TF_Expand_Matrix_Sorted'],per=per)
+        fcMatrix = mat['TF_Expand_Matrix_Sorted']
+        if cont==0:
+            delta=(fcMatrix[:,:,0]*threshNet(fcMatrix[:,:,0],per))[np.newaxis,:,:]
+            theta=(fcMatrix[:,:,1]*threshNet(fcMatrix[:,:,1],per))[np.newaxis,:,:]
+            alpha=(fcMatrix[:,:,2]*threshNet(fcMatrix[:,:,2],per))[np.newaxis,:,:]
+            beta=(fcMatrix[:,:,3]*threshNet(fcMatrix[:,:,3],per))[np.newaxis,:,:]
+            gamma_low=(fcMatrix[:,:,4]*threshNet(fcMatrix[:,:,4],per))[np.newaxis,:,:]
+            gamma_high=(fcMatrix[:,:,5]*threshNet(fcMatrix[:,:,5],per))[np.newaxis,:,:]
+            cont += 1
+            continue
+        delta=np.concatenate((delta,(fcMatrix[:,:,0]*threshNet(fcMatrix[:,:,0],per))[np.newaxis,:,:]),axis=0)
+        theta=np.concatenate((theta,(fcMatrix[:,:,1]*threshNet(fcMatrix[:,:,1],per))[np.newaxis,:,:]),axis=0)
+        alpha=np.concatenate((alpha,(fcMatrix[:,:,2]*threshNet(fcMatrix[:,:,2],per))[np.newaxis,:,:]),axis=0)
+        beta=np.concatenate((beta,(fcMatrix[:,:,3]*threshNet(fcMatrix[:,:,3],per))[np.newaxis,:,:]),axis=0)
+        gamma_low=np.concatenate((gamma_low,(fcMatrix[:,:,4]*threshNet(fcMatrix[:,:,4],per))[np.newaxis,:,:]),axis=0)
+        gamma_high=np.concatenate((gamma_high,(fcMatrix[:,:,5]*threshNet(fcMatrix[:,:,5],per))[np.newaxis,:,:]),axis=0)
+        cont += 1
+    band_names = ['delta', 'theta', 'alpha', 'beta', 'gamma_low', 'gamma_high']
+
+
+
+    connectomes = dict.fromkeys(band_names, [])
+    for band, band_mat in zip(band_names,[delta, theta, alpha, beta, gamma_low, gamma_high]):
+        connectomes[band]= band_mat
+    # mean_delta=np.nansum(delta,axis=0)
+    # mean_theta=np.nansum(theta,axis=0)
+    # mean_alpha=np.nansum(alpha,axis=0)
+    # mean_beta=np.nansum(beta,axis=0)
+    # mean_gamma_low=np.nansum(gamma_low,axis=0)
+    # mean_gamma_high=np.nansum(gamma_high,axis=0)
     # plt.figure()
     # sns.heatmap(mean_delta,cmap='jet')
     # plt.figure()
@@ -68,5 +80,6 @@ def read_Fc(FcFile,path,per):
     #     fcDiag=create_Graphs_Disconnected(fcMatrix)
     #     fcDiagMat.append(fcDiag)
     # fcDiagMat=np.array(fcDiagMat)
-    
-    return delta, theta, alpha, beta, gamma_low, gamma_high, ROIs
+
+
+    return connectomes, ROIs

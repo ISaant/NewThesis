@@ -14,12 +14,13 @@ from tqdm import tqdm
 from FunClassifiers4newThesis_pytorch import *
 from copy import copy
 
-def Anat_Feat(path,File,row_idx,scoreDf):
+def Anat_Feat(path,File,row_idx,scoreDf, sort_idx):
     AnatomicalFeatures=pd.read_csv(path+File[0])
     AnatomicalFeatures.drop(columns=['Unnamed: 0'],inplace=True)
     anat2use=myReshape(np.delete(AnatomicalFeatures, row_idx,axis=0))
-    
-    Sub,PSD,ROI=anat2use.shape
+    anat2use=anat2use.take(sort_idx,axis=2)
+
+    Sub,_,ROI=anat2use.shape
     nPCA=5
     anatPCA=np.zeros((Sub,nPCA,ROI))
     for roi in range(ROI):
@@ -31,7 +32,7 @@ def Anat_Feat(path,File,row_idx,scoreDf):
     anatPCA=RestoreShape(anatPCA)
     
     
-    age=scoreDf['Age'].to_numpy()
+    age=scoreDf['Edad'].to_numpy()
     Reg=[]
     for i in tqdm(range(200)):
         x_train, x_test, y_train,y_test,_,_=Split(anat2use,age,.3,seed=i)
@@ -58,33 +59,43 @@ def Anat_Feat(path,File,row_idx,scoreDf):
                 matPred[j,k]=cp_LassoPred
                 matPred[k,j]=cp_LassoPred
                 
-        matPred=np.nanmean((LassoPred-matPred),axis=0)[np.newaxis,]
+        matPred=np.nanmean((LassoPred-matPred)/LassoPred,axis=0)[np.newaxis,]
         if i == 0:
             MatPred=matPred
             continue
         MatPred=np.concatenate((MatPred,matPred))
-    
-    MatPredDf=pd.DataFrame(MatPred,columns=["NumVert" , "SurfArea" ,
-                                                "GrayVol" , "ThickAvg",
-                                                "ThickStd", "MeanCurv",
-                                                "GausCurv", "FoldInd" ,
-                                                "CurvInd" ])
-    
+    sns.displot(Reg, kde=True, color='olive')
+    plt.xlabel('Desempeño')
+    plt.ylabel('Densidad')
+    plt.title('Desempeño MLP usando, características \n estructurales - Edad')
+    # MatPredDf=pd.DataFrame(MatPred,columns=["NumVert" , "SurfArea" ,
+    #                                             "GrayVol" , "ThickAvg",
+    #                                             "ThickStd", "MeanCurv",
+    #                                             "GausCurv", "FoldInd" ,
+    #                                             "CurvInd" ])
+
+    MatPredDf = pd.DataFrame(MatPred, columns=["NumVert", "AreaSup",
+                                               "VolGris", "GrosorProm",
+                                               "GrosorStd", "CurvProm",
+                                               "CurvGauss", "IndPleg",
+                                               "IndCurv"])
     MatPredDf_melted = MatPredDf.reset_index().melt(id_vars='index')
     plt.figure()
     sns.kdeplot(MatPredDf_melted,x='value',hue='variable',fill=True, 
                 common_norm=False, palette="rainbow",alpha=.5, linewidth=1)
+
+    plt.title('Importancia de la características estructurales')
+    plt.xlabel('Varianza explicada')
+    plt.ylabel('Densidad')
     
-    plt.title('Feature importance, "Flip" approach')
-    
-    anat2use=RestoreShape(np.delete(myReshape(anat2use),[0,1,7],axis=1)) #Remove the worst features for future testing
-    # Rearange for NN
-    cont=0
-    Anat_aranged=np.zeros((anat2use.shape)) #!!! YA NO PUEDES RESTAURAR A (SUB,ANAT,ROI) USANDO RESTORESHAPE
-    for i in range (6):
-        for j in np.arange(0,6*68,6):
-            # print(i+j)
-            Anat_aranged[:,cont]=anat2use[:,i+j]
-            cont+=1
-    del model
-    return anat2use,Anat_aranged, anatPCA
+    # anat2use=RestoreShape(np.delete(myReshape(anat2use),[0,1,7],axis=1)) #Remove the worst features for future testing
+    # # Rearange for NN
+    # cont=0
+    # Anat_aranged=np.zeros((anat2use.shape)) #!!! YA NO PUEDES RESTAURAR A (SUB,ANAT,ROI) USANDO RESTORESHAPE
+    # for i in range (6):
+    #     for j in np.arange(0,6*68,6):
+    #         # print(i+j)
+    #         Anat_aranged[:,cont]=anat2use[:,i+j]
+    #         cont+=1
+    # del model
+    return anat2use, anatPCA

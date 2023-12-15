@@ -64,7 +64,6 @@ def Perceptron_PCA (Input0,numOutputNeurons):
     # print(classification)
     tf.keras.backend.clear_session()
     NN0 = Dense(512, activation='sigmoid')(Input0)
-    NN0 = Dense(512, activation='sigmoid')(Input0)
     NN0 = Dense(256, activation='relu')(NN0)
     NN0 = Dense(64, activation='elu')(NN0)
     NN0 = Dense(16, activation='selu')(NN0)

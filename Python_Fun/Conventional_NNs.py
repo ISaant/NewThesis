@@ -19,9 +19,10 @@ from torch.utils.data import random_split
 from torch.utils.data import Dataset, DataLoader
 
 def NNs (iterations, num_epochs, dataset, train_size, test_size, val_size, batch_size,
-              input_size_psd, input_size_anat, output_size, device, lr=None):
+              input_size_psd, input_size_anat, output_size, device, labels, lr=None):
     
     model = []
+    _,scaler=Scale_out(labels)
     #%%
     NNPred_list_anat=[]
     for i in tqdm(range(iterations)):
@@ -34,6 +35,7 @@ def NNs (iterations, num_epochs, dataset, train_size, test_size, val_size, batch
 
         val_loader = DataLoader(dataset=val_dataset, batch_size=len(val_dataset),
                                 shuffle=False, num_workers=2)
+        print(input_size_anat,output_size)
         model = NeuralNet(input_size_anat, output_size).to(device)
         if 'model' in globals():
             model.apply(weight_reset)
@@ -45,9 +47,9 @@ def NNs (iterations, num_epochs, dataset, train_size, test_size, val_size, batch
         var_pos = 1
         train_ANN(model, criterion, optimizer, train_loader, val_loader, num_epochs, var_pos)
         mse_test, pred = test_ANN(model, test_loader, var_pos)
-        pred = np.array(pred)
-        y_test = test_dataset[:][-1].numpy()
-        NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), True)
+        pred = scaler.inverse_transform(np.array(pred).reshape(-1,1))
+        y_test = scaler.inverse_transform(test_dataset[:][-1].numpy())
+        NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
         print(f'Test_Acc: {NNPred:4f}, Test_MSE: {mse_test}')
         NNPred_list_anat.append(NNPred)
     
@@ -72,9 +74,9 @@ def NNs (iterations, num_epochs, dataset, train_size, test_size, val_size, batch
         var_pos = 0
         train_ANN(model, criterion, optimizer, train_loader, val_loader, num_epochs, var_pos)
         mse_test, pred = test_ANN(model, test_loader, var_pos)
-        pred = np.array(pred)
-        y_test = test_dataset[:][-1].numpy()
-        NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), True)
+        pred = scaler.inverse_transform(np.array(pred).reshape(-1,1))
+        y_test = scaler.inverse_transform(test_dataset[:][-1].numpy())
+        NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
         print(f'Test_Acc: {NNPred:4f}, Test_MSE: {mse_test}')
         NNPred_list_psd.append(NNPred)
         
@@ -101,9 +103,9 @@ def NNs (iterations, num_epochs, dataset, train_size, test_size, val_size, batch
         var_pos = [0, 1]
         train_ANN(model, criterion, optimizer, train_loader, val_loader, num_epochs, var_pos)
         mse_test, pred = test_ANN(model, test_loader, var_pos)
-        pred = np.array(pred)
-        y_test = test_dataset[:][-1].numpy()
-        NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), True)
+        pred = scaler.inverse_transform(np.array(pred).reshape(-1,1))
+        y_test = scaler.inverse_transform(test_dataset[:][-1].numpy())
+        NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
         print(f'Test_Acc: {NNPred:4f}, Test_MSE: {mse_test}')
         NNPred_list_CustomModel_NoFc.append(NNPred)
         

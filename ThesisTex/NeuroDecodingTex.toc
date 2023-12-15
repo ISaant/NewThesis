@@ -1,0 +1,37 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}Introducción }{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Registro}{5}{subsection.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.1}Magnetoencefalografía}{6}{subsubsection.1.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.2}Resonancia Magnética}{11}{subsubsection.1.1.2}%
+\contentsline {section}{\numberline {2}Antecedentes}{17}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Decodificación neuronal}{17}{subsection.2.1}%
+\contentsline {section}{\numberline {3}Descripción del problema}{19}{section.3}%
+\contentsline {section}{\numberline {4}Objetivos }{19}{section.4}%
+\contentsline {section}{\numberline {5}Material}{20}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Información demográfica}{21}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Puntajes cognitivos/conductuales}{21}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Inteligencia cristalizada}{22}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Inteligencia Fluida}{23}{subsubsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.3}Reconocimiento de rostros}{23}{subsubsection.5.2.3}%
+\contentsline {subsubsection}{\numberline {5.2.4}Reconocimiento de expresiones faciales}{24}{subsubsection.5.2.4}%
+\contentsline {subsubsection}{\numberline {5.2.5}Picture-Picture Priming (PPP) }{26}{subsubsection.5.2.5}%
+\contentsline {subsection}{\numberline {5.3}Memoria visual a corto plazo}{27}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Métodos}{28}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Parcelación de la masa encefálica}{28}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Características Anatómicas}{30}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Características Espectrales}{34}{subsection.6.3}%
+\contentsline {subsubsection}{\numberline {6.3.1}Detección y eliminación de electrodos dañados}{34}{subsubsection.6.3.1}%
+\contentsline {subsubsection}{\numberline {6.3.2}Filtrado}{36}{subsubsection.6.3.2}%
+\contentsline {subsubsection}{\numberline {6.3.3}Detección y eliminación de artefactos}{37}{subsubsection.6.3.3}%
+\contentsline {subsubsection}{\numberline {6.3.4}Estimación de fuentes}{40}{subsubsection.6.3.4}%
+\contentsline {subsubsection}{\numberline {6.3.5}Transformada Welch}{43}{subsubsection.6.3.5}%
+\contentsline {subsection}{\numberline {6.4}Clasificación}{45}{subsection.6.4}%
+\contentsline {subsubsection}{\numberline {6.4.1}Predicción: Red neuronal profunda}{45}{subsubsection.6.4.1}%
+\contentsline {subsubsection}{\numberline {6.4.2}Perceptron Multicapa}{46}{subsubsection.6.4.2}%
+\contentsline {section}{\numberline {7}Resultados}{47}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Predicción de demográficos}{48}{subsection.7.1}%
+\contentsline {subsubsection}{\numberline {7.1.1}Características espectrales}{48}{subsubsection.7.1.1}%
+\contentsline {subsubsection}{\numberline {7.1.2}Características anatómicas}{54}{subsubsection.7.1.2}%
+\contentsline {subsubsection}{\numberline {7.1.3}Red neuronal profunda}{56}{subsubsection.7.1.3}%
+\contentsline {section}{\numberline {8}Conclusión}{58}{section.8}%
+\contentsline {section}{\numberline {9}Bibliografía }{59}{section.9}%

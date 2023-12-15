@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import Lasso, LinearRegression
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
-from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.preprocessing import StandardScaler, LabelEncoder, MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from tqdm import tqdm
 import torch
@@ -41,6 +41,13 @@ def Scale(Data):
     Data=scaler.transform(Data)
     return Data
 
+#%% ===========================================================================
+def Scale_out(Data):
+    
+    scaler=MinMaxScaler(feature_range=(-1,1))
+    scaler.fit(Data)
+    Data_scaled=scaler.transform(Data)
+    return Data_scaled,scaler
 #%% ===========================================================================
 def Split(Data,labels,testSize,seed=None):
     idx = np.arange(len(Data))
@@ -89,33 +96,25 @@ def plotPredictionsReg(predictions,y_test,plot):
 
 class CustomDataset(Dataset):
 
-    def __init__(self,psd,anat,emb, emb_zeros,labels,transform=None):
+    def __init__(self,psd,anat, fc, psd_s200, anat_s200, ScFeat, labels,transform=None):
         # Initialize data, download, etc.
         # read with numpy or pandas
         self.n_samples = psd.shape[0]
-        # self.n2_samples = data2.shape[0]
 
         # here the first column is the class label, the rest are the features
-        self.psd = torch.from_numpy(psd.astype('float32')) # size [n_samples, n_features]
-        self.anat = torch.from_numpy(anat.astype('float32'))
-        added = []
-        concat=[]
-        for sub in range(len(emb)):
-            added.append(np.sum(emb[sub], axis=0))
-            concat.append(emb_zeros[sub].flatten())
-        added = np.array(added)
-        concat=np.array(concat)
-        scaler = MinMaxScaler()
-        # transform data
-        scaled = scaler.fit_transform(added)
-        self.added=torch.from_numpy(added.astype('float32'))
-        self.concat=torch.from_numpy(concat)
+        self.psd = torch.from_numpy(Scale(psd).astype('float32')) # size [n_samples, n_features]
+        self.anat = torch.from_numpy(Scale(anat).astype('float32'))
+        self.fc = torch.from_numpy(fc.astype('float32'))
+        self.psd_s200 = torch.from_numpy(Scale(psd_s200).astype('float32'))
+        self.anat_s200 = torch.from_numpy(Scale(anat_s200).astype('float32'))
+        self.ScFeat = torch.from_numpy(ScFeat.astype('float32'))
         self.labels = torch.from_numpy(labels.astype('float32'))
         
         self.transform=transform
     # support indexing such that dataset[i] can be used to get i-th sample
     def __getitem__(self, idx):
-        sample = [self.psd[idx], self.anat[idx], self.added[idx], self.concat[idx], self.labels[idx]]
+        sample = [self.psd[idx], self.anat[idx], self.fc[idx], self.psd_s200[idx],
+                  self.anat_s200[idx], self.ScFeat[idx], self.labels[idx]]
         if self.transform:
             sample = self.transform(sample)
         
@@ -148,7 +147,8 @@ class NeuralNet(nn.Module):
         self.activation2 = nn.ReLU()
         self.activation3 = nn.ELU()
         self.activation4 = nn.SELU()
-        self.activation5 = nn.GELU()
+        self.activation5 = nn.ReLU()
+        self.activation6 = nn.Tanh()
 
     def forward(self, x):
         out = self.activation1(self.il(x))
@@ -179,7 +179,7 @@ class NeuralNet4Graph_emb(nn.Module):
         self.activation2 = nn.ReLU()
         self.activation3 = nn.ELU()
         self.activation4 = nn.SELU()
-        self.activation5 = nn.GELU()
+        self.activation5 = nn.Tanh()
 
     def forward(self, x):
         out = self.activation1(self.il(x))
@@ -229,14 +229,14 @@ class CustomModel_NoFc(nn.Module):
             nn.GELU()
         )
 
-        
+
         # Capa de salida
         self.output_layer = nn.Sequential(
             nn.Linear(32, 32),
             nn.ReLU(),
             nn.Linear(32, 16),
             nn.ReLU(),
-            nn.Linear(16, output_size)
+            nn.Linear(16, output_size),
         )
 
     def forward(self, inputs):
@@ -256,6 +256,81 @@ class CustomModel_NoFc(nn.Module):
 
         return final_output
 
+#%%
+class CustomModel_Sc(nn.Module):
+    def __init__(self, input_size_psd, input_size_anat, input_size_ScFeat, output_size):
+        super(CustomModel_Sc, self).__init__()
+
+        # Definir las capas para InputPSD
+        self.NN0 = nn.Sequential(
+            nn.Linear(input_size_psd, 512),
+            nn.Sigmoid(),
+            nn.Linear(512, 256),
+            nn.ReLU(),
+            nn.Linear(256, 64),
+            nn.ELU(),
+            nn.Linear(64, 16),
+            nn.SELU(),
+            nn.Linear(16, 16),
+            nn.GELU()
+        )
+
+        # Definir las capas para InputAnat
+        self.NN1 = nn.Sequential(
+            nn.Linear(input_size_anat, 512),
+            nn.Sigmoid(),
+            nn.Linear(512, 256),
+            nn.ReLU(),
+            nn.Linear(256, 64),
+            nn.ELU(),
+            nn.Linear(64, 16),
+            nn.SELU(),
+            nn.Linear(16, 16),
+            nn.GELU()
+        )
+
+        self.NN2 = nn.Sequential(
+            nn.Linear(input_size_ScFeat, 512),
+            nn.Sigmoid(),
+            nn.Linear(512, 256),
+            nn.ReLU(),
+            nn.Linear(256, 64),
+            nn.ELU(),
+            nn.Linear(64, 16),
+            nn.SELU(),
+            nn.Linear(16, 16),
+            nn.GELU()
+        )
+
+        # Capa de salida
+        self.output_layer = nn.Sequential(
+            nn.Linear(48, 32),
+            nn.ReLU(),
+            nn.Linear(32, 16),
+            nn.ReLU(),
+            nn.Linear(16, output_size),
+        )
+
+    def forward(self, inputs):
+        input_psd = inputs[0]
+        input_anat = inputs[1]
+        input_FeatSc = inputs[2]
+        # Propagación a través de las capas correspondientes a InputPSD
+        out0 = self.NN0(input_psd)
+
+        # Propagación a través de las capas correspondientes a InputAnat
+        out1 = self.NN1(input_anat)
+
+        # Propagación a través de las capas correspondientes a SC
+        out2 = self.NN2(input_FeatSc)
+
+        # Concatenar las salidas
+        concatenated_output = torch.cat((out0, out1,out2), dim=1)
+
+        # Propagación a través de la capa de salida
+        final_output = self.output_layer(concatenated_output)
+
+        return final_output
 
 #%% To reset wights
 def weight_reset(m):
@@ -283,6 +358,7 @@ def Dataset_graph(features, labels, connectome, task, idx=None):
     # task=torch.FloatTensor(task[:,np.newaxis,])
 
     for i in range(len(features)):
+        x=features[i,:,:].T
         if idx:
             x=np.delete(features[i,:,:],idx[i],axis=1).T
         x=torch.FloatTensor(x)
@@ -327,7 +403,7 @@ class GCN(torch.nn.Module):
         self.activation1 = nn.Sigmoid()
         self.activation2 = nn.ReLU()
         # self.pooling=nn.AdaptiveAvgPool2d((hidden_channels,2))
-        # self.activation3 = nn.ELU()
+        self.activation3 = nn.ELU()
         # self.activation4 = nn.SELU()
         # self.activation5 = nn.GELU()
 
@@ -348,8 +424,8 @@ class GCN(torch.nn.Module):
          
         if self.lin is not None:
             x = self.lin(x).relu()
-        else:
-            x=x2
+        # else:
+        #     x=x
 
         # 2. Readout layer
         x = global_mean_pool(x, batch)  # [batch_size, hidden_channels]
@@ -359,7 +435,7 @@ class GCN(torch.nn.Module):
         # x = F.dropout(x, p=0.5, training=self.training)
         out = self.activation1(self.il(x))
         out = self.activation2(self.hl1(out))
-        out = self.activation2(self.hl2(out))
+        out = self.activation3(self.hl2(out))
         out = self.ol(out)
         
         return out
@@ -657,10 +733,10 @@ def train_ANN(model, criterion,optimizer, train, val, epochs, var_pos):
                 var = data[var_pos].to(device)
                 outputs = model(var)
             else:
-                vars=[]
+                varss=[]
                 for pos in var_pos:
-                    vars.append(data[pos].to(device))
-                outputs = model(vars)
+                    varss.append(data[pos].to(device))
+                outputs = model(varss)
             loss = criterion(outputs, targets)
 
             # backward
@@ -674,7 +750,7 @@ def train_ANN(model, criterion,optimizer, train, val, epochs, var_pos):
     outputs= outputs.detach().to('cpu').numpy().flatten()
     targets= targets.detach().to('cpu').numpy().flatten()
     mse_train, _ = test_ANN(model, train, var_pos)
-    NNPred = plotPredictionsReg(outputs,targets, True)
+    NNPred = plotPredictionsReg(outputs,targets, False)
     print(f'Train_Acc: {NNPred:4f}, Train_MSE: {mse_train}')
 # testing and eval
 
@@ -688,10 +764,10 @@ def test_ANN(model, loader, var_pos):
                 var = data[var_pos].to(device)
                 outputs = model(var).to('cpu').numpy().flatten()
             else:
-                vars = []
+                varss = []
                 for pos in var_pos:
-                    vars.append(data[pos].to(device))
-                outputs = model(vars).to('cpu').numpy().flatten()
+                    varss.append(data[pos].to(device))
+                outputs = model(varss).to('cpu').numpy().flatten()
             mse = mean_squared_error(targets,outputs)
             pred.extend(outputs)
     return mse, pred
@@ -713,7 +789,7 @@ def train_GNN(model, criterion,optimizer, train, val, epochs):
                 mse_val, _, _ = test_GNN(model, val, False)
                 mse_train, _, _ = test_GNN(model, train, False)
                 print(f'Epoch: {epoch:02d}, : MSE_train: {mse_train:.4f}, MSE_val: {mse_val:.4F}')
-    mse_train, _, Acc = test_GNN(model, train, True)
+    mse_train, _, Acc = test_GNN(model, train, False)
     print(f'Train_Acc: {Acc:4f}, Train_MSE: {mse_train}')
 # testing and evalS
 
@@ -732,3 +808,33 @@ def test_GNN(model, loader, plot):
         NNPred=plotPredictionsReg(pred.flatten(),true_label.flatten(),plot)# Check against ground-truth labels.
 
     return mse, pred ,NNPred
+
+#%%
+from sklearn.svm import SVR
+from sklearn.pipeline import make_pipeline
+
+
+def svm_reg(connectome, y, kernel):
+    vectorize_tril=[]
+    for adj in connectome:
+        lower_triangle=np.tril(adj, -1).flatten()
+        lower_triangle=lower_triangle[np.where(lower_triangle)]
+        vectorize_tril.append(lower_triangle)
+
+    vectorize_tril=np.array(vectorize_tril)
+    X_train, X_test, y_train, y_test= train_test_split(vectorize_tril, y, test_size=.3, random_state=0)
+
+    y_train = y_train.reshape(-1, 1)
+    X_sc = StandardScaler()
+    y_sc = StandardScaler()
+    X_train = X_sc.fit_transform(X_train)
+    y_train = y_sc.fit_transform(y_train)
+    y_train = y_train.flatten()
+    regrassor = SVR(kernel=kernel, C=1.5, epsilon=0.2)
+    regrassor.fit(X_train, y_train)
+    pred = regrassor.predict(X_sc.transform(X_test))
+    pred = pred.reshape(-1, 1)
+    pred = y_sc.inverse_transform(pred).flatten()
+    true_label = y_test.flatten()
+    NNPred = plotPredictionsReg(pred, true_label, True)  # Check against ground-truth labels.
+    print(NNPred)

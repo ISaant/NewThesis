@@ -10,13 +10,15 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import scipy
+from copy import copy
 import seaborn as sns
+sns.set_context("talk")
 from tqdm import tqdm
 from scipy import sparse
 from sklearn.decomposition import PCA
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn import linear_model
+from sklearn import linear_model, svm, preprocessing
 
 
 
@@ -73,10 +75,10 @@ def RemoveNan(Data,labels):
     return Data,labels
 
 #%% ===========================================================================
-def myReshape(array):
+def myReshape(array,rois=68):
     [x,y]=array.shape
-    cols=y//68
-    newarray=np.zeros((x,cols,68))
+    cols=y//rois
+    newarray=np.zeros((x,cols,rois))
     for i,j in enumerate(np.arange(0,y,cols)):
         newarray[:,:,i]=array[:,j:j+cols]
         
@@ -96,9 +98,145 @@ def RestoreShape(Data):
         return Data
 
 #%% ===========================================================================
+def PltDistDemographics(demographics):
+    sns.violinplot(data=demographics, x='Sexo', y='Edad', palette='mako', inner="point")
+    plt.title('Distribución de las edades por genero')
+    Age = demographics['Edad'].to_numpy()
+    Acer = demographics['Acer'].to_numpy()
+    Cattell = demographics['Cattell'].to_numpy()
+    # RoundAge = copy(Age)
+    # RoundAge[RoundAge < 30] = 30
+    # for i in np.arange(30, 90, 10):
+    #     print(i)
+    #     RoundAge[np.logical_and(RoundAge > i, RoundAge <= i + 10)] = (i + 10)
+    # # RoundAge[RoundAge>80]=90
+    # demographics['Intervalo'] = RoundAge
+    sns.displot(data=demographics, x='Cattell', hue='Intervalo', kind='kde', fill=True)
+    plt.title('Distribución de Cattell por rango de edad')
+    plt.ylabel('Densidad')
+    sns.displot(data=demographics, x='Acer', hue='Intervalo', kind='kde', fill=True)
+    plt.title('Distribución de ACE-R por rango de edad')
+    plt.ylabel('Densidad')
+    plt.xlim([60, 110])
+    # plt.figure()
+    # sns.lmplot(x='Age', y='Cattell', data=demographics,
+    #            scatter=False, scatter_kws={'alpha': 0.3}, palette='CMRmap')
+    plt.figure()
+    sns.residplot(data=demographics, x="Edad", y="Cattell", order=2, line_kws=dict(color="r"))
+    # plt.figure()
+    # sns.residplot(data=demographics, x="Edad", y="Cattell", order=2, line_kws=dict(color="r"))
+    sns.relplot(data=demographics, y='Cattell', x='Edad', hue='Intervalo')
+    plt.title('Regresión de Cattell con respecto a la Edad ')
+    rsq, pvalue = scipy.stats.pearsonr(Age, Cattell)
+    rsq_cuad, pvalue_cuad = scipy.stats.pearsonr(Age**2, Cattell**2)
+    Age = Age.reshape(-1, 1)
+    linReg = linear_model.LinearRegression()
+    # linReg.fit(Edad, Cattell)
+    # Predict data of estimated models
+    # line_age = np.round(np.arange(Age.min() - 5, Age.max() + 5, .01), 2)[:, np.newaxis]
+    # line_predCatell = linReg.predict(line_age)
+
+    regressor = svm.SVR(kernel='poly',degree=2)
+    regressor.fit(Age, Cattell)
+    curve_age = np.round(np.arange(Age.min()-5, Age.max() +5, .01), 2)[:, np.newaxis]
+    curve_predCatell = regressor.predict(curve_age)
+    plt.plot(curve_age, curve_predCatell, color="olive", linewidth=4, alpha=.7)
+
+
+    plt.annotate('PearsonR= ' + str(round(rsq_cuad, 2)),
+                 (20, 15), fontsize=12)
+    # plt.annotate('pvalue= ' + str(round(pvalue_cuad,4)),
+    #              (20, 12), fontsize=12)
+    plt.annotate('pvalue < .0001',
+                 (20, 12), fontsize=12)
+
+    Residuals = returnResuduals(demographics, ['Cattell'], linReg)
+    Residuals ['Intervalo'] = demographics['Intervalo']
+    # dfRes_melt = pd.melt(Residuals, id_vars=['Edad'],
+    #                      value_vars=['resCattell', 'Intervalo'])
+
+    color = 'mako'
+
+    sns.displot(data=Residuals, x='resCattell', hue='Intervalo', kind='kde',
+                fill=True, palette=color)
+
+    sns.lmplot(x='Edad', y='resCattell', data=Residuals,
+               scatter=False, scatter_kws={'alpha': 0.3}, palette=color)
+
+    sns.relplot(data=demographics, x='Cattell', y='Acer', hue='Intervalo')
+    plt.title('Cattell-Acer Regression')
+    rsq, pvalue = scipy.stats.pearsonr(Cattell, Acer)
+    Cattell = Cattell.reshape(-1, 1)
+    # Acer=Acer.reshape(-1,1)
+    linReg = linear_model.LinearRegression()
+    linReg.fit(Cattell, Acer)
+    # Predict data of estimated models
+    line_X = np.linspace(Cattell.min(), Cattell.max(), 603)[:, np.newaxis]
+    line_y = linReg.predict(line_X)
+    plt.plot(line_X, line_y, color="yellowgreen", linewidth=4, alpha=.7)
+    plt.annotate('PearsonR= ' + str(round(rsq, 2)),
+                 (20, 17), fontsize=12)
+    plt.annotate('pvalue= ' + str(round(pvalue,4)),
+                 (20, 10), fontsize=12)
+
+
+    sns.relplot(data=demographics, x='Edad', y='Acer', hue='Intervalo')
+    plt.title('Regresión de ACE-R con respecto a la Edad')
+
+    regressor.fit(Age, Acer)
+    curve_predAcer = regressor.predict(curve_age)
+    plt.plot(curve_age, curve_predAcer, color="olive", linewidth=4, alpha=.7)
+    plt.ylabel('ACE-R')
+    Age = Age.reshape(Age.shape[0], )
+    rsq, pvalue = scipy.stats.pearsonr(Age**2, Acer**2)
+    plt.annotate('PearsonR= ' + str(round(rsq, 2)),
+                 (20, 77), fontsize=12)
+    # plt.annotate('pvalue= ' + str(round(pvalue_cuad, 4)),
+    #              (20, 70), fontsize=12)
+    plt.annotate('pvalue < .0001 ',
+                 (20, 70), fontsize=12)
+
+    Age = Age.reshape(Age.shape[0], )
+    rsq, pvalue = scipy.stats.pearsonr(Age, Acer)
+    Age = Age.reshape(-1, 1)
+    # linReg = linear_model.LinearRegression()
+    # linReg.fit(Age, Acer)
+    # Predict data of estimated models
+    # line_X = np.linspace(Age.min(), Age.max(), 603)[:, np.newaxis]
+    # line_y = linReg.predict(line_X)
+    # plt.plot(line_X, line_y, color="yellowgreen", linewidth=4, alpha=.7)
+    # plt.annotate('PearsonR= ' + str(round(rsq, 2)),
+    #              (20, 77), fontsize=12)
+    # plt.annotate('pvalue= ' + str(pvalue),
+    #              (20, 70), fontsize=12)
+    plt.ylim([60, 110])
+
+    plt.show()
+    # return line_age, line_predCatell
+
+#%% ==========================================================================
+def returnResuduals(df, Variables, model):
+    x = np.array(copy(df['Edad'])).reshape(-1, 1)
+    resDf = copy(df)
+
+    for var in Variables:
+        nanidx = np.array(np.where(np.isnan(df[var]))).flatten()
+        y = np.array(df[var].fillna(df[var].mean()))  # fill the nan with the mean value... not sure if its the best solution
+        model.fit(x, y)
+        # Predict data of estimated models
+        predictions = model.predict(x)
+        residuals = y - predictions
+        resDf[var] = residuals
+        resDf.loc[nanidx, var] = np.nan
+        resDf.rename(columns={var: 'res' + var}, inplace=True)
+    return resDf
+
+#%% ===========================================================================
 def myPCA (DataFrame,verbose,nPca):
     from sklearn import preprocessing
-    scaled_data = preprocessing.scale(DataFrame)
+    # scaled_data = preprocessing.scale(DataFrame)
+    scaler = preprocessing.StandardScaler()
+    scaled_data = scaler.fit_transform(DataFrame)
     pca = PCA() # create a PCA object
     pca.fit(scaled_data) # do the math
     pca_data = pca.transform(scaled_data) # get PCA coordinates for scaled_data
@@ -173,8 +311,9 @@ def knn_graph(connectome, Nneighbours=8):
     
         # Weights.
         sigma2 = np.mean(dist[:, -1])**2 #Calcula el cuadrado de la media de las distancias a los vecinos más cercanos
-        # dist = np.exp(- dist**2 / sigma2) # Pasamos de correlacion a distancia, entre mayor la correlacion menor la distancia
-    
+        dist = np.exp(- dist**2 / sigma2) # Pasamos de correlacion a distancia, entre mayor la correlacion menor la distancia
+
+
         # Weight matrix.
         I = np.arange(0, M).repeat(k)
         J = idx.reshape(M*k)
@@ -200,8 +339,8 @@ def knn_graph(connectome, Nneighbours=8):
         idx = np.argsort(-conn)[:, 0:Nneighbours]#se buscan los k valores mas grandes por fila, se busca a partir de la segunda columns porque se le hincharon sus huevos  
         dist = np.array([conn[i, idx[i]] for i in range(conn.shape[0])])
         # dist[dist < 0.1] = 0
-        adj_mat_sp = build_adjacency(dist, idx)
-        connectome[:,:,band]=adj_mat_sp.toarray()
+        adj_mat_sp = build_adjacency(dist, idx).toarray()
+        connectome[:,:,band]=adj_mat_sp
     
     return connectome
     # fig=plt.figure(figsize=(10,4))
@@ -228,17 +367,20 @@ def threshold(connectome, tresh):
 #%%
 
 def percentage(connectome, per):
-    x,y,bands=connectome.shape
+    data = copy(connectome)
+    if data.ndim < 3:
+        data = data[:, :, np.newaxis]
+    x,y,bands = data.shape
     for band in range(bands):
-        upper_triangle=connectome[:,:,band]
-        upper_triangle=upper_triangle[np.triu_indices(upper_triangle.shape[0],k=0)]
-        num_of_nodes=np.ceil(len(upper_triangle)*per).astype(int)
-        idx = np.argsort(-upper_triangle)[num_of_nodes:]
-        upper_triangle[idx]=0
+        upper_triangle = data[:, :, band]
+        upper_triangle = upper_triangle[np.triu_indices(upper_triangle.shape[0], k=1)]
+        num_of_edges = np.ceil(len(upper_triangle)*per).astype(int)
+        idx = np.argsort(-upper_triangle)[num_of_edges:]
+        upper_triangle[idx] = 0
         X = np.zeros((x,y))
-        X[np.triu_indices(X.shape[0], k = 0)] = upper_triangle
-        connectome[:,:,band]=X + X.T - np.diag(np.diag(X))
-    return connectome
+        X[np.triu_indices(X.shape[0], k=1)] = upper_triangle
+        data[:, :, band] = X + X.T - np.diag(np.diag(X))
+    return data
 
 #%%
 def create_Graphs_Disconnected(fcMat):
@@ -281,8 +423,11 @@ def CorrHist(FcFile,path):
             col.hist(fcMat_Vec[count,:], bins=30, range= (0.01,max(fcMat_Vec[count,:])),density=True, cumulative= True, histtype= 'step')
             col.set_title(title[count])
             count+=1
-    
-        
+#%%
+def eraseDiag(matrix):
+    for node in range(matrix.shape[0]):
+        matrix[node,node]=0
+    return matrix
 
         
         

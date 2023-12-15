@@ -1,7 +1,7 @@
 path = '/media/isaac/Elements/camcan_AEC_ortho/';
-path2save_AP='/home/isaac/Documents/Doctorado_CIC/NewThesis_db/camcan_AEC_ortho_AnteroPosterior/';
-path2save_YEO='/home/isaac/Documents/Doctorado_CIC/NewThesis_db/camcan_AEC_ortho_YEO/';
-names=readtable('/home/isaac/Documents/Doctorado_CIC/NewThesis_db/camcan_AEC_ortho_YEO/Regions_and_Networks.csv');
+path2save_AP='/home/isaac/Documents/Doctorado_CIC/NewThesis_db_DK/camcan_AEC_ortho_AnteroPosterior/';
+path2save_YEO='/home/isaac/Documents/Doctorado_CIC/NewThesis_db_DK/camcan_AEC_ortho_YEO/';
+names=readtable('/home/isaac/Documents/Doctorado_CIC/NewThesis_db_DK/camcan_AEC_ortho_YEO/Regions_and_Networks.csv');
 Idx4SortingLR=load("Index2Sort_Anterioposterior.mat").Index;% Los indices son anteroposterior, pero hay que separar izquiera y derecha
 Idx4SortingAP=[Idx4SortingLR(1:2:end),Idx4SortingLR(2:2:end)];
 Idx4SortingYEO=table2array(load("Index2Sort_YEO.mat").sorted(:,'oldindex'));

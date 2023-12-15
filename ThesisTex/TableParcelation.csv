@@ -1,0 +1,28 @@
+Name (group or institution) ,Brain coverage ,Granularity (number of parcels/networks)a ,Original format (and other formats) ,Links ,Refs 
+Macroanatomy ,,,,,
+AAL Atlas ,Whole brain ,82 parcels ,Volume ,http://www.gin.cnrs.fr/en/tools/aal-aal2/ ,102
+Harvard–Oxford Atla,s Cerebrum ,69 parcels ,Volume ,Included in the installation package of FSL (https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/ Atlases) and MRIcron (http://www. mccauslandcenter.sc.edu/mricro/mricron) and can be found here: http://neuro. debian.net/pkgs/fsl-harvard-oxford- atlases.html ,138–141 
+Desikan–Killiany Atla,s Cerebral cortex ,70 parcels ,Surface ,Included in the installation package of FreeSurfer: https://surfer.nmr.mgh.harvard. edu/fswiki/CorticalParcellation ,140
+Destrieux Atlas ,Cerebral cortex ,148 parcels ,Surface ,Included in the installation package of FreeSurfer: https://surfer.nmr.mgh.harvard. edu/fswiki/CorticalParcellation ,142
+MarsAtlas ,Cerebrum ,89 parcels ,Surface and volume ,http://meca-brain.org/software/marsatlas- colin27/ ,143
+Rs-fMRI ,,,,,
+Bellec et al. (2010) ,Whole brain ,"7, 12, 20, 36, 64, 122, 197, 325 and 444 parcels ",Volume ,https://figshare.com/articles/Group_ multiscale_functional_template_ generated_with_BASC_on_the_ Cambridge_sample/1285615 ,61
+Power et al. (2011) ,Cerebrum ,14 networks ,Volume ,https://www.jonathanpower. net/2011-neuron-bigbrain.html ,144
+"Yeo et al. (2011), Buckner et al. (2011) and Choi et al. (2012) ","Cerebral cortex, cerebellum and striatum ",7 and 17 networks ,Surface of cerebral cortex and volume of cerebellum and striatum ,"Included in the installation package of FreeSurfer: https://surfer.nmr.mgh.harvard. edu/fswiki/CorticalParcellation_Yeo2011, http://surfer.nmr.mgh.harvard.edu/fswiki/ CerebellumParcellation_Buckner2011 and https://surfer.nmr.mgh.harvard.edu/fswiki/ StriatumParcellation_Choi2012 ",70145146
+,,,,"The 7 and 17 spatially distributed cortical networks have also been converted into 51 and 114 spatially connected parcels, respectively: https://github. com/ThomasYeoLab/CBIG/tree/master/ stable_projects/brain_parcellation/ Yeo2011_fcMRI_clustering ",
+Craddock et al. (2012,) Whole brain ,"10 to 1,000 parcels ",Volume ,http://ccraddock.github.io/cluster_roi/ atlases.html ,83
+Shen et al. (2013) ,Whole brain ,"93, 184 and 278 parcels ",Volume ,www.nitrc.org/frs/?group_id=51 ,147
+Gordon et al. (2016) ,Cerebral cortex ,333 parcels ,Surface (and volume) ,www.nil.wustl.edu/labs/petersen/ Resources.html ,59
+Atlas of Intrinsic Connectivity of Homotopic Areas ,Cerebrum ,384 parcels ,Volume ,In the installation package of AAL toolbox (http://www.gin.cnrs.fr/en/tools/aal-aal2/) and MRIcron (http://www.mccauslandcenter. sc.edu/mricro/mricron) and can be found here: https://omictools.com/atlas-of- intrinsic-connectivity-of-homotopic- areas-tool ,148
+Wang et al. (2015) ,Cerebralcortex ,18 networks ,Surface ,Pre-compiled code for individual-specific network parcellations: http://nmr.mgh. harvard.edu/bid/DownLoad.html ,18
+Gordon et al. (2017) ,Cerebralcortex ,Subject dependent ,Surface ,Individual-specific network and areal-level parcellations for the Midnight Scan Club subjects: https://www.openfmri.org/ dataset/ds000224/ ,97
+Schaefer et al. (2018) ,Cerebralcortex ,"100, 200, 400, 600, 800 and 1,000 parcels ",Surface (and volume) ,https://github.com/ThomasYeoLab/ CBIG/tree/master/stable_ projects/brain_parcellation/ Schaefer2018_LocalGlobal ,54
+,,,,,
+Name (group or institution) ,Brain coverage ,Granularity (number of parcels/networks)a ,Original format (and other formats) ,Links ,Refs 
+Rs-fMRI (cont.) ,,,,,
+Kong et al. (2018) ,Cerebral cortex ,17 networks ,Surface ,Code for individual-specific network parcellations: https://github.com/ ThomasYeoLab/CBIG/tree/master/ stable_projects/brain_parcellation/ Kong2019_MSHBM ,5
+Other ,,,,,
+"PrAGMATiC, based on task fMRI ",Cerebral cortex ,320 parcels ,Volume (and surface) ,For visualization only: http://gallantlab. org/huth2016/ ,33149
+"Brainnetome, based on PDT ",Cerebral cortex and subcortical structures ,246 parcels ,Volume ,http://atlas.brainnetome.org/download. html ,103
+"Varikuti et al. (2018), based on sMRI (SC) ",Whole brain ,2 to 500 parcels ,Volume ,http://anima.fz-juelich.de/studies/ Varikuti_NMFBrainAge_2018 ,23
+"HCP Multimodal Parcellation, Glasser et al. (2016) ",Cerebral cortex ,360 parcels ,Surface ,https://balsa.wustl.edu/WN56 ,16

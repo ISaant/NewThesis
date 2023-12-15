@@ -11,7 +11,7 @@ import pandas as pd
 from Fun4newThesis import *
 from tqdm import tqdm
 
-def PSD_Feat (path,mainDir,restStateDir,emptyRoomDir,columns, row_idx):
+def PSD_Feat (path,mainDir,restStateDir,emptyRoomDir,columns, row_idx, sort_idx):
     for e,file in enumerate(tqdm(restStateDir)):
         matrix=myReshape(pd.read_csv(path+mainDir[1]+'/'+file,header=None).to_numpy())[np.newaxis, :]
         if e == 0:
@@ -22,6 +22,7 @@ def PSD_Feat (path,mainDir,restStateDir,emptyRoomDir,columns, row_idx):
     emptyRoom = myReshape(emptyRoom) #reshape into [Subjects,PSD,ROI]
     emptyRoomCropped = emptyRoom[:,columns,:]
     restState=np.mean(restStateAll,axis=0)
+    restState=restState.take(sort_idx,axis=2)
     psd2use=np.delete(restState,row_idx,axis=0)[:,columns,:] #remove index with nan and select the band-width of interest
     
     # PCA on PSD

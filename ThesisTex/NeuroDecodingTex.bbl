@@ -1,0 +1,1024 @@
+\begin{thebibliography}{100}
+
+\bibitem{abbott2011dementia}
+A.~Abbott.
+\newblock Dementia: a problem for our age.
+\newblock {\em Nature}, 475(7355):S2--S4, 2011.
+
+\bibitem{Abbott1994}
+L.~F. Abbott.
+\newblock {Decoding neuronal firing and modelling neural networks}.
+\newblock {\em Quarterly Reviews of Biophysics}, 27(3):291--331, 1994.
+
+\bibitem{Abeles1977}
+M.~Abeles and M.~H. Goldstein.
+\newblock {Multispike Train Analysis}.
+\newblock {\em Proceedings of the IEEE}, 65(5):762--773, 1977.
+
+\bibitem{abeles1977multispike}
+M.~Abeles and M.~H. Goldstein.
+\newblock Multispike train analysis.
+\newblock {\em Proceedings of the IEEE}, 65(5):762--773, 1977.
+
+\bibitem{Adeli2003}
+H.~Adeli, Z.~Zhou, and N.~Dadmehr.
+\newblock {Analysis of EEG records in an epileptic patient using wavelet
+  transform}.
+\newblock {\em Journal of Neuroscience Methods}, 123(1):69--87, 2003.
+
+\bibitem{Adrian1926}
+E.~D. Adrian.
+\newblock {The impulses produced by sensory nerve endings: Part I.}
+\newblock {\em The Journal of physiology}, 61:49, 1926.
+
+\bibitem{allaman2020spontaneous}
+L.~Allaman, A.~Mottaz, A.~Kleinschmidt, and A.~G. Guggisberg.
+\newblock Spontaneous network coupling enables efficient task performance
+  without local task-induced activations.
+\newblock {\em Journal of Neuroscience}, 40(50):9663--9675, 2020.
+
+\bibitem{arechiga2014universo}
+H.~Ar{\'e}chiga.
+\newblock {\em El universo interior}.
+\newblock Fondo de cultura econ{\'o}mica, 2014.
+
+\bibitem{ashburner2005unified}
+J.~Ashburner and K.~J. Friston.
+\newblock Unified segmentation.
+\newblock {\em Neuroimage}, 26(3):839--851, 2005.
+
+\bibitem{auzias2016marsatlas}
+G.~Auzias, O.~Coulon, and A.~Brovelli.
+\newblock Marsatlas: a cortical parcellation atlas for functional mapping.
+\newblock {\em Human brain mapping}, 37(4):1573--1592, 2016.
+
+\bibitem{baddeley1999working}
+A.~D. Baddeley and R.~H. Logie.
+\newblock Working memory: The multiple-component model.
+\newblock 1999.
+
+\bibitem{Bailek1991}
+D.~{Bailek, W., Rieke, F., de Ruyter van Steveninck, R.R., Warland}.
+\newblock {Reading a Neural Code}.
+\newblock {\em Science}, 252:1854--1857, 1991.
+
+\bibitem{baillet2001electromagnetic}
+S.~Baillet, J.~C. Mosher, and R.~M. Leahy.
+\newblock Electromagnetic brain mapping.
+\newblock {\em IEEE Signal processing magazine}, 18(6):14--30, 2001.
+
+\bibitem{bar2001neuronal}
+I.~Bar-Gad, Y.~Ritov, and H.~Bergman.
+\newblock The neuronal refractory period causes a short-term peak in the
+  autocorrelation function.
+\newblock {\em Journal of neuroscience methods}, 104(2):155--163, 2001.
+
+\bibitem{baraldi2002constructive}
+A.~Baraldi and E.~Alpaydin.
+\newblock Constructive feedforward art clustering networks. i.
+\newblock {\em IEEE transactions on neural networks}, 13(3):645--661, 2002.
+
+\bibitem{bartlett1986aging}
+J.~C. Bartlett and J.~E. Leslie.
+\newblock Aging and memory for faces versus single views of faces.
+\newblock {\em Memory \& cognition}, 14:371--381, 1986.
+
+\bibitem{becker2018alpha}
+R.~Becker, D.~Van De~Ville, and A.~Kleinschmidt.
+\newblock Alpha oscillations reduce temporal long-range dependence in
+  spontaneous human brain activity.
+\newblock {\em Journal of Neuroscience}, 38(3):755--764, 2018.
+
+\bibitem{bellec2010multi}
+P.~Bellec, P.~Rosa-Neto, O.~C. Lyttelton, H.~Benali, and A.~C. Evans.
+\newblock Multi-level bootstrap analysis of stable clusters in resting-state
+  fmri.
+\newblock {\em Neuroimage}, 51(3):1126--1139, 2010.
+
+\bibitem{Bellman1957}
+R.~Bellman.
+\newblock {A Markovian decision process}.
+\newblock {\em Journal of mathematics and mechanics}, pages 679--684, 1957.
+
+\bibitem{benton1968impairment}
+A.~Benton and M.~Van~Allen.
+\newblock Impairment in facial recognition in patients with cerebral disease.
+\newblock {\em Cortex}, 4(4):344--IN1, 1968.
+
+\bibitem{bestel2012novel}
+R.~Bestel, A.~W. Daus, and C.~Thielemann.
+\newblock A novel automated spike sorting algorithm with adaptable feature
+  extraction.
+\newblock {\em Journal of neuroscience methods}, 211(1):168--178, 2012.
+
+\bibitem{Bigdely-Shamlo2015}
+N.~Bigdely-Shamlo, T.~Mullen, C.~Kothe, K.~M. Su, and K.~A. Robbins.
+\newblock {The PREP pipeline: Standardized preprocessing for large-scale EEG
+  analysis}.
+\newblock {\em Frontiers in Neuroinformatics}, 9(JUNE):1--19, 2015.
+
+\bibitem{bijsterbosch2018relationship}
+J.~D. Bijsterbosch, M.~W. Woolrich, M.~F. Glasser, E.~C. Robinson, C.~F.
+  Beckmann, D.~C. Van~Essen, S.~J. Harrison, and S.~M. Smith.
+\newblock The relationship between spatial configuration and functional
+  connectivity of brain regions.
+\newblock {\em elife}, 7:e32992, 2018.
+
+\bibitem{Bishop2006}
+C.~M. Bishop.
+\newblock {\em {Pattern recognition and machine learning}}.
+\newblock springer, 2006.
+
+\bibitem{Borst1999}
+A.~Borst and F.~E. Theunissen.
+\newblock {Information theory and neural coding - Nature Neuroscience}.
+\newblock {\em Nature neuroscience}, 2(11):947--957, 1999.
+
+\bibitem{brown2014magnetic}
+R.~W. Brown, Y.-C.~N. Cheng, E.~M. Haacke, M.~R. Thompson, and R.~Venkatesan.
+\newblock {\em Magnetic resonance imaging: physical principles and sequence
+  design}.
+\newblock John Wiley \& Sons, 2014.
+
+\bibitem{buckner2011organization}
+R.~L. Buckner, F.~M. Krienen, A.~Castellanos, J.~C. Diaz, and B.~T. Yeo.
+\newblock The organization of the human cerebellum estimated by intrinsic
+  functional connectivity.
+\newblock {\em Journal of neurophysiology}, 106(5):2322--2345, 2011.
+
+\bibitem{Buzsaki2004}
+G.~Buzs{\'{a}}ki.
+\newblock {Large-scale recording of neuronal ensembles}.
+\newblock {\em Nature Neuroscience}, 7(5):446--451, 2004.
+
+\bibitem{Buzsaki2012}
+G.~Buzs{\'{a}}ki, C.~A. Anastassiou, and C.~Koch.
+\newblock {The origin of extracellular fields and currents-EEG, ECoG, LFP and
+  spikes}.
+\newblock {\em Nature Reviews Neuroscience}, 13(6):407--420, 2012.
+
+\bibitem{cachia2018interindividual}
+A.~Cachia, M.~Roell, J.-F. Mangin, Z.~Y. Sun, A.~Jobert, L.~Braga, O.~Houde,
+  S.~Dehaene, and G.~Borst.
+\newblock How interindividual differences in brain anatomy shape reading
+  accuracy.
+\newblock {\em Brain Structure and Function}, 223:701--712, 2018.
+
+\bibitem{cattell1987intelligence}
+R.~B. Cattell.
+\newblock {\em Intelligence: Its structure, growth and action}.
+\newblock Elsevier, 1987.
+
+\bibitem{cattell1960measuring}
+R.~B. Cattell and A.~K. Cattell.
+\newblock {\em Measuring intelligence with the culture fair tests}.
+\newblock Institute for Personality and Ability Testing, 1960.
+
+\bibitem{Chappell2020}
+M.~Chappell and S.~Payne.
+\newblock {The Action Potential}.
+\newblock {\em Biosystems and Biorobotics}, 24(July):35--45, 2020.
+
+\bibitem{Chen2016a}
+T.~Chen and C.~Guestrin.
+\newblock {Xgboost: A scalable tree boosting system}.
+\newblock In {\em Proceedings of the 22nd acm sigkdd international conference
+  on knowledge discovery and data mining}, pages 785--794, 2016.
+
+\bibitem{choi2012organization}
+E.~Y. Choi, B.~T. Yeo, and R.~L. Buckner.
+\newblock The organization of the human striatum estimated by intrinsic
+  functional connectivity.
+\newblock {\em Journal of neurophysiology}, 108(8):2242--2263, 2012.
+
+\bibitem{churchland1988perspectives}
+P.~S. Churchland and T.~J. Sejnowski.
+\newblock Perspectives on cognitive neuroscience.
+\newblock {\em Science}, 242(4879):741--745, 1988.
+
+\bibitem{Churchland1994}
+P.~S. Churchland and T.~J. Sejnowski.
+\newblock {\em {The computational brain}}.
+\newblock MIT press, 1994.
+
+\bibitem{cichy2019deep}
+R.~M. Cichy and D.~Kaiser.
+\newblock Deep neural networks as scientific models.
+\newblock {\em Trends in cognitive sciences}, 23(4):305--317, 2019.
+
+\bibitem{cohen1968magnetoencephalography}
+D.~Cohen.
+\newblock Magnetoencephalography: evidence of magnetic fields produced by
+  alpha-rhythm currents.
+\newblock {\em Science}, 161(3843):784--786, 1968.
+
+\bibitem{cole2017predicting}
+J.~H. Cole, R.~P. Poudel, D.~Tsagkrasoulis, M.~W. Caan, C.~Steves, T.~D.
+  Spector, and G.~Montana.
+\newblock Predicting brain age with deep learning from raw imaging data results
+  in a reliable and heritable biomarker.
+\newblock {\em NeuroImage}, 163:115--124, 2017.
+
+\bibitem{Colgin2009}
+L.~L. Colgin, T.~Denninger, M.~Fyhn, T.~Hafting, T.~Bonnevie, O.~Jensen, M.~B.
+  Moser, and E.~I. Moser.
+\newblock {Frequency of gamma oscillations routes flow of information in the
+  hippocampus}.
+\newblock {\em Nature}, 462(7271):353--357, 2009.
+
+\bibitem{Comon1991}
+P.~Comon, C.~Jutten, and J.~Herault.
+\newblock {Blind separation of sources, part II: Problems statement}.
+\newblock {\em Signal Processing}, 24(1):11--20, 1991.
+
+\bibitem{costandi2016neuroplasticity}
+M.~Costandi.
+\newblock {\em Neuroplasticity}.
+\newblock MIt Press, 2016.
+
+\bibitem{craddock2012whole}
+R.~C. Craddock, G.~A. James, P.~E. Holtzheimer~III, X.~P. Hu, and H.~S.
+  Mayberg.
+\newblock A whole brain fmri atlas generated via spatially constrained spectral
+  clustering.
+\newblock {\em Human brain mapping}, 33(8):1914--1928, 2012.
+
+\bibitem{Csicsvari2003}
+J.~Csicsvari, D.~A. Henze, B.~Jamieson, K.~D. Harris, A.~Sirota,
+  P.~Barth{\'{o}}, K.~D. Wise, and G.~Buzs{\'{a}}ki.
+\newblock {Massively parallel recording of unit and local field potentials with
+  silicon-based electrodes}.
+\newblock {\em Journal of Neurophysiology}, 90(2):1314--1323, 2003.
+
+\bibitem{Dantas2017}
+H.~Dantas, V.~J. Mathews, S.~M. Wendelken, T.~S. Davis, G.~A. Clark, and D.~J.
+  Warren.
+\newblock {Neural decoding systems using Markov Decision Processes}.
+\newblock {\em ICASSP, IEEE International Conference on Acoustics, Speech and
+  Signal Processing - Proceedings}, pages 974--978, 2017.
+
+\bibitem{davatzikos2016computational}
+C.~Davatzikos.
+\newblock Computational neuroanatomy using brain deformations: From brain
+  parcellation to multivariate pattern analysis and machine learning, 2016.
+
+\bibitem{Dayan2001}
+P.~Dayan and L.~F. Abbott.
+\newblock {\em {Theoretical neuroscience: computational and mathematical
+  modeling of neural systems}}.
+\newblock Computational Neuroscience Series, 2001.
+
+\bibitem{DeLafuente2006}
+V.~de~Lafuente and R.~Romo.
+\newblock {Neural correlate of subjective sensory experience gradually builds
+  up across cortical areas}.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  103(39):14266--14271, 2006.
+
+\bibitem{de1988potential}
+J.~C. de~Munck.
+\newblock The potential distribution in a layered anisotropic spheroidal volume
+  conductor.
+\newblock {\em Journal of applied Physics}, 64(2):464--470, 1988.
+
+\bibitem{Deco2012}
+G.~Deco and D.~Obradovic.
+\newblock {\em {An information-theoretic approach to neural computing}}.
+\newblock Springer Science and Business Media, 2012.
+
+\bibitem{desikan2006automated}
+R.~S. Desikan, F.~S{\'e}gonne, B.~Fischl, B.~T. Quinn, B.~C. Dickerson,
+  D.~Blacker, R.~L. Buckner, A.~M. Dale, R.~P. Maguire, B.~T. Hyman, et~al.
+\newblock An automated labeling system for subdividing the human cerebral
+  cortex on mri scans into gyral based regions of interest.
+\newblock {\em Neuroimage}, 31(3):968--980, 2006.
+
+\bibitem{destrieux2010automatic}
+C.~Destrieux, B.~Fischl, A.~Dale, and E.~Halgren.
+\newblock Automatic parcellation of human cortical gyri and sulci using
+  standard anatomical nomenclature.
+\newblock {\em Neuroimage}, 53(1):1--15, 2010.
+
+\bibitem{dosenbach2010prediction}
+N.~U. Dosenbach, B.~Nardos, A.~L. Cohen, D.~A. Fair, J.~D. Power, J.~A. Church,
+  S.~M. Nelson, G.~S. Wig, A.~C. Vogel, C.~N. Lessov-Schlaggar, et~al.
+\newblock Prediction of individual brain maturity using fmri.
+\newblock {\em Science}, 329(5997):1358--1361, 2010.
+
+\bibitem{Duda2001}
+R.~O. Duda, P.~E. Hart, and D.~G. Stork.
+\newblock {Pattern Classification. John Wiley and Sons}.
+\newblock {\em Inc., New York}, 2, 2001.
+
+\bibitem{Ebbesen2017}
+C.~L. Ebbesen and M.~Brecht.
+\newblock {Motor cortex - To act or not to act?}
+\newblock {\em Nature Reviews Neuroscience}, 18(11):694--705, 2017.
+
+\bibitem{eickhoff2018imaging}
+S.~B. Eickhoff, B.~T. Yeo, and S.~Genon.
+\newblock Imaging-based parcellations of the human brain.
+\newblock {\em Nature Reviews Neuroscience}, 19(11):672--686, 2018.
+
+\bibitem{ekman1976pictures}
+P.~Ekman.
+\newblock Pictures of facial affect.
+\newblock {\em (No Title)}, 1976.
+
+\bibitem{er2016online}
+M.~J. Er, R.~Venkatesan, and N.~Wang.
+\newblock An online universal classifier for binary, multi-class and
+  multi-label classification.
+\newblock In {\em 2016 IEEE International Conference on Systems, Man, and
+  Cybernetics (SMC)}, pages 003701--003706. IEEE, 2016.
+
+\bibitem{fan2016human}
+L.~Fan, H.~Li, J.~Zhuo, Y.~Zhang, J.~Wang, L.~Chen, Z.~Yang, C.~Chu, S.~Xie,
+  A.~R. Laird, et~al.
+\newblock The human brainnetome atlas: a new brain atlas based on connectional
+  architecture.
+\newblock {\em Cerebral cortex}, 26(8):3508--3526, 2016.
+
+\bibitem{finn2015functional}
+E.~S. Finn, X.~Shen, D.~Scheinost, M.~D. Rosenberg, J.~Huang, M.~M. Chun,
+  X.~Papademetris, and R.~T. Constable.
+\newblock Functional connectome fingerprinting: identifying individuals using
+  patterns of brain connectivity.
+\newblock {\em Nature neuroscience}, 18(11):1664--1671, 2015.
+
+\bibitem{fischl2012freesurfer}
+B.~Fischl.
+\newblock Freesurfer.
+\newblock {\em Neuroimage}, 62(2):774--781, 2012.
+
+\bibitem{fornito2016fundamentals}
+A.~Fornito, A.~Zalesky, and E.~Bullmore.
+\newblock {\em Fundamentals of brain network analysis}.
+\newblock Academic press, 2016.
+
+\bibitem{fox2012distributed}
+P.~T. Fox and K.~J. Friston.
+\newblock Distributed processing; distributed functions?
+\newblock {\em Neuroimage}, 61(2):407--426, 2012.
+
+\bibitem{franke2010estimating}
+K.~Franke, G.~Ziegler, S.~Kl{\"o}ppel, C.~Gaser, A.~D.~N. Initiative, et~al.
+\newblock Estimating the age of healthy subjects from t1-weighted mri scans
+  using kernel methods: exploring the influence of various parameters.
+\newblock {\em Neuroimage}, 50(3):883--892, 2010.
+
+\bibitem{gerlach1922magnetische}
+W.~Gerlach and O.~Stern.
+\newblock Das magnetische moment des silberatoms.
+\newblock {\em Zeitschrift f{\"u}r Physik}, 9(1):353--355, 1922.
+
+\bibitem{geselowitz1970magnetic}
+D.~Geselowitz.
+\newblock On the magnetic field generated outside an inhomogeneous volume
+  conductor by internal current sources.
+\newblock {\em IEEE Transactions on Magnetics}, 6(2):346--347, 1970.
+
+\bibitem{Glaser2017}
+J.~I. Glaser, R.~H. Chowdhury, M.~G. Perich, L.~E. Miller, and K.~P. Kording.
+\newblock {Machine learning for neural decoding}.
+\newblock {\em arXiv}, 7(August), 2020.
+
+\bibitem{glasser2016multi}
+M.~F. Glasser, T.~S. Coalson, E.~C. Robinson, C.~D. Hacker, J.~Harwell,
+  E.~Yacoub, K.~Ugurbil, J.~Andersson, C.~F. Beckmann, M.~Jenkinson, et~al.
+\newblock A multi-modal parcellation of human cerebral cortex.
+\newblock {\em Nature}, 536(7615):171--178, 2016.
+
+\bibitem{gordon2016generation}
+E.~M. Gordon, T.~O. Laumann, B.~Adeyemo, J.~F. Huckins, W.~M. Kelley, and S.~E.
+  Petersen.
+\newblock Generation and evaluation of a cortical area parcellation from
+  resting-state correlations.
+\newblock {\em Cerebral cortex}, 26(1):288--303, 2016.
+
+\bibitem{gordon2017precision}
+E.~M. Gordon, T.~O. Laumann, A.~W. Gilmore, D.~J. Newbold, D.~J. Greene, J.~J.
+  Berg, M.~Ortega, C.~Hoyt-Drazen, C.~Gratton, H.~Sun, et~al.
+\newblock Precision functional mapping of individual human brains.
+\newblock {\em Neuron}, 95(4):791--807, 2017.
+
+\bibitem{graves2012supervised}
+A.~Graves.
+\newblock Supervised sequence labelling.
+\newblock In {\em Supervised sequence labelling with recurrent neural
+  networks}, pages 5--13. Springer, 2012.
+
+\bibitem{gross2013good}
+J.~Gross, S.~Baillet, G.~R. Barnes, R.~N. Henson, A.~Hillebrand, O.~Jensen,
+  K.~Jerbi, V.~Litvak, B.~Maess, R.~Oostenveld, et~al.
+\newblock Good practice for conducting and reporting meg research.
+\newblock {\em Neuroimage}, 65:349--363, 2013.
+
+\bibitem{Guo2011}
+L.~Guo, D.~Rivero, J.~Dorado, C.~R. Munteanu, and A.~Pazos.
+\newblock {Automatic feature extraction using genetic programming: An
+  application to epileptic EEG classification}.
+\newblock {\em Expert Systems with Applications}, 38(8):10425--10436, 2011.
+
+\bibitem{hamalainen1993magnetoencephalography}
+M.~H{\"a}m{\"a}l{\"a}inen, R.~Hari, R.~J. Ilmoniemi, J.~Knuutila, and O.~V.
+  Lounasmaa.
+\newblock Magnetoencephalography—theory, instrumentation, and applications to
+  noninvasive studies of the working human brain.
+\newblock {\em Reviews of modern Physics}, 65(2):413, 1993.
+
+\bibitem{han2022brain}
+J.~Han, S.~Y. Kim, J.~Lee, and W.~H. Lee.
+\newblock Brain age prediction: A comparison between machine learning models
+  using brain morphometric data.
+\newblock {\em Sensors}, 22(20):8077, 2022.
+
+\bibitem{harrington2012machine}
+P.~Harrington.
+\newblock {\em Machine learning in action}.
+\newblock Simon and Schuster, 2012.
+
+\bibitem{Harris2000}
+K.~D. Harris, D.~A. Henze, J.~Csicsvari, H.~Hirase, and G.~Buzs{\'{a}}ki.
+\newblock {Accuracy of tetrode spike separation as determined by simultaneous
+  intracellular and extracellular measurements}.
+\newblock {\em Journal of Neurophysiology}, 84(1):401--414, 2000.
+
+\bibitem{harris2000accuracy}
+K.~D. Harris, D.~A. Henze, J.~Csicsvari, H.~Hirase, and G.~Buzsaki.
+\newblock Accuracy of tetrode spike separation as determined by simultaneous
+  intracellular and extracellular measurements.
+\newblock {\em Journal of neurophysiology}, 84(1):401--414, 2000.
+
+\bibitem{Hazan2006}
+L.~Hazan, M.~Zugaro, and G.~Buzs{\'{a}}ki.
+\newblock {Klusters, NeuroScope, NDManager: A free software suite for
+  neurophysiological data processing and visualization}.
+\newblock {\em Journal of Neuroscience Methods}, 155(2):207--216, 2006.
+
+\bibitem{Hebb2005}
+D.~O. Hebb.
+\newblock {\em {The organization of behavior: A neuropsychological theory}}.
+\newblock Psychology Press, 2005.
+
+\bibitem{heeger2000poisson}
+D.~Heeger et~al.
+\newblock Poisson model of spike generation.
+\newblock {\em Handout, University of Standford}, 5(1-13):76, 2000.
+
+\bibitem{heekeren2008neural}
+H.~R. Heekeren, S.~Marrett, and L.~G. Ungerleider.
+\newblock The neural systems that mediate human perceptual decision making.
+\newblock {\em Nature reviews neuroscience}, 9(6):467--479, 2008.
+
+\bibitem{Hidalgo-Balbuena2019}
+A.~E. Hidalgo-Balbuena, A.~Y. Luma, A.~K. Pimentel-Farfan,
+  T.~Pe{\~{n}}a-Rangel, and P.~E. Rueda-Orozco.
+\newblock {Sensory representations in the striatum provide a temporal reference
+  for learning and executing motor habits}.
+\newblock {\em Nature Communications}, 10(1):1--15, 2019.
+
+\bibitem{HodgkinA.L.andHuxley1939}
+A.~F. {Hodgkin, A. L., and Huxley}.
+\newblock {Action Potentials Recorded from Inside a Nerve Fibre : Abstract :
+  Nature}.
+\newblock 1939.
+
+\bibitem{hulata2002method}
+E.~Hulata, R.~Segev, and E.~Ben-Jacob.
+\newblock A method for spike sorting and detection based on wavelet packets and
+  shannon's mutual information.
+\newblock {\em Journal of neuroscience methods}, 117(1):1--12, 2002.
+
+\bibitem{huth2016natural}
+A.~G. Huth, W.~A. De~Heer, T.~L. Griffiths, F.~E. Theunissen, and J.~L.
+  Gallant.
+\newblock Natural speech reveals the semantic maps that tile human cerebral
+  cortex.
+\newblock {\em Nature}, 532(7600):453--458, 2016.
+
+\bibitem{huth2015pragmatic}
+A.~G. Huth, T.~L. Griffiths, F.~E. Theunissen, and J.~L. Gallant.
+\newblock Pragmatic: a probabilistic and generative model of areas tiling the
+  cortex.
+\newblock {\em arXiv preprint arXiv:1504.03622}, 2015.
+
+\bibitem{Jahankhani2006}
+P.~Jahankhani, V.~Kodogiannis, and K.~Revett.
+\newblock {EEG signal classification using wavelet feature extraction and
+  neural networks}.
+\newblock {\em Proceedings - IEEE John Vincent Atanasoff 2006 International
+  Symposium on Modern Computing, JVA 2006}, pages 120--124, 2006.
+
+\bibitem{jeedella2006design}
+J.~Jeedella, H.~Al~Ahamad, M.~Al-Mualla, and J.~M. Noras.
+\newblock Design and analysis of second order iir notch filters with double
+  frequency initialization.
+\newblock In {\em 2006 IEEE GCC Conference (GCC)}, pages 1--6. IEEE, 2006.
+
+\bibitem{Johnson2001}
+K.~O. Johnson.
+\newblock {The roles and functions of cutaneous mechanoreceptors}.
+\newblock {\em Current Opinion in Neurobiology}, 11(4):455--461, 2001.
+
+\bibitem{joliot2015aicha}
+M.~Joliot, G.~Jobard, M.~Naveau, N.~Delcroix, L.~Petit, L.~Zago, F.~Crivello,
+  E.~Mellet, B.~Mazoyer, and N.~Tzourio-Mazoyer.
+\newblock Aicha: An atlas of intrinsic connectivity of homotopic areas.
+\newblock {\em Journal of neuroscience methods}, 254:46--59, 2015.
+
+\bibitem{Jutten1991}
+C.~Jutten and J.~Herault.
+\newblock {Blind separation of sources, part I: An adaptive algorithm based on
+  neuromimetic architecture}.
+\newblock {\em Signal Processing}, 24(1):1--10, 1991.
+
+\bibitem{jwo2021windowing}
+D.-J. Jwo, W.-Y. Chang, and I.-H. Wu.
+\newblock Windowing techniques, the welch method for improvement of power
+  spectrum estimation.
+\newblock {\em Comput. Mater. Contin}, 67:3983--4003, 2021.
+
+\bibitem{Kajikawa2011}
+Y.~Kajikawa and C.~E. Schroeder.
+\newblock {How local is the local field potential?}
+\newblock {\em Neuron}, 72(5):847--858, 2011.
+
+\bibitem{kajikawa2011local}
+Y.~Kajikawa and C.~E. Schroeder.
+\newblock How local is the local field potential?
+\newblock {\em Neuron}, 72(5):847--858, 2011.
+
+\bibitem{Kandel1997}
+A.~Kandel and G.~Buzs{\'{e}}ki.
+\newblock {Cellular-synaptic generation of sleep spindles, spike-and-wave
+  discharges, and evoked thalamocortical responses in the neocortex of the
+  rat}.
+\newblock {\em Journal of Neuroscience}, 17(17):6783--6797, 1997.
+
+\bibitem{Kandel2000}
+E.~R. Kandel, J.~H. Schwartz, T.~M. Jessell, D.~o.~B. Jessell, M.~B. Thomas,
+  S.~Siegelbaum, and A.~J. Hudspeth.
+\newblock {\em {Principles of neural science}}, volume~4.
+\newblock McGraw-hill New York, 2000.
+
+\bibitem{kirkpatrick2008schizophrenia}
+B.~Kirkpatrick, E.~Messias, P.~D. Harvey, E.~Fernandez-Egea, and C.~R. Bowie.
+\newblock Is schizophrenia a syndrome of accelerated aging?
+\newblock {\em Schizophrenia bulletin}, 34(6):1024--1032, 2008.
+
+\bibitem{kong2019spatial}
+R.~Kong, J.~Li, C.~Orban, M.~R. Sabuncu, H.~Liu, A.~Schaefer, N.~Sun, X.-N.
+  Zuo, A.~J. Holmes, S.~B. Eickhoff, et~al.
+\newblock Spatial topography of individual-specific cortical networks predicts
+  human cognition, personality, and emotion.
+\newblock {\em Cerebral cortex}, 29(6):2533--2551, 2019.
+
+\bibitem{kotsiantis2007supervised}
+S.~B. Kotsiantis, I.~Zaharakis, P.~Pintelas, et~al.
+\newblock Supervised machine learning: A review of classification techniques.
+\newblock {\em Emerging artificial intelligence applications in computer
+  engineering}, 160(1):3--24, 2007.
+
+\bibitem{Kwak2012}
+C.~Kwak and O.~W. Kwon.
+\newblock {Cardiac disorder classification by heart sound signals using murmur
+  likelihood and hidden Markov model state likelihood}.
+\newblock {\em IET Signal Processing}, 6(4):326--334, 2012.
+
+\bibitem{levin1975short}
+H.~Levin, K.~d.~S. Hamsher, and A.~Benton.
+\newblock A short form of the test of facial recognition for clinical use.
+\newblock {\em The Journal of Psychology}, 91(2):223--228, 1975.
+
+\bibitem{Levitan1991}
+I.~B. Levitan and L.~K. Kaczmarek.
+\newblock {The Neuron-Cell and Molecular Biology-Oxford}.
+\newblock 1991.
+
+\bibitem{lewicki1998review}
+M.~S. Lewicki.
+\newblock A review of methods for spike sorting: the detection and
+  classification of neural action potentials.
+\newblock {\em Network: Computation in Neural Systems}, 9(4):R53, 1998.
+
+\bibitem{Linden2014}
+H.~Lind{\'{e}}n, E.~Hagen, S.~{\L}eski, E.~S. Norheim, K.~H. Pettersen, and
+  G.~T. Einevoll.
+\newblock {LFPy: A tool for biophysical simulation of extracellular potentials
+  generated by detailed model neurons}.
+\newblock {\em Frontiers in Neuroinformatics}, 7(JAN):1--15, 2014.
+
+\bibitem{liu2022decoding}
+Y.~Liu, M.~M. Nour, N.~W. Schuck, T.~E. Behrens, and R.~J. Dolan.
+\newblock Decoding cognition from spontaneous neural activity.
+\newblock {\em Nature Reviews Neuroscience}, 23(4):204--214, 2022.
+
+\bibitem{livezey2021deep}
+J.~A. Livezey and J.~I. Glaser.
+\newblock Deep learning approaches for neural decoding across architectures and
+  recording modalities.
+\newblock {\em Briefings in bioinformatics}, 22(2):1577--1591, 2021.
+
+\bibitem{long2020prediction}
+Z.~Long, L.~Du, J.~Zhao, S.~Wu, Q.~Zheng, and X.~Lei.
+\newblock Prediction on treatment improvement in depression with resting state
+  connectivity: a coordinate-based meta-analysis.
+\newblock {\em Journal of Affective Disorders}, 276:62--68, 2020.
+
+\bibitem{Lowry2007}
+D.~W. Lowry, B.~E. Gliner, K.~Leyde, B.~Clopton, J.~Miazga, and C.~Genau.
+\newblock {Methods and systems employing intracranial electrodes for
+  neurostimulation and/or electroencephalography}, nov 2007.
+
+\bibitem{MacKay2003}
+D.~J.~C. MacKay and D.~J.~C. {Mac Kay}.
+\newblock {\em {Information theory, inference and learning algorithms}}.
+\newblock Cambridge university press, 2003.
+
+\bibitem{mallat1999wavelet}
+S.~Mallat.
+\newblock {\em A wavelet tour of signal processing}.
+\newblock Elsevier, 1999.
+
+\bibitem{Marshall1937}
+W.~H. Marshall, C.~N. Woolsey, and P.~Bard.
+\newblock {Cortical representation of tactile sensibility as indicated by
+  cortical potentials}.
+\newblock {\em Science}, 85(2207):388--390, 1937.
+
+\bibitem{meskaldji2016prediction}
+D.-E. Meskaldji, M.~G. Preti, T.~A. Bolton, M.-L. Montandon, C.~Rodriguez,
+  S.~Morgenthaler, P.~Giannakopoulos, S.~Haller, and D.~Van De~Ville.
+\newblock Prediction of long-term memory scores in mci based on resting-state
+  fmri.
+\newblock {\em NeuroImage: Clinical}, 12:785--795, 2016.
+
+\bibitem{migliore2018physiological}
+R.~Migliore, C.~A. Lupascu, L.~L. Bologna, A.~Romani, J.-D. Courcol,
+  S.~Antonel, W.~A. Van~Geit, A.~M. Thomson, A.~Mercer, S.~Lange, et~al.
+\newblock The physiological variability of channel density in hippocampal ca1
+  pyramidal cells and interneurons explored using a unified data-driven
+  modeling workflow.
+\newblock {\em PLoS computational biology}, 14(9):e1006423, 2018.
+
+\bibitem{miller2016multimodal}
+K.~L. Miller, F.~Alfaro-Almagro, N.~K. Bangerter, D.~L. Thomas, E.~Yacoub,
+  J.~Xu, A.~J. Bartsch, S.~Jbabdi, S.~N. Sotiropoulos, J.~L. Andersson, et~al.
+\newblock Multimodal population brain imaging in the uk biobank prospective
+  epidemiological study.
+\newblock {\em Nature neuroscience}, 19(11):1523--1536, 2016.
+
+\bibitem{minsky1969perceptron}
+M.~Minsky and S.~Papert.
+\newblock Perceptron: an introduction to computational geometry.
+\newblock {\em The MIT Press, Cambridge, expanded edition}, 19(88):2, 1969.
+
+\bibitem{mitchell2018visual}
+D.~J. Mitchell and R.~Cusack.
+\newblock Visual short-term memory through the lifespan: Preserved benefits of
+  context and metacognition.
+\newblock {\em Psychology and aging}, 33(5):841, 2018.
+
+\bibitem{Montgomery2007}
+S.~M. Montgomery and G.~Buzs{\'{a}}ki.
+\newblock {Gamma oscillations dynamically couple hippocampal CA3 and CA1
+  regions during memory task performance}.
+\newblock {\em Proceedings of the National Academy of Sciences of the United
+  States of America}, 104(36):14495--14500, 2007.
+
+\bibitem{mulert2023eeg}
+C.~Mulert and L.~Lemieux.
+\newblock {\em EEG-fMRI: physiological basis, technique, and applications}.
+\newblock Springer Nature, 2023.
+
+\bibitem{niedermeyer2005electroencephalography}
+E.~Niedermeyer and F.~L. da~Silva.
+\newblock {\em Electroencephalography: basic principles, clinical applications,
+  and related fields}.
+\newblock Lippincott Williams \& Wilkins, 2005.
+
+\bibitem{noone2015addenbrooke}
+P.~Noone.
+\newblock Addenbrooke’s cognitive examination-iii.
+\newblock {\em Occupational Medicine}, 65(5):418--420, 2015.
+
+\bibitem{Oram1998}
+M.~W. Oram, P.~F{\"{o}}ldi{\'{a}}k, D.~I. Perrett, and F.~Sengpiel.
+\newblock {The 'ideal homunculus': Decoding neural population signals}.
+\newblock {\em Trends in Neurosciences}, 21(6):259--265, 1998.
+
+\bibitem{pauli1925einfluss}
+W.~Pauli.
+\newblock On the influence of the velocity dependence of the electron mass on
+  the zee man effect.
+\newblock {\em Zeitschrift f{\"u}r Physik}, 31(1):373--385, 1925.
+
+\bibitem{pauli1988quantenmechanik}
+W.~Pauli.
+\newblock {\em On the quantum mechanics of the magnetic electron}.
+\newblock Springer, 1988.
+
+\bibitem{Petsche1984}
+H.~Petsche, H.~Pockberger, and P.~Rappelsberger.
+\newblock {On the search for the sources of the electroencephalogram}.
+\newblock {\em Neuroscience}, 11(1):1--27, 1984.
+
+\bibitem{plaschke2020age}
+R.~N. Pl{\"a}schke, K.~R. Patil, E.~C. Cieslik, A.~D. Nostro, D.~P. Varikuti,
+  A.~Plachti, P.~L{\"o}sche, F.~Hoffstaedter, T.~Kalenscher, R.~Langner, et~al.
+\newblock Age differences in predicting working memory performance from
+  network-based functional connectivity.
+\newblock {\em Cortex}, 132:441--459, 2020.
+
+\bibitem{plonsey1982nature}
+R.~Plonsey.
+\newblock The nature of sources of bioelectric and biomagnetic fields.
+\newblock {\em Biophysical Journal}, 39(3):309--312, 1982.
+
+\bibitem{Pouget1998}
+A.~Pouget, K.~Zhang, S.~Deneve, and P.~E. Latham.
+\newblock {Statistically efficient estimation using population coding}.
+\newblock {\em Neural computation}, 10(2):373--401, 1998.
+
+\bibitem{power2011functional}
+J.~D. Power, A.~L. Cohen, S.~M. Nelson, G.~S. Wig, K.~A. Barnes, J.~A. Church,
+  A.~C. Vogel, T.~O. Laumann, F.~M. Miezin, B.~L. Schlaggar, et~al.
+\newblock Functional network organization of the human brain.
+\newblock {\em Neuron}, 72(4):665--678, 2011.
+
+\bibitem{preston1899radiation}
+T.~Preston.
+\newblock Radiation phenomena in the magnetic field.
+\newblock {\em Nature}, 59(1523):224--229, 1899.
+
+\bibitem{QuianQuiroga2009}
+R.~{Quian Quiroga} and S.~Panzeri.
+\newblock {Extracting information from neuronal populations: Information theory
+  and decoding approaches}.
+\newblock {\em Nature Reviews Neuroscience}, 10(3):173--185, 2009.
+
+\bibitem{quiroga2004unsupervised}
+R.~Q. Quiroga, Z.~Nadasdy, and Y.~Ben-Shaul.
+\newblock Unsupervised spike detection and sorting with wavelets and
+  superparamagnetic clustering.
+\newblock {\em Neural computation}, 16(8):1661--1687, 2004.
+
+\bibitem{quiroga2007decoding}
+R.~Q. Quiroga, L.~Reddy, C.~Koch, and I.~Fried.
+\newblock Decoding visual inputs from multiple neurons in the human temporal
+  lobe.
+\newblock {\em Journal of neurophysiology}, 98(4):1997--2007, 2007.
+
+\bibitem{QuirogaR.Q.Panzeri}
+S.~{Quiroga, R. Q., Panzeri}.
+\newblock {\em {Principles of neural coding.}}
+\newblock CRC Press, 2013.
+
+\bibitem{rey2015past}
+H.~G. Rey, C.~Pedreira, and R.~Q. Quiroga.
+\newblock Past, present and future of spike sorting techniques.
+\newblock {\em Brain research bulletin}, 119:106--117, 2015.
+
+\bibitem{Rickert2005}
+J.~Rickert, S.~{Cardoso De Oliveira}, E.~Vaadia, A.~Aertsen, S.~Rotter, and
+  G.~Mehring.
+\newblock {Encoding of movement direction in different frequency ranges of
+  motor cortical local field potentials}.
+\newblock {\em Journal of Neuroscience}, 25(39):8815--8824, 2005.
+
+\bibitem{riera2012pitfalls}
+J.~J. Riera, T.~Ogawa, T.~Goto, A.~Sumiyoshi, H.~Nonaka, A.~Evans, H.~Miyakawa,
+  and R.~Kawashima.
+\newblock Pitfalls in the dipolar model for the neocortical eeg sources.
+\newblock {\em Journal of neurophysiology}, 108(4):956--975, 2012.
+
+\bibitem{Rodeberg2017}
+N.~T. Rodeberg, S.~G. Sandberg, J.~A. Johnson, P.~E.~M. Phillips, and R.~M.
+  Wightman.
+\newblock {Hitchhiker's guide to voltammetry: acute and chronic electrodes for
+  in vivo fast-scan cyclic voltammetry}.
+\newblock {\em ACS chemical neuroscience}, 8(2):221--234, 2017.
+
+\bibitem{Rolls2012}
+E.~Rolls and A.~Treves.
+\newblock {Neural Networks and Brain Function}.
+\newblock {\em Neural Networks and Brain Function}, 2012.
+
+\bibitem{Roux2006}
+S.~Roux, W.~A. MacKay, and A.~Riehle.
+\newblock {The pre-movement component of motor cortical local field potentials
+  reflects the level of expectancy}.
+\newblock {\em Behavioural Brain Research}, 169(2):335--351, 2006.
+
+\bibitem{Rueda-Orozco2015}
+P.~E. Rueda-Orozco and D.~Robbe.
+\newblock {The striatum multiplexes contextual and kinematic information to
+  constrain motor habits execution}.
+\newblock {\em Nature Neuroscience}, 18(3):453--462, 2015.
+
+\bibitem{schaefer2018local}
+A.~Schaefer, R.~Kong, E.~M. Gordon, T.~O. Laumann, X.-N. Zuo, A.~J. Holmes,
+  S.~B. Eickhoff, and B.~T. Yeo.
+\newblock Local-global parcellation of the human cerebral cortex from intrinsic
+  functional connectivity mri.
+\newblock {\em Cerebral cortex}, 28(9):3095--3114, 2018.
+
+\bibitem{Scherberger2005}
+H.~Scherberger, M.~R. Jarvis, and R.~A. Andersen.
+\newblock {Cortical local field potential encodes movement intentions in the
+  posterior parietal cortex}.
+\newblock {\em Neuron}, 46(2):347--354, 2005.
+
+\bibitem{Schroeder2001}
+C.~E. Schroeder, R.~W. Lindsley, C.~Specht, A.~Marcovici, J.~F. Smiley, and
+  D.~C. Javitt.
+\newblock {Somatosensory input to auditory association cortex in the macaque
+  monkey}.
+\newblock {\em Journal of Neurophysiology}, 85(3):1322--1327, 2001.
+
+\bibitem{shafto2014cambridge}
+M.~A. Shafto, L.~K. Tyler, M.~Dixon, J.~R. Taylor, J.~B. Rowe, R.~Cusack, A.~J.
+  Calder, W.~D. Marslen-Wilson, J.~Duncan, T.~Dalgleish, et~al.
+\newblock The cambridge centre for ageing and neuroscience (cam-can) study
+  protocol: a cross-sectional, lifespan, multidisciplinary examination of
+  healthy cognitive ageing.
+\newblock {\em BMC neurology}, 14:1--25, 2014.
+
+\bibitem{shen2013groupwise}
+X.~Shen, F.~Tokoglu, X.~Papademetris, and R.~T. Constable.
+\newblock Groupwise whole-brain parcellation from resting-state fmri data for
+  network node identification.
+\newblock {\em Neuroimage}, 82:403--415, 2013.
+
+\bibitem{singh2014magnetoencephalography}
+S.~P. Singh.
+\newblock Magnetoencephalography: basic principles.
+\newblock {\em Annals of Indian Academy of Neurology}, 17(Suppl 1):S107, 2014.
+
+\bibitem{sluimer2009accelerating}
+J.~D. Sluimer, W.~M. van~der Flier, G.~B. Karas, R.~van Schijndel, J.~Barnes,
+  R.~G. Boyes, K.~S. Cover, S.~D. Olabarriaga, N.~C. Fox, P.~Scheltens, et~al.
+\newblock Accelerating regional atrophy rates in the progression from normal
+  aging to alzheimer’s disease.
+\newblock {\em European radiology}, 19:2826--2833, 2009.
+
+\bibitem{Snijders2010}
+A.~H. Snijders and B.~R. Bloem.
+\newblock {Cycling for Freezing of Gait}.
+\newblock {\em New England Journal of Medicine}, 362(13):e46, 2010.
+
+\bibitem{sripada2020prediction}
+C.~Sripada, S.~Rutherford, M.~Angstadt, W.~K. Thompson, M.~Luciana, A.~Weigard,
+  L.~H. Hyde, and M.~Heitzeg.
+\newblock Prediction of neurocognition in youth from resting state fmri.
+\newblock {\em Molecular psychiatry}, 25(12):3413--3421, 2020.
+
+\bibitem{st2023functional}
+F.~St-Onge, M.~Javanray, A.~Pichet~Binette, C.~Strikwerda-Brown, J.~Remz, R.~N.
+  Spreng, G.~Shafiei, B.~Misic, {\'E}.~Vachon-Presseau, and S.~Villeneuve.
+\newblock Functional connectome fingerprinting across the lifespan.
+\newblock {\em Network Neuroscience}, 7(3):1206--1227, 2023.
+
+\bibitem{Stanley2013}
+G.~B. Stanley.
+\newblock {Reading and writing the neural code}.
+\newblock {\em Nature Neuroscience}, 16(3):259--263, 2013.
+
+\bibitem{Szymanski2009}
+F.~D. Szymanski, J.~A. Garcia-Lazaro, and J.~W. Schnupp.
+\newblock {Current source density profiles of stimulus-specific adaptation in
+  rat auditory cortex}.
+\newblock {\em Journal of Neurophysiology}, 102(3):1483--1490, 2009.
+
+\bibitem{tadel2011brainstorm}
+F.~Tadel, S.~Baillet, J.~C. Mosher, D.~Pantazis, and R.~M. Leahy.
+\newblock Brainstorm: a user-friendly application for meg/eeg analysis.
+\newblock {\em Computational intelligence and neuroscience}, 2011:1--13, 2011.
+
+\bibitem{takekawa2010accurate}
+T.~Takekawa, Y.~Isomura, and T.~Fukai.
+\newblock Accurate spike sorting for multi-unit recordings.
+\newblock {\em European Journal of Neuroscience}, 31(2):263--272, 2010.
+
+\bibitem{taylor2017cambridge}
+J.~R. Taylor, N.~Williams, R.~Cusack, T.~Auer, M.~A. Shafto, M.~Dixon, L.~K.
+  Tyler, R.~N. Henson, et~al.
+\newblock The cambridge centre for ageing and neuroscience (cam-can) data
+  repository: Structural and functional mri, meg, and cognitive data from a
+  cross-sectional adult lifespan sample.
+\newblock {\em neuroimage}, 144:262--269, 2017.
+
+\bibitem{tzourio2002automated}
+N.~Tzourio-Mazoyer, B.~Landeau, D.~Papathanassiou, F.~Crivello, O.~Etard,
+  N.~Delcroix, B.~Mazoyer, and M.~Joliot.
+\newblock Automated anatomical labeling of activations in spm using a
+  macroscopic anatomical parcellation of the mni mri single-subject brain.
+\newblock {\em Neuroimage}, 15(1):273--289, 2002.
+
+\bibitem{Ubeyli2009}
+E.~D. {\"{U}}beyli.
+\newblock {Combined neural network model employing wavelet coefficients for EEG
+  signals classification}.
+\newblock {\em Digital Signal Processing: A Review Journal}, 19(2):297--308,
+  2009.
+
+\bibitem{uhlenbeck1925ersetzung}
+G.~E. Uhlenbeck and S.~Goudsmit.
+\newblock Replacing the hypothesis of mechanical constraints with a requirement
+  regarding the internal behavior of each individual electron.
+\newblock {\em Die Naturwissenschaften}, 13(47):953--954, 1925.
+
+\bibitem{Valtierra2020}
+J.~L. Valtierra.
+\newblock {Dise{\~{n}}o de circuitos integrados para interfaces neuronales
+  implantables}.
+\newblock 2020.
+
+\bibitem{van2015opportunities}
+E.~Van~Diessen, T.~Numan, E.~Van~Dellen, A.~Van Der~Kooi, M.~Boersma,
+  D.~Hofman, R.~Van~Lutterveld, B.~Van~Dijk, E.~Van~Straaten, A.~Hillebrand,
+  et~al.
+\newblock Opportunities and methodological challenges in eeg and meg resting
+  state functional brain network research.
+\newblock {\em Clinical Neurophysiology}, 126(8):1468--1481, 2015.
+
+\bibitem{van1988beamforming}
+B.~D. Van~Veen and K.~M. Buckley.
+\newblock Beamforming: A versatile approach to spatial filtering.
+\newblock {\em IEEE assp magazine}, 5(2):4--24, 1988.
+
+\bibitem{varikuti2018evaluation}
+D.~P. Varikuti, S.~Genon, A.~Sotiras, H.~Schwender, F.~Hoffstaedter, K.~R.
+  Patil, C.~Jockwitz, S.~Caspers, S.~Moebus, K.~Amunts, et~al.
+\newblock Evaluation of non-negative matrix factorization of grey matter in age
+  prediction.
+\newblock {\em Neuroimage}, 173:394--410, 2018.
+
+\bibitem{wang2015parcellating}
+D.~Wang, R.~L. Buckner, M.~D. Fox, D.~J. Holt, A.~J. Holmes, S.~Stoecklein,
+  G.~Langs, R.~Pan, T.~Qian, K.~Li, et~al.
+\newblock Parcellating cortical functional networks in individuals.
+\newblock {\em Nature neuroscience}, 18(12):1853--1860, 2015.
+
+\bibitem{weishaupt2006does}
+D.~Weishaupt, V.~D. K{\"o}chli, B.~Marincek, J.~M. Froehlich, D.~Nanz, and
+  K.~P. Pruessmann.
+\newblock {\em How does MRI work?: an introduction to the physics and function
+  of magnetic resonance imaging}, volume~2.
+\newblock Springer, 2006.
+
+\bibitem{Wu2015}
+T.~Wu, M.~Hallett, and P.~Chan.
+\newblock {Motor automaticity in Parkinson's disease}.
+\newblock {\em Neurobiology of Disease}, 82:226--234, 2015.
+
+\bibitem{Xing2009}
+D.~Xing, C.~I. Yeh, and R.~M. Shapley.
+\newblock {Spatial spread of the local field potential and its laminar
+  variation in visual cortex}.
+\newblock {\em Journal of Neuroscience}, 29(37):11540--11549, 2009.
+
+\bibitem{Xu2019}
+Z.~Xu, W.~Wu, S.~S. Winter, M.~L. Mehlman, W.~N. Butler, C.~M. Simmons, R.~E.
+  Harvey, L.~E. Berkowitz, Y.~Chen, J.~S. Taube, A.~A. Wilber, and B.~J. Clark.
+\newblock {A Comparison of Neural Decoding Methods and Population Coding Across
+  Thalamo-Cortical Head Direction Cells}.
+\newblock {\em Frontiers in Neural Circuits}, 13(December):1--18, 2019.
+
+\bibitem{Yaseen2018}
+Yaseen, G.~Y. Son, and S.~Kwon.
+\newblock {Classification of heart sound signal using multiple features}.
+\newblock {\em Applied Sciences (Switzerland)}, 8(12), 2018.
+
+\bibitem{yeo2011organization}
+B.~T. Yeo, F.~M. Krienen, J.~Sepulcre, M.~R. Sabuncu, D.~Lashkari,
+  M.~Hollinshead, J.~L. Roffman, J.~W. Smoller, L.~Z{\"o}llei, J.~R. Polimeni,
+  et~al.
+\newblock The organization of the human cerebral cortex estimated by intrinsic
+  functional connectivity.
+\newblock {\em Journal of neurophysiology}, 2011.
+
+\bibitem{Zador1997}
+A.~Zador.
+\newblock {Spikes: Exploring the neural code}.
+\newblock {\em Science}, 277(5327):772--773, 1997.
+
+\bibitem{zamani2022efficient}
+M.~Zamani, C.~Okreghe, and A.~Demosthenous.
+\newblock Efficient approximation of action potentials with high-order shape
+  preservation in unsupervised spike sorting.
+\newblock {\em arXiv preprint arXiv:2204.13463}, 2022.
+
+\bibitem{zhang2007ml}
+M.-L. Zhang and Z.-H. Zhou.
+\newblock Ml-knn: A lazy learning approach to multi-label learning.
+\newblock {\em Pattern recognition}, 40(7):2038--2048, 2007.
+
+\bibitem{zhang1995fast}
+Z.~Zhang.
+\newblock A fast method to compute surface potentials generated by dipoles
+  within multilayer anisotropic spheres.
+\newblock {\em Physics in medicine \& biology}, 40(3):335, 1995.
+
+\end{thebibliography}

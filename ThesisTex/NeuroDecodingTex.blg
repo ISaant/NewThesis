@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: NeuroDecodingTex.aux
+The style file: abbrv.bst
+Database file #1: Tesis.bib
+Warning--I didn't find a database entry for "ivezey2021deep"
+Warning--I didn't find a database entry for "fjell2009high"
+Warning--empty journal in baddeley1999working
+Warning--empty journal in HodgkinA.L.andHuxley1939
+Warning--empty journal in Levitan1991
+Warning--empty journal in Valtierra2020
+You've used 175 entries,
+            2118 wiz_defined-function locations,
+            1518 strings with 39176 characters,
+and the built_in function-call counts, 66630 in all, are:
+= -- 6402
+> -- 4030
+< -- 9
++ -- 1613
+- -- 1416
+* -- 5494
+:= -- 11433
+add.period$ -- 526
+call.type$ -- 175
+change.case$ -- 1192
+chr.to.int$ -- 0
+cite$ -- 179
+duplicate$ -- 1999
+empty$ -- 4529
+format.name$ -- 1416
+if$ -- 13216
+int.to.chr$ -- 0
+int.to.str$ -- 175
+missing$ -- 193
+newline$ -- 876
+num.names$ -- 350
+pop$ -- 1046
+preamble$ -- 1
+purify$ -- 1037
+quote$ -- 0
+skip$ -- 1351
+stack$ -- 0
+substring$ -- 4364
+swap$ -- 237
+text.length$ -- 9
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 660
+warning$ -- 4
+while$ -- 627
+width$ -- 178
+write$ -- 1893
+(There were 6 warnings)
