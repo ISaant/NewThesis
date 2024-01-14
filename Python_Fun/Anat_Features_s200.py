@@ -40,7 +40,7 @@ def Anat_Feat_s200(path, AnatFile_s200, scoreDf, subjects):
         model = Lasso(alpha=.2)
         model.fit(x_train, y_train)
         pred_Lasso = model.predict(x_test)
-        LassoPred = plotPredictionsReg(pred_Lasso, y_test, False)
+        LassoPred,_ = plotPredictionsReg(pred_Lasso, y_test, False)
         Reg.append(LassoPred)
         x_test = myReshape(x_test, 200)
         sub, ft, ROI = x_test.shape
@@ -54,7 +54,7 @@ def Anat_Feat_s200(path, AnatFile_s200, scoreDf, subjects):
                 cp[:, [j, k], :] = cp[:, [k, j], :]
                 cp = RestoreShape(cp)
                 cp_pred_Lasso = model.predict(cp)
-                cp_LassoPred = plotPredictionsReg(cp_pred_Lasso, y_test, False)
+                cp_LassoPred,_ = plotPredictionsReg(cp_pred_Lasso, y_test, False)
                 matPred[j, k] = cp_LassoPred
                 matPred[k, j] = cp_LassoPred
 

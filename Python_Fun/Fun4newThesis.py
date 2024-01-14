@@ -75,7 +75,7 @@ def RemoveNan(Data,labels):
     return Data,labels
 
 #%% ===========================================================================
-def myReshape(array,rois=68):
+def myReshape(array,rois=68):  #goes from [Sub,PSDxROI] to [Sub,PSD,ROI]
     [x,y]=array.shape
     cols=y//rois
     newarray=np.zeros((x,cols,rois))
@@ -87,7 +87,7 @@ def myReshape(array,rois=68):
 
 #%% ===========================================================================
 
-def RestoreShape(Data):
+def RestoreShape(Data):  #goes from [Sub,PSD,ROI] to [Sub,PSD x ROI]
     if len(Data.shape)>2:
         [x,y,z]=Data.shape
         newarray=np.zeros((x,y*z))

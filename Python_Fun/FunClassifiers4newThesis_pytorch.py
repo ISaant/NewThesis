@@ -15,7 +15,7 @@ from sklearn.linear_model import Lasso, LinearRegression
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler, LabelEncoder, MinMaxScaler
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 from tqdm import tqdm
 import torch
 import torch.nn as nn
@@ -78,6 +78,7 @@ def Split_Parallel_NN(psd,anat,delta,theta,alpha, beta, gamma1,gamma2,labels,tes
 #%% ===========================================================================
 def plotPredictionsReg(predictions,y_test,plot):
     pearson=scipy.stats.pearsonr(predictions,y_test)
+    MAE = mean_absolute_error(y_test,predictions)
     if plot :
         plt.figure()
         plt.scatter(predictions,y_test)
@@ -90,7 +91,7 @@ def plotPredictionsReg(predictions,y_test,plot):
         plt.xlim(lims)
         plt.ylim(lims)
         plt.show()
-    return pearson[0]
+    return pearson[0], MAE
 
 #%% ===========================================================================
 
@@ -743,14 +744,15 @@ def train_ANN(model, criterion,optimizer, train, val, epochs, var_pos):
             loss.backward()
             optimizer.step()
             optimizer.zero_grad()
-            # if epoch % 10 == 0:
-            #     mse_val, _ = test_ANN(model, val, var_pos)
-            #     mse_train, _ = test_ANN(model, train, var_pos)
-            #     print(f'Epoch: {epoch:02d}, : MSE_train: {mse_train:.4f}, MSE_val: {mse_val:.4F}')
+            if epoch % 10 == 0:
+                mse_val, _ = test_ANN(model, val, var_pos)
+                mse_train, _ = test_ANN(model, train, var_pos)
+                print(f'Epoch: {epoch:02d}, : MSE_train: {mse_train:.4f}, MSE_val: {mse_val:.4F}')
     outputs= outputs.detach().to('cpu').numpy().flatten()
     targets= targets.detach().to('cpu').numpy().flatten()
     mse_train, _ = test_ANN(model, train, var_pos)
-    NNPred = plotPredictionsReg(outputs,targets, False)
+    NNPred, _ = plotPredictionsReg(outputs,targets, False)
+
     print(f'Train_Acc: {NNPred:4f}, Train_MSE: {mse_train}')
 # testing and eval
 
@@ -768,6 +770,7 @@ def test_ANN(model, loader, var_pos):
                 for pos in var_pos:
                     varss.append(data[pos].to(device))
                 outputs = model(varss).to('cpu').numpy().flatten()
+                print(outputs)
             mse = mean_squared_error(targets,outputs)
             pred.extend(outputs)
     return mse, pred
@@ -805,7 +808,7 @@ def test_GNN(model, loader, plot):
         pred = np.array(pred)
         true_label = np.array(true_label)
         mse = mean_squared_error(np.array(true_label),pred)
-        NNPred=plotPredictionsReg(pred.flatten(),true_label.flatten(),plot)# Check against ground-truth labels.
+        NNPred, _ =plotPredictionsReg(pred.flatten(),true_label.flatten(),plot)# Check against ground-truth labels.
 
     return mse, pred ,NNPred
 
@@ -836,5 +839,5 @@ def svm_reg(connectome, y, kernel):
     pred = pred.reshape(-1, 1)
     pred = y_sc.inverse_transform(pred).flatten()
     true_label = y_test.flatten()
-    NNPred = plotPredictionsReg(pred, true_label, True)  # Check against ground-truth labels.
+    NNPred, _ = plotPredictionsReg(pred, true_label, True)  # Check against ground-truth labels.
     print(NNPred)

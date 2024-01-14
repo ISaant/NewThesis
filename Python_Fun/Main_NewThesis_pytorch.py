@@ -6,7 +6,7 @@ Created on Wed Sep 20 18:26:29 2023
 @author: isaac
 """
 
-#%%
+#%% https://mcgill-my.sharepoint.com/:f:/g/personal/zhenqi_liu_mail_mcgill_ca/Eri7NN-sXGJLkZcMfeKelAwBo5JNbLsSOiseFmbxttQdDg?e=BLXBlT
 from importlib import reload
 import os
 from time import sleep
@@ -325,7 +325,7 @@ train_ANN(model, criterion, optimizer, train_loader, val_loader, num_epochs, var
 mse_test, pred = test_ANN(model,test_loader, var_pos)
 pred=np.array(pred)
 y_test = test_dataset[:][-1].numpy()
-NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), True)
+NNPred, _ = plotPredictionsReg(pred.flatten(), y_test.flatten(), True)
 print(f'Test_Acc: {NNPred:4f}, Test_MSE: {mse_test}')
 
 

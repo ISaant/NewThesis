@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed May 10 12:03:35 2023
+
+@author: isaac
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -65,12 +73,12 @@ input_size_fc = fc.shape[1]
 input_size_psds200 = psds200.shape[1]
 input_size_anats200 = anats200.shape[1]
 input_size_ScFeat = ScFeat.shape[1]
-input_size_global_sc = glob_sc.shape[1]
+# input_size_global_sc = glob_sc.shape[1]
 output_size = scores.shape[1]
 
 
 #%%
-iterations = 3
+iterations = 30
 model = []
 import FunClassifiers4newThesis_pytorch
 reload(FunClassifiers4newThesis_pytorch)
@@ -89,7 +97,7 @@ for i in range(50):
     model = Lasso(alpha=.2)
     model.fit(anat_train, y_train)
     pred_Lasso = model.predict(anat_test)
-    LassoPred = plotPredictionsReg(pred_Lasso, y_test.flatten(), False)
+    LassoPred,LassoMAE = plotPredictionsReg(pred_Lasso, y_test.flatten(), False)
     Mean_Acc.append(LassoPred)
 Mean_Acc=np.mean(Mean_Acc)
 
@@ -105,7 +113,7 @@ for roi in tqdm(range(ROI)):
         model = Lasso(alpha=.2)
         model.fit(anat_train, y_train)
         pred_Lasso = model.predict(anat_test)
-        LassoPred = plotPredictionsReg(pred_Lasso, y_test.flatten(), False)
+        LassoPred,LassoMAE = plotPredictionsReg(pred_Lasso, y_test.flatten(), False)
         reg_roi.append(LassoPred)
     ROI_Importance.append(np.mean(reg_roi))
 ROI_Importance = np.take(ROI_Importance,np.argsort(ROIs))
@@ -121,6 +129,7 @@ anatPCA = RestoreShape(anatPCA)
 #%% Individual NN
 #psd
 NNPred_psd=[]
+MAE_psd=[]
 for i in tqdm(range(iterations)):
     train_loader, test_loader, val_loader = dataloaders(dataset, train_size, test_size, val_size, batch_size, seed=i)
     dataiter = iter(test_loader)
@@ -141,11 +150,13 @@ for i in tqdm(range(iterations)):
     # NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
     pred = np.array(pred)
     y_test = test_data[:][-1].numpy()
-    NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
+    NNPred,NNMAE = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
     print(f'Test_Acc: {NNPred:4f}, Test_MSE: {mse_test}')
     NNPred_psd.append(NNPred)
+    MAE_psd.append(NNMAE)
 #%%anat
 NNPred_anat=[]
+MAE_anat=[]
 for i in tqdm(range(iterations)):
     train_loader, test_loader, val_loader = dataloaders(dataset, train_size, test_size, val_size, batch_size, seed=i)
     dataiter = iter(test_loader)
@@ -166,12 +177,14 @@ for i in tqdm(range(iterations)):
     # NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
     pred = np.array(pred)
     y_test = test_data[:][-1].numpy()
-    NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
+    NNPred,NNMAE = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
     print(f'Test_Acc: {NNPred:4f}, Test_MSE: {mse_test}')
     NNPred_anat.append(NNPred)
+    MAE_anat.append(NNMAE)
 
 #%%psd_s200
 NNPred_psd_s200=[]
+MAE_psd_s200=[]
 for i in tqdm(range(iterations)):
     train_loader, test_loader, val_loader = dataloaders(dataset, train_size, test_size, val_size, batch_size, seed=i)
     dataiter = iter(test_loader)
@@ -192,11 +205,13 @@ for i in tqdm(range(iterations)):
     # NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
     pred = np.array(pred)
     y_test = test_data[:][-1].numpy()
-    NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
+    NNPred,NNMAE = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
     print(f'Test_Acc: {NNPred:4f}, Test_MSE: {mse_test}')
     NNPred_psd_s200.append(NNPred)
+    MAE_psd_s200.append(NNMAE)
 #%%anat_s200
 NNPred_anat_s200=[]
+MAE_anat_s200=[]
 for i in tqdm(range(iterations)):
     train_loader, test_loader, val_loader = dataloaders(dataset, train_size, test_size, val_size, batch_size, seed=i)
     dataiter = iter(test_loader)
@@ -217,11 +232,13 @@ for i in tqdm(range(iterations)):
     # NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
     pred = np.array(pred)
     y_test = test_data[:][-1].numpy()
-    NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
+    NNPred,NNMAE = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
     print(f'Test_Acc: {NNPred:4f}, Test_MSE: {mse_test}')
     NNPred_anat_s200.append(NNPred)
+    MAE_anat_s200.append(NNMAE)
 #%% Parallel NN
 NNPred_CustomModel=[]
+MAE_CustomModel=[]
 for i in tqdm(range(iterations)):
     train_loader, test_loader, val_loader = dataloaders(dataset, train_size, test_size, val_size, batch_size, seed=i)
     dataiter = iter(test_loader)
@@ -237,11 +254,13 @@ for i in tqdm(range(iterations)):
     mse_test, pred = test_ANN(model, test_loader, var_pos)
     pred = np.array(pred)
     y_test = test_data[:][-1].numpy()
-    NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
+    NNPred,NNMAE = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
     print(f'Test_Acc: {NNPred:4f}, Test_MSE: {mse_test}')
     NNPred_CustomModel.append(NNPred)
+    MAE_CustomModel.append(NNMAE)
 #%%
 NNPred_CustomModel_s200=[]
+MAE_CustomModel_s200=[]
 for i in tqdm(range(iterations)):
     train_loader, test_loader, val_loader = dataloaders(dataset, train_size, test_size, val_size, batch_size, seed=i)
     dataiter = iter(test_loader)
@@ -257,14 +276,16 @@ for i in tqdm(range(iterations)):
     mse_test, pred = test_ANN(model, test_loader, var_pos)
     pred = np.array(pred)
     y_test = test_data[:][-1].numpy()
-    NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
+    NNPred,NNMAE = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
     print(f'Test_Acc: {NNPred:4f}, Test_MSE: {mse_test}')
     NNPred_CustomModel_s200.append(NNPred)
+    MAE_CustomModel_s200.append(NNMAE)
 
 #%%
 NNPred_CustomModel_Sc=[]
+MAE_CustomModel_Sc=[]
 for i in tqdm(range(iterations)):
-    train_loader, test_loader, val_loader = dataloaders(dataset, train_size, test_size, val_size, batch_size, seed=i)
+    train_loader, test_loader, val_loader = dataloaders(dataset, train_size, test_size, val_size, batch_size, seed=1)
     dataiter = iter(test_loader)
     test_data = next(dataiter)
     model = CustomModel_Sc(input_size_psds200, input_size_anats200, input_size_ScFeat,  output_size).to(device)
@@ -278,11 +299,10 @@ for i in tqdm(range(iterations)):
     mse_test, pred = test_ANN(model, test_loader, var_pos)
     pred = np.array(pred)
     y_test = test_data[:][-1].numpy()
-    NNPred = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
+    NNPred,NNMAE = plotPredictionsReg(pred.flatten(), y_test.flatten(), False)
     print(f'Test_Acc: {NNPred:4f}, Test_MSE: {mse_test}')
     NNPred_CustomModel_Sc.append(NNPred)
-    NNPred_CustomModel_Sc2.append(NNPred)
-
+    MAE_CustomModel_Sc.append(NNMAE)
 #%%
 PredExperimentsDF=pd.DataFrame({'PSD_PCA':list(np.array(NNPred_psd_s200)),
                                 'Anat_PCA':list(np.array(NNPred_anat_s200)),
@@ -302,4 +322,19 @@ plt.ylabel('Performance')
 plt.title('Boxplot Acc')
 
 #%%
+MAEExperimentsDF=pd.DataFrame({'PSD_PCA':list(np.array(MAE_psd_s200)),
+                                'Anat_PCA':list(np.array(MAE_anat_s200)),
+                                'Parallel_noSc':list(np.array(MAE_CustomModel_s200)),
+                                'Parallel_Sc':list(np.array(MAE_CustomModel_Sc)),
+                                #'GCN': models_acc[0],
+                                #'SAGE_GCN': models_acc[1],
+                                #'GNN_Diffpool': models_acc[2],
+                                #'GIN':NNPred_list_CustomModel_Fc
+                                })
 
+plt.figure()
+MAEExperimentsDf_melted = MAEExperimentsDF.reset_index().melt(id_vars='index')
+sns.boxplot(MAEExperimentsDf_melted,y='value',x='variable', palette="dark:#5A9_r")
+plt.xlabel('Model')
+plt.ylabel('Performance')
+plt.title('Boxplot Acc')

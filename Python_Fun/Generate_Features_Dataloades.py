@@ -1,4 +1,11 @@
-#%%
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed May 10 12:03:35 2023
+
+@author: isaac
+"""
+
 from importlib import reload
 import os
 from time import sleep
@@ -214,4 +221,4 @@ def Generate():
 
 
 
-    return psd2use, restStatePCA, anat2use, anatPCA, DiagFc, restStatePCA_s200, anatPCA_s200, local_s200, glob_s200, ROIs, scores
+    return psd2use, restStatePCA, anat2use, anatPCA, DiagFc, restStatePCA_s200, anatPCA_s200, local_PCA, glob_PCA, ROIs, scores
