@@ -18,7 +18,7 @@ from scipy import sparse
 from sklearn.decomposition import PCA
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn import linear_model, svm, preprocessing
+from sklearn import linear_model, svm, preprocessing, cross_decomposition
 
 
 
@@ -429,13 +429,26 @@ def eraseDiag(matrix):
         matrix[node,node]=0
     return matrix
 
+#%%
+from sklearn.model_selection import train_test_split
+def myCCA(features,target):
+    
+    # x_train,x_test,y_train,y_test=train_test_split(features,target, test_size=.3)
+    cca = cross_decomposition.CCA(n_components=1)
+ 
+    # Fit the CCA model to X and Y
+    cca.fit(features, target)
+     
+    # Transform X and Y to canonical variables
+    X_c, Y_c = cca.transform(features, target)
+     
+    # Score the CCA model
+    score = cca.score(features, target)
+     
+    # Print the score
+    print(score)
         
-        
-        
-        
-        
-        
-        
+    return score
         
         
         

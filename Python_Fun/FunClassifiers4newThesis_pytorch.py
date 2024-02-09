@@ -355,7 +355,9 @@ def Dataset_graph(features, labels, connectome, task, idx=None):
             connectome[sub] = connectome[sub].astype('float32')
     else:
         connectome=connectome.astype('float32')
-    task=torch.FloatTensor(task[:,np.newaxis,np.newaxis])
+    # task=torch.FloatTensor(task[:,np.newaxis,np.newaxis])
+    task=torch.FloatTensor(task[:,np.newaxis])
+
     # task=torch.FloatTensor(task[:,np.newaxis,])
 
     for i in range(len(features)):

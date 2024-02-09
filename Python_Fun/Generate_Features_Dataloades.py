@@ -221,4 +221,4 @@ def Generate():
 
 
 
-    return psd2use, restStatePCA, anat2use, anatPCA, DiagFc, restStatePCA_s200, anatPCA_s200, local_PCA, glob_PCA, ROIs, scores
+    return psd2use, restStatePCA, anat2use, anatPCA, DiagFc, restStatePCA_s200, anatPCA_s200, connectomes, local_PCA, glob_PCA, ROIs, scores

@@ -8,7 +8,8 @@ Created on Wed May 10 12:03:35 2023
 
 import matplotlib.pyplot as plt
 import numpy as np
-
+import os
+os.chdir('/home/isaac/Documents/Doctorado_CIC/NewThesis/Python_Fun')
 from Generate_Features_Dataloades import Generate
 from importlib import reload
 from Fun4newThesis import *
@@ -17,18 +18,17 @@ import torch
 from torch.utils.data import random_split
 from torch.utils.data import Dataset, DataLoader
 import torch.optim as optim
+from sklearn.model_selection import train_test_split
 device = torch.device ('cuda' if torch.cuda.is_available() else 'cpu')
 
-psd2use, restStatePCA, anat2use, anatPCA, DiagFc, restStatePCA_s200, anatPCA_s200, local, glob, ROIs, scores = Generate()
+psd2use, restStatePCA, anat2use, anatPCA, DiagFc, restStatePCA_s200, anatPCA_s200, structConn, local, glob, ROIs, scores = Generate()
 
 #%% Prepare dataset
 
-print('Generating Dataset...')
+print('Generating Dataset for traditional ML...')
 # scores_scaled,scaler=Scale_out(scores)
 dataset=CustomDataset(restStatePCA, anatPCA, DiagFc, restStatePCA_s200, anatPCA_s200, np.concatenate((np.array(local), glob),axis=1), scores, transform=None)
 
-
-#%%
 
 def dataloaders(dataset, train_size, test_size, val_size, batch_size, seed=[]):
     gen = torch.Generator()
@@ -75,6 +75,46 @@ input_size_anats200 = anats200.shape[1]
 input_size_ScFeat = ScFeat.shape[1]
 # input_size_global_sc = glob_sc.shape[1]
 output_size = scores.shape[1]
+
+
+#%% Prepare dataset for GCN
+from torch_geometric.loader import DataLoader as DataLoader_gometric
+print ('Generating Dataset for GCN with Structural connectivity...')
+
+def select_feat_psdPca(psdPCA,anatFeat):
+    psdPCA = myReshape(psdPCA,rois=200)
+    anatFeat = myReshape(anatFeat,rois=200)
+    # anatFeat=np.tile(anatFeat,numBandsUsed)
+    if len(psdPCA)!=0 and len(anatFeat)!=0:
+
+        featlist=list(np.concatenate((psdPCA,anatFeat),axis=1))
+        
+        return featlist
+    elif len(psdPCA)!=0 and len(anatFeat)==0:
+        # return psdPCA[:,(freqsCropped>=bandOfInt[0])&(freqsCropped<=bandOfInt[1]),:]
+        return list(psdPCA)
+    else:
+        return list(myReshape(anatFeat))
+    
+features_pca= select_feat_psdPca(restStatePCA_s200, anatPCA_s200)
+
+feat_train, feat_test, sc_train, sc_test, y_train, y_test = train_test_split(
+    features_pca, structConn, scores, test_size=.2,random_state=12)
+
+feat_train, feat_val, sc_train, sc_val, y_train, y_val = train_test_split(
+    feat_train, sc_train, y_train, test_size=.1, random_state=12)
+
+dataloader_train = DataLoader_gometric(Dataset_graph(feat_train, ROIs, sc_train, y_train), batch_size=1,
+                              shuffle=True)
+dataloader_test = DataLoader_gometric(Dataset_graph(feat_test, ROIs, sc_test, y_test), batch_size=1)
+
+dataloader_val = DataLoader_gometric(Dataset_graph(feat_val, ROIs, sc_val, y_val), batch_size=1)
+
+dataset_all=Dataset_graph(features_pca, ROIs, structConn, scores)
+
+for i in range(10):
+    data = dataset_all[i]
+    print(data)
 
 
 #%%
@@ -338,3 +378,42 @@ sns.boxplot(MAEExperimentsDf_melted,y='value',x='variable', palette="dark:#5A9_r
 plt.xlabel('Model')
 plt.ylabel('Performance')
 plt.title('Boxplot Acc')
+
+#%%
+model1 = GCN(data.x.shape[1],hidden_channels=12, lin=True)
+model2 = SAGE_GCN (data.x.shape[1],hidden_channels=32, lin=True)
+model3 = GNN_DiffPool(data.x.shape[1])
+
+models = [model1,model2,model3]
+models_acc=[]
+num_epochs= 200
+models_loss= np.zeros((3,num_epochs))
+
+for i in tqdm(range(3)):
+
+    feat_train, feat_test, sc_train, sc_test, y_train, y_test = train_test_split(
+        features_pca, structConn, scores, test_size=.2,random_state=12)
+
+    feat_train, feat_val, sc_train, sc_val, y_train, y_val = train_test_split(
+        feat_train, sc_train, y_train, test_size=.1, random_state=12)
+
+    dataloader_train = DataLoader_gometric(Dataset_graph(feat_train, ROIs, sc_train, y_train), batch_size=1,
+                                  shuffle=True)
+    dataloader_test = DataLoader_gometric(Dataset_graph(feat_test, ROIs, sc_test, y_test), batch_size=1)
+
+    dataloader_val = DataLoader_gometric(Dataset_graph(feat_val, ROIs, sc_val, y_val), batch_size=1)
+    # Derive ratio of correct predictions.
+
+    NNPred_list_CustomModel_Fc=[]
+    for mm, model in enumerate(models):
+        print(model._get_name())
+        model = model.to(device)
+        optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=5e-4)
+        criterion = nn.MSELoss()
+        if 'model' in globals():
+            model.apply(weight_reset)
+        train_GNN(model, criterion, optimizer, dataloader_train, dataloader_val, num_epochs)
+        mse_test, pred, test_acc = test_GNN(model, dataloader_test, True)
+        print(f'Test_Acc: {test_acc:4f}, Test_MSE: {mse_test}')
+        NNPred_list_CustomModel_Fc.append(test_acc)
+    models_acc.append(NNPred_list_CustomModel_Fc)

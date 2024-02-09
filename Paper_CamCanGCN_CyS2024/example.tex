@@ -1,0 +1,374 @@
+\documentclass{cys}
+
+\usepackage[utf8]{inputenc}
+
+%\usepackage[english]{babel}
+%\usepackage[spanish,mexico,es-tabla]{babel}
+\usepackage[russian,english]{babel}  % If you use other languages, use Babel package.
+
+
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{epstopdf} % Avoid using plain Latex, use PDFLATEX
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+
+\addto\captionsenglish{%
+  \renewcommand{\figurename}{Fig.}%
+  \renewcommand{\abstractname}{Abstract.} 
+%  \renewcommand{\keywordsname}{Keywords: } 
+}
+
+\addto\captionsspanish{%
+  \renewcommand{\figurename}{Fig.}%
+  \renewcommand{\abstractname}{Resumen.} 
+%  \renewcommand{\keywordsname}{Palabras clave: } 
+}
+
+
+\title{Geometrical Deep Learning: A Feasible Methodology For Predicting Age}
+
+\author{Santiago Isaac Flores-Alonso $^1$, Blanca Tovar-Corona$^2$, René Luna-García$^2$}
+
+\affil{ 
+$^1$ IPN,CIC, Ciudad de México 07738,   \authorcr   % Do not us full postal address!
+México            
+\authorcr \authorcr
+$^2$ IPN,UPIITA, Ciudad de México 07340, \authorcr
+México             
+\authorcr  \authorcr
+
+$^3$ IPN,CIC, Ciudad de México 07738,   \authorcr   % Do not us full postal address!
+México                       
+\authorcr  \authorcr
+sfloresa2010@alumno.ipn.mx, bltovar@ipn.mx, rlunag@ipn.mx
+\authorcr  \authorcr
+}
+
+
+\begin{document}
+
+\maketitle
+
+\renewcommand{\tablename}{Table}
+
+\begin{abstract}
+This paper presents...
+\end{abstract}
+
+\begin{keywords} 
+Aging, cortical features, connectomics, GCN, PSD, , 
+\end{keywords} 
+
+
+
+\section{Introduction}
+\label{sec:introduction}
+
+
+
+The human brain undergoes dynamic changes throughout life, and during adulthood, the brain aging process induces structural and functional changes that contribute to a gradual decline in cognitive performance. Although these age-related changes are not inherently pathological, the likelihood of developing neurodegenerative disorders increases with age. Recent studies have proposed that neuropathological conditions arise from processes associated with accelerated brain aging [citation].
+
+\bigskip In this context, preventive medicine stands to benefit from individualized quantification of atypical aging, as a significant deviation between predicted and chronological age, may indicate pathological aging. Such deviations could be associated with various age-related risk factors, leading to impaired cognitive functions and neuropathologies.
+
+\bigskip
+Understanding and identifying biomarkers that define healthy aging is crucial to detect early-stage neurodegeneration and predicting age-related cognitive decline. One promising approach involves leveraging neuroimaging data to capture the multivariate patterns of age-related brain change and formulate high-dimensional regression boundaries to accurately predict the age of healthy individuals. Machine learning (ML) models, trained on neurotypical subjects, can then be applied to clinical samples, revealing aberrant age-related changes [cita], and offering a population-level tool for assessing brain aging. This approach has been employed in various disorders, such as Alzheimer’s[cita], traumatic brain injury[cita], schizophrenia[cita], HIV[cita], epilepsy[cita], and Down’s syndrome[cita]. Additionally, predicting brain age has extended beyond neurological disorders, showing positive impacts of meditation[citar], increased education[citar], and physical exercise[cita] on brain age. 
+
+\bigskip
+The aforementioned studies have focused mainly on estimating brain age based primarily on anatomical features from different brain regions of interest (ROIs), extracted from structural magnetic resonance imaging (T1-weighted MRI) (e.g., Cole, Leech,  Sharp, 2015; Cole, Poudel, et al. ., 2017). Nevertheless, the brain is a network of interleaved neural circuits, and only using the anatomical features neglects the underlying topology and functional aspect of the brain, such as information about the neighborhood, the connectivity, or the distribution of power and frequencies among ROIs.
+
+\bigskip
+Connectivity, which is represented as graph, exhibits important changes during healthy aging and presents specific patterns for different neuropathologies, and recent work has explored using Convolutional Neural Networks (CNN) to capture the spatial topology of connectivity data. However, CNNs, designed for Euclidean spaces, may lead to misleading conclusions when applied to graphs, since they are inherently a non-Euclidean structure. Moreover, the CNNs can not incorporate the embeddings of the nodes in the graph as part of the feature space. 
+
+\bigskip
+In the context of incorporating functional, structural, and connectivity information for age prediction, Graph Convolutional Networks (GCN) provide a more suitable architecture. GCNs enable feature embedding in graph nodes, transforming these features while considering the graph topology. To delve into the role of brain topology in age prediction, we implemented a GCN achitecture that integrates both structural and functional features to predict brain age. Our exploration of age-related brain changes involved utilizing MEG electrophysiological recordings and MRI structural features of each brain region as features for the graph nodes.
+
+
+
+\section{Related Work}
+\label{sec:relatedWork}
+
+\section{Materials and Methods}
+\label{sec:Materials}
+
+This section summarizes the feature extraction techniques and Deep Learning algorithm used to address the problem apropos the age prediction, along with the dataset description. The algorithmic proposal was developed in Python 3.9 on the Ubuntu 20.04 distribution. In particular, the deep learning algorithm was built using Pytorch 2.0.1.
+
+\subsection{Dataset}
+We conducted an analysis using data sourced from the open-access Cambridge Center for Aging Neuroscience (Cam-CAN) repository (refer to Shafto et al., 2014, and Taylor et al., 2017, for detailed information on the dataset and acquisition protocols). The dataset is accessible at \url{http://www.mrc-cbu.cam.ac.uk/datasets/camcan/}.
+
+\bigskip 
+Specifically, our investigation utilized both structural (T1-weighted MRI) and functional (resting-state MEG) neuroimaging data from a cohort of 652 healthy subjects (male/female = 322/330, mean age = 54.3 ± 18.6, age range 18–88 years).The T1-weighted MRI images were acquired using a 3T Siemens TIM Trio scanner equipped with a 32-channel head coil. The imaging parameters for the MPRAGE sequence were as follows: TR = 2250 ms, TE = 2.99 ms, Flip angle = 9°, Field of View = 256 × 240 × 192 mm³, and voxel size = 1 mm isotropic.Resting-state MEG data were recorded using a 306-channel Elekta Neuromag Vectorview (102 magnetometers and 204 planar gradiometers) at a sampling rate of 1 kHz. During the resting-state scan, subjects were instructed to lie still, remain awake, and keep their eyes closed for approximately 9 minutes. 
+
+\bigskip 
+After exclusions, which involved subjects lacking both MRI and MEG data, unsatisfactory preprocessing results or failure to extract the cortical surface for source reconstruction, our final dataset comprised 606 subjects.
+
+\bigskip
+\subsection{MEG data preprocessing and feature extraction}
+
+MEG preprocessing procedures closely followed the methodology outlined by da Silva Castanheira et al. (2021). Brainstorm in MATLAB 2020b (Mathworks, Inc., Massachusetts, USA) was employed for MEG data preprocessing, adhering to established good-practice guidelines. All steps below, unless specified otherwise, were executed using the Brainstorm toolkit.
+
+\bigskip
+Firstly, a notch filter bank was applied to eliminate the line noise artifact (60 Hz) and 10 of its harmonics. Slow-wave and DC-offset artifacts were then removed using a highpass FIR filter with a 0.3-Hz cutoff. Signal-Space Projections (SSPs) were derived to effectively remove cardiac and ocular artifacts. This involved defining signal projectors based on electrocardiogram and electroculogram recordings around identified artifact occurrences. SSPs were also applied to attenuate low-frequency (1–7 Hz) and high-frequency noisy components (40–400 Hz) related to saccades and muscle activity, respectively.
+
+\bigskip
+Subsequently, distinct brain source models were generated for all narrowband versions of the MEG sensor data. Individual T1-weighted MRI data were automatically segmented and labeled with Freesurfer. Coregistration with MEG sensor locations was established using digitized head points collected during each MEG session. MEG forward head models were created for each participant using the overlapping spheres approach, and cortical source models were developed with linearly constrained minimum-variance (LCMV) beamforming. Data covariance regularization was performed, and to mitigate the impact of variable source depth, the estimated source variance was normalized by the noise covariance matrix. Elementary MEG source orientations were constrained normal to the surface at 15,000 locations of the cortex. Noise statistics for source modeling were estimated from two-minute empty-room recordings collected as closely as possible in time to each participant’s MEG session.
+
+\bigskip
+Finally, the source time series were organized into 68 and 200 cortical regions of interest (ROIs) based on the Desikan-Killiany(DK) and Schaefer-200 (s200) atlases, respectively, which constitute the nodes of the graphs. To streamline the time series within each ROI, dimension reduction was performed using the first principal component. To standardize the intersubject variability duration in the recordings, the time series were uniformly cropped to a duration of 300 seconds.
+
+
+\subsubsection{Power Spectrum Density}
+\smallskip
+\noindent After estimating the mean time series for each region of interest (ROI), spectral power density (PSD) was computed using the Welch method, involving: (1) Dividing the original data segment into $K$ possibly overlapping segments; (2) Calculating the periodogram by computing the Discrete Fourier Transform (DFT) for each segment, then squaring the magnitude and dividing by the length; (3) Averaging these local estimates.
+
+\bigskip
+Formally, the estimation method is as follows. For each segment of length $L$, a modified periodogram is computed by selecting a data window $W(j), j = 0,\ldots , L-1$, and forming the sequences $X_1(j)W(j),\ldots , X_K(j)W(j)$. The finite Fourier transforms $A_1(n),\ldots , A_K(n)$ of these sequences are then obtained:
+
+
+\begin{equation}
+A_k(n) = \frac{1}{L} \sum_{j=0}^{L-1}X_k(j)W(j)e^{-i{\frac{2kj}{L}}}
+\end{equation} 
+
+
+\smallskip
+The $K$ modified periodograms are given by:
+
+\begin{equation}
+I_k(f_n)=\frac{L}{U}|A_k(n)|^2, \quad k=1,2,\ldots,K,
+\end{equation} 
+
+where
+
+\begin{equation*}
+f_n=\frac{n}{L}, \quad n=0,\ldots,L/2
+\end{equation*}
+
+and
+
+\begin{equation*}
+U=\frac{1}{L}\sum_{j=0}^{L-1} W^2(j).
+\end{equation*}
+
+\smallskip
+Finally, the spectral estimate is the average of these periodograms, i.e., 
+
+
+\begin{equation}
+\hat{P}(f_n)=\frac{1}{K}\sum_{k=1}^K I-k(f_n).
+\end{equation}
+
+
+Given the sample frequency and the recording length, a two-second window with a 50\% overlap was employed for computing the PSD. This encodes the power of frequencies between 0 and 500 Hz with a 0.5 Hz resolution, resulting in arrays of 1000 features per ROI. Multiplying the number of ROIs in each parcellation gives the feature dimensionality of 68,000 and 200,000 for DK and s200 parcellations, respectively.
+
+
+\bigskip
+Since the disparity between the number of participants and the number of features, the data points may become sparse, increasing the challenge for the model to discern meaningful patterns. Therefore, PCA was chosen as the dimensional reduction technique. Figure x illustrates the explained variance for the first x components for each ROI. It is evident that the first 10 components explain at least 90\% of the variance for all ROIs, resulting in a 99\% reduction in the volume of the searching space.
+\\\```
+\subsubsection{Functional Connectivity}
+
+\smallskip
+Functional connectivity entails examining the statistical relationships and temporal dependencies among distinct brain regions or neuronal populations. Employed in neuroimaging, it gauges the extent to which the activities in various brain areas correlate or synchronize over time.
+
+\bigskip
+The observed co-activation patterns between brain regions serve as indicators of the brain's functional network organization. High synchronization implies the participation of spatially separated regions of interest (ROIs) in similar neural processes, while low connectivity suggests diminished coordination among these regions. Aberrant connectivity may indicate the presence of diverse neurological and psychiatric conditions. To calculate the degree of synchronization, the amplitude envelope correlation (AEC) was employed.  
+
+
+
+\bigskip
+As it's name implies, the AEC uses the amplitude envelopes to derive the corresponding Pearson correlation coefficients between all pair of ROIs. Firstly, the Hilbert transform was employed to decompose time series into the time-frequency domain for envelope computation. The Hilbert transform $\mathcal{H}[x(t)]$ of a signal $x(t)$ is expressed as:
+
+\begin{equation}
+\mathcal{H}[x(t)]=\frac{1}{\pi}\int_{-\infty}^{\infty}\frac{x(t-\tau)}{\tau}d\tau=a_{\tilde{x}}(t)e^{j\phi_{\tilde{x}}(t)}
+\end{equation}
+
+\begin{equation}
+\mathcal{H}[x(t)]=\frac{1}{\pi}\int_{-\infty}^{\infty}\frac{x(t-\tau)}{\tau}d\tau=a_{\tilde{x}}(t)e^{j\phi_{\tilde{x}}(t)} 
+\end{equation}
+
+The result, often denoted as $\tilde{x}(t)$, is an analytic signal—a complex time series uniquely associated with the original data time series, $x(t)$, where the modulus $a_{\tilde{x}}(t)$ and phase $\phi_{\tilde{x}}(t)$ of $\tilde{x}(t)$ correspond to the instantaneous amplitude (or envelope) and instantaneous phase of the original time series $x(t)$, respectively.
+
+\bigskip
+However, in the process of deriving power envelopes for correlation analysis, a crucial step involves orthogonalizing the two signals that may be correlated. This ensures that the signals do not share trivial co-variability in power, arising from measuring the same sources, while preserving co-variation related to measuring different sources.
+
+\bigskip
+By employing ordinary least squares, the instantaneous linear relation between two signals in the frequency domain can be derived. Let $X(t,f)$ and $Y(t,f)$ represent the frequency domain representations of two time series $x$ and $y$, where $t$ and $t'$ are the time points of the center of the windows for spectral analysis, and $f$ is the frequency of interest. The part of a complex time series $Y$ that can be instantaneously and linearly predicted from $X$, denoted as $Y_{||X}$, is expressed as:
+\small
+%\begin{equation}
+%Y_{||X} = a_{X,Y}(f,T)X(t,f)= \\ 
+%real(\frac{\sum_{t'\in T}X(t',f)Y(t',f)^\ast}{\sum_{t'\in T}X(t',f)X(t',f)^\ast}) X(t,f)
+%\end{equation}
+
+\small
+\begin{equation}
+Y_{||X} =  real(\frac{\sum_{t'\in T}X(t',f)Y(t',f)^\ast}{\sum_{t'\in T}X(t',f)X(t',f)^\ast}) X(t,f)
+\end{equation}
+
+\smallskip
+Where $a_{X,Y}$ is the regression coefficient describing the instantaneous linear relation between $X$ and $Y$, estimated from data in the time interval $T$, $\ast$ denotes the complex conjugate, and $\text{real}(\cdot)$ is the real part of a complex number. The signal $Y$ orthogonalized to the signal $X$, denoted as $Y_{\perp X}(t,f)$, is derived by subtracting the parallel signal component:
+
+\begin{equation}
+Y_{\perp X}(t,f) = Y(t,f)-Y_{||X}(t,f)
+\end{equation}
+
+\smallskip
+Finally, the orthogonalized AEC where used to compute the individual connectomes derived for each one of the typical frequency bands of electrophysiology to understand whether the expression of certain ranges of brain rhythms would explain better the age differentiation. We bandpass ﬁltered MEG signals in the delta (1–4 Hz), theta (4–8 Hz), alpha (8–13 Hz), beta (13–30 Hz), gamma (30–50 Hz), and high gamma (50–150 Hz) frequency bands. 
+
+\bigskip
+It is possible to see that the calculation of the Pearson correlation for all pairwise regions has a computational complexity of $O^2$. This, added to the fact that we will use six different narrowband frequencies for 606 subjects, led us to compute the connectome using only the DK atlas. Therefore, each one of these connectomes, yields a 68 $\times$ 68 symmetric connectome matrix.
+
+
+\subsection{Anatomical Features and Structural Connectivity}
+
+The preprocessing of the raw NIfTI data in Brain Imaging Data Structure (BIDS) format from the CamCAN repository were executed utilizing the official singularity container images. The adoption of singularity container images was pivotal in ensuring the reproducibility of the entire preprocessing process. This rigorous approach adheres to established standards and safeguards the integrity and consistency of the data processing workflows.
+
+\bigskip
+\subsubsection{Anatomical Statistics}
+
+
+The preprocessing of anatomical MRI data was conducted utilizing fMRIPrep version 23.0.1, as outlined by Esteban et al. (2019). fMRIPrep is a tool specialized in preprocessing functional magnetic resonance imaging (fMRI) data, that incorporates a series of steps for the thorough processing of T1-weighted (T1w) anatomical images. In a nutshell, the preprocessing involves addressing intensity nonuniformities (INU) in the T1w images to ensure consistency, removal of non-brain tissues achieved through the process of skull-stripping, tissue segmentation to delineate different anatomical structures and surface reconstruction for detailed cortical and subcortical analyses. Finally, a spatial normalization aligns T1w images to a standard space, facilitating cross-subject comparisons. For a more detailed account of the original preprocessing steps executed by fMRIPrep, interested readers are encouraged to refer to tool's documentation, facilitating adaptability to varying experimental needs.
+
+\bigskip
+Post-preprocessing, fMRIPrep derives anatomical statistics for each ROI that encompass key metrics such as:
+
+\begin{enumerate}
+
+
+\item \textbf{Surface area}: Given the geometry of the reconstructed cortical surface as a mesh, for a triangular face ABC of the surface representation, with vertex coordinates $\mathbf{a}=[x_A ; y_A ; z_A]'$, $\mathbf{b}=[x_B ; y_B ; z_B]'$, and $\mathbf{c}=[x_C ; y_C ; z_C]'$, the area is $|\mathbf{u} \times \mathbf{v}|/2$, where $\mathbf{u} = \mathbf{a}-\mathbf{c}, \mathbf{v} = \mathbf{b}-\mathbf{c}$.
+
+\item \textbf{Cortical thickness}: Cortical thickness is the distance between the pial surface (outer boundary of the cortex) and the gray/white matter boundary. It is given by: 
+
+\begin{equation}
+T=\frac{(P_F-P_F^1)+(P_F^1-P_F^1)}{2}
+\end{equation}
+
+where $P_F$ is a point in on the white surface boundary, and $P_F^1$ and $P_F^2$ are the nearest points to $P_F$ on the pial and white boundaries respectively. 
+
+\item \textbf{Gray matter volume}: For a given face $A_w B_w C_w$ in the white surface, and its corresponding face $A_p B_p C_p$ in the pial surface, define an oblique truncated triangular pyramid. Subsequently, split this truncated pyramid into three tetrahedra, defined as:
+%\begin{array}{lcllllll} 
+%$T_1= (A_w,B_w,C_w,A_p)$\\ 
+%$T_2 = (A_p,B_p,C_p,B_w$\\ 
+%$T_3 = (A_p,C_p,C_w,B_w)$ 
+%\end{array}
+
+\[
+\begin{array}{lcllllll} 
+T_1 &=& (&A_w,&B_w,&C_w,&A_p&)\\ 
+T_2 &=& (&A_p,&B_p,&C_p,&B_w&)\\ 
+T_3 &=& (&A_p,&C_p,&C_w,&B_w&)
+\end{array}
+\]
+
+For each such tetrahedra, let $\mathbf{a}$, $\mathbf{b}$, $\mathbf{c}$ and $\mathbf{d}$ represent its four vertices in terms of coordinates $[x\;y\;z]'$. Finally, compute the volume as $|\mathbf{u}\cdot(\mathbf{v} \times \mathbf{w})|/6$
+ 
+\item \textbf{Mean and Gaussian Curvature}: The extrinsic curvature is a property that arises from the mechanical folding of a surface, and as such is not intrinsic of the surface itself, but rather of how it is embedded in three-dimensional space. At each point on a line, the curvature is measured as the inverse of the radius of the osculating circle $c=\frac{1}{r}$. On a 
+surface, among the infinity of possible directions, there are always two ($c1, c2$) which produce maximum and a minimum value of curvature, and these directions are always orthogonal to each other, called the principals of curvatures. 
+
+The mean curvature $H$ is the arithmetic mean of these principal curvatures: $H=\frac{c_1+c_2}{2}$, while the Gaussian curvature is  the product of the principal curvature measured in each of these directions $K = c1 \times c2$
+
+\item \textbf{Intrinsic Curvature Index}: As its name suggests, the intrinsic curvature of the surface itself is a property that cannot be removed from it without tearing or deforming the surface. The intrinsic curvature of the vertex, as proposed by  the principles of the Gauss-Bonnet, is calculated as the surfeit or deficit of the vertex angle divided by one third the sum of the vertex areas:
+
+\begin{equation}
+K=\frac{2\pi-\sum_i\Theta_i}{\frac{1}{3}\sum_iA_i}
+\end{equation}
+
+where $\Theta_i$ is the angle subtended by ith vertex, and $A_i$
+is the area of $i$th vertex (the sum of areas of triangle
+surrounding the vertex).
+
+\item \textbf{Folding Index}: Aldo known as gyrification index, is a metric that quantifies the amount of cortex buried within the sulcal folds as compared with the amount of cortex on the outer visible cortex. It is commonly computed on coronal sections using the following equation:
+
+\begin{equation}
+GI=\frac{\sum_{j=1}^{M_P}A_P^j}{\sum_{j=1}^{M_O}A_O^j}
+\end{equation}
+
+where $A_P^j$ and $A_O^j$ are the area of the face $j$ in the 3-D mesh
+of the pial surface and of the outer surface, respectively, and $M_P$ and are $M_O$ the total number of faces in the pial and outer mesh, respectively.
+
+\item \textbf{Number of vertices}: As the name implies, it is the number of vertices of the reconstructed cortical surface inside each ROI.
+
+
+\end{enumerate}
+\bigskip
+%For a more detailed account of the original preprocessing steps executed by fMRIPrep, interested readers are encouraged to refer to Supplementary X, where a thorough documentation of the preprocessing details can be found. This supplementary information serves as a valuable resource for transparency and reproducibility, providing insights into the specific methodologies applied during the anatomical MRI preprocessing phase.
+
+\bigskip
+%For a more detailed account of the original preprocessing steps executed by fMRIPrep, interested readers are encouraged to refer to
+
+\subsubsection{Structural Connectivity}
+
+The preprocessing of diffusion MRI data was conducted using QSIprep version 0.17.0, following the methodology outlined by Cieslak et al. (2021). In a concise summary, the diffusion-weighted images (DWI) underwent a series of preprocessing steps to ensure the reliability and accuracy of subsequent analyses. These steps included denoising to enhance signal quality, Gibbs unringing to correct for artifact introduced during acquisition, bias field correction to address intensity variations, intensity normalization for consistency, head-motion estimation and Eddy current correction for motion and distortion correction, and registration and normalization to a standard space for inter-subject comparability.
+
+\bigskip
+To reconstruct the structural connectivity matrices, we employed the \texttt{mrtrix\_multishell\_msmt\_ACT-hsvs} pipeline. The estimation of tissue fiber response functions was carried out using the dhollander algorithm, and fiber orientation distributions (FODs) were estimated using the multi-shell multi-tissue constrained spherical deconvolution (MSMT-CSD) algorithm. Probability tractography was implemented using the iFOD2 probabilistic tracking method. Anatomically-constrained tractography (ACT) was applied, incorporating T1-weighted (T1w) segmentation constraints. The T1w segmentation utilized FreeSurfer outputs from the anatomical processing steps, enabling the hybrid surface volume segmentation (HSVS) method.
+
+\bigskip
+Streamline weights for the structural connectivity matrix were calculated using the SIFT2 algorithm, ensuring a refined representation of white matter connections. For a comprehensive understanding of the original preprocessing details executed by QSIprep, we direct readers to Supplementary X, where a detailed documentation of the preprocessing steps is available. This supplementary information serves as a valuable reference, providing transparency and reproducibility insights into the diffusion MRI preprocessing procedures applied in this study.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.1\textwidth]{foto.JPG}
+\caption{Snapshot of something}
+\label{jdm1}
+\end{figure}
+
+
+\begin{table}[ht]
+\renewcommand{\arraystretch}{1.3}
+	\centering
+	\caption{Tables, no capital letters, no point at the end}
+	\begin{tabular}{lrrrr}
+	\hline
+		Classes & Articles \\
+	\hline
+		one \emph{and} two& 61 & 115,729 \\
+		three & 169 & 869,607 \\
+		four & 209 & 2,402,704 \\
+		five & 206 & 2,561,115 \\		
+	\hline
+	\end{tabular}
+	\label{table:Table1}
+\end{table}
+
+\subsection{Linguistic Features}
+\label{subsection:linguistic}
+
+Features. Special symbols: á, ñ.
+
+\section{Results}
+\label{sec:Results}
+
+\section{Conclusion and Future Work}
+\label{sec:conclusionAndFutureWork}
+
+Conclusions here.
+
+\section*{Acknowledgements} 
+We would like to thank.. 
+This work is funded by...
+
+
+% OBLIGATORY: use BIBTEX formatting!
+\small{
+\bibliographystyle{cys}
+\bibliography{biblio}
+}
+\normalsize
+
+
+\begin{biography}[]{} % Leave this section empty
+\end{biography}
+
+{\vskip 12pt}
+\noindent
+\footnotesize {\textit{Article received on 06/12/2016; accepted on 16/01/2017.\\
+Corresponding author is XXXXX.}
+
+\end{document}

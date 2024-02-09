@@ -100,7 +100,7 @@ def measure_sparcity(data,data_th):
 
     return sparcity_bin, corr, conDen
 
-def find_positions(array):
+def find_positions(array): #this is to find the position of the curvature closer to the optimum value
     positions = 0
 
     for i in range(1, len(array)):
