@@ -235,6 +235,7 @@ The preprocessing of the raw NIfTI data in Brain Imaging Data Structure (BIDS) f
 
 The preprocessing of anatomical MRI data was conducted utilizing fMRIPrep version 23.0.1, as outlined by Esteban et al. (2019). fMRIPrep is a tool specialized in preprocessing functional magnetic resonance imaging (fMRI) data, that incorporates a series of steps for the thorough processing of T1-weighted (T1w) anatomical images. In a nutshell, the preprocessing involves addressing intensity nonuniformities (INU) in the T1w images to ensure consistency, removal of non-brain tissues achieved through the process of skull-stripping, tissue segmentation to delineate different anatomical structures and surface reconstruction for detailed cortical and subcortical analyses. Finally, a spatial normalization aligns T1w images to a standard space, facilitating cross-subject comparisons. For a more detailed account of the original preprocessing steps executed by fMRIPrep, interested readers are encouraged to refer to tool's documentation, facilitating adaptability to varying experimental needs.
 
+
 \bigskip
 Post-preprocessing, fMRIPrep derives anatomical statistics for each ROI that encompass key metrics such as:
 
@@ -242,7 +243,7 @@ Post-preprocessing, fMRIPrep derives anatomical statistics for each ROI that enc
 
 
 \item \textbf{Surface area}: Given the geometry of the reconstructed cortical surface as a mesh, for a triangular face ABC of the surface representation, with vertex coordinates $\mathbf{a}=[x_A ; y_A ; z_A]'$, $\mathbf{b}=[x_B ; y_B ; z_B]'$, and $\mathbf{c}=[x_C ; y_C ; z_C]'$, the area is $|\mathbf{u} \times \mathbf{v}|/2$, where $\mathbf{u} = \mathbf{a}-\mathbf{c}, \mathbf{v} = \mathbf{b}-\mathbf{c}$.
-
+\\
 \item \textbf{Cortical thickness}: Cortical thickness is the distance between the pial surface (outer boundary of the cortex) and the gray/white matter boundary. It is given by: 
 
 \begin{equation}
@@ -250,7 +251,7 @@ T=\frac{(P_F-P_F^1)+(P_F^1-P_F^1)}{2}
 \end{equation}
 
 where $P_F$ is a point in on the white surface boundary, and $P_F^1$ and $P_F^2$ are the nearest points to $P_F$ on the pial and white boundaries respectively. 
-
+\\
 \item \textbf{Gray matter volume}: For a given face $A_w B_w C_w$ in the white surface, and its corresponding face $A_p B_p C_p$ in the pial surface, define an oblique truncated triangular pyramid. Subsequently, split this truncated pyramid into three tetrahedra, defined as:
 %\begin{array}{lcllllll} 
 %$T_1= (A_w,B_w,C_w,A_p)$\\ 
@@ -266,23 +267,22 @@ T_3 &=& (&A_p,&C_p,&C_w,&B_w&)
 \end{array}
 \]
 
-For each such tetrahedra, let $\mathbf{a}$, $\mathbf{b}$, $\mathbf{c}$ and $\mathbf{d}$ represent its four vertices in terms of coordinates $[x\;y\;z]'$. Finally, compute the volume as $|\mathbf{u}\cdot(\mathbf{v} \times \mathbf{w})|/6$
- 
-\item \textbf{Mean and Gaussian Curvature}: The extrinsic curvature is a property that arises from the mechanical folding of a surface, and as such is not intrinsic of the surface itself, but rather of how it is embedded in three-dimensional space. At each point on a line, the curvature is measured as the inverse of the radius of the osculating circle $c=\frac{1}{r}$. On a 
-surface, among the infinity of possible directions, there are always two ($c1, c2$) which produce maximum and a minimum value of curvature, and these directions are always orthogonal to each other, called the principals of curvatures. 
+For each such tetrahedra, let $\mathbf{a}$, $\mathbf{b}$, $\mathbf{c}$ and $\mathbf{d}$ represent its four vertices in terms of coordinates $[x\;y\;z]'$. Finally, compute the volume as $|\mathbf{u}\cdot(\mathbf{v} \times \mathbf{w})|/6$.%, where $\mathbf{u} = \mathbf{a}-\mathbf{d}, \mathbf{v} = \mathbf{b}-\mathbf{d}, \mathbf{w} = \mathbf{c}-\mathbf{d}$, $\times$ is the cross product, $\cdot$ represents the dot product, and the bars $|\;|$ the vector norm.
+\\
+\item \textbf{Mean and Gaussian Curvature}: The extrinsic curvature is a property that arises from the mechanical folding of a surface, and as such is not intrinsic of the surface itself, but rather of how it is embedded in three-dimensional space. At each point on a line, the curvature is measured as the inverse of the radius of the osculating circle $c=\frac{1}{r}$. On a surface, among the infinity of possible directions, there are always two ($c1, c2$) which produce maximum and a minimum value of curvature, and these directions are always orthogonal to each other, called the principals of curvatures. 
 
 The mean curvature $H$ is the arithmetic mean of these principal curvatures: $H=\frac{c_1+c_2}{2}$, while the Gaussian curvature is  the product of the principal curvature measured in each of these directions $K = c1 \times c2$
-
+\\
 \item \textbf{Intrinsic Curvature Index}: As its name suggests, the intrinsic curvature of the surface itself is a property that cannot be removed from it without tearing or deforming the surface. The intrinsic curvature of the vertex, as proposed by  the principles of the Gauss-Bonnet, is calculated as the surfeit or deficit of the vertex angle divided by one third the sum of the vertex areas:
 
 \begin{equation}
-K=\frac{2\pi-\sum_i\Theta_i}{\frac{1}{3}\sum_iA_i}
+K=\frac{2\pi-\sum_i\theta_i}{\frac{1}{3}\sum_iA_i}
 \end{equation}
 
-where $\Theta_i$ is the angle subtended by ith vertex, and $A_i$
+where $\theta_i$ is the angle subtended by ith vertex, and $A_i$
 is the area of $i$th vertex (the sum of areas of triangle
 surrounding the vertex).
-
+\\
 \item \textbf{Folding Index}: Aldo known as gyrification index, is a metric that quantifies the amount of cortex buried within the sulcal folds as compared with the amount of cortex on the outer visible cortex. It is commonly computed on coronal sections using the following equation:
 
 \begin{equation}
@@ -291,11 +291,12 @@ GI=\frac{\sum_{j=1}^{M_P}A_P^j}{\sum_{j=1}^{M_O}A_O^j}
 
 where $A_P^j$ and $A_O^j$ are the area of the face $j$ in the 3-D mesh
 of the pial surface and of the outer surface, respectively, and $M_P$ and are $M_O$ the total number of faces in the pial and outer mesh, respectively.
-
+\\
 \item \textbf{Number of vertices}: As the name implies, it is the number of vertices of the reconstructed cortical surface inside each ROI.
 
 
 \end{enumerate}
+
 \bigskip
 %For a more detailed account of the original preprocessing steps executed by fMRIPrep, interested readers are encouraged to refer to Supplementary X, where a thorough documentation of the preprocessing details can be found. This supplementary information serves as a valuable resource for transparency and reproducibility, providing insights into the specific methodologies applied during the anatomical MRI preprocessing phase.
 
@@ -304,10 +305,119 @@ of the pial surface and of the outer surface, respectively, and $M_P$ and are $M
 
 \subsubsection{Structural Connectivity}
 
-The preprocessing of diffusion MRI data was conducted using QSIprep version 0.17.0, following the methodology outlined by Cieslak et al. (2021). In a concise summary, the diffusion-weighted images (DWI) underwent a series of preprocessing steps to ensure the reliability and accuracy of subsequent analyses. These steps included denoising to enhance signal quality, Gibbs unringing to correct for artifact introduced during acquisition, bias field correction to address intensity variations, intensity normalization for consistency, head-motion estimation and Eddy current correction for motion and distortion correction, and registration and normalization to a standard space for inter-subject comparability.
+Structural connectivity refers to the anatomical pathways and connections formed by white matter tracts in the brain, indicating the physical wiring that enables communication between different regions.
 
 \bigskip
-To reconstruct the structural connectivity matrices, we employed the \texttt{mrtrix\_multishell\_msmt\_ACT-hsvs} pipeline. The estimation of tissue fiber response functions was carried out using the dhollander algorithm, and fiber orientation distributions (FODs) were estimated using the multi-shell multi-tissue constrained spherical deconvolution (MSMT-CSD) algorithm. Probability tractography was implemented using the iFOD2 probabilistic tracking method. Anatomically-constrained tractography (ACT) was applied, incorporating T1-weighted (T1w) segmentation constraints. The T1w segmentation utilized FreeSurfer outputs from the anatomical processing steps, enabling the hybrid surface volume segmentation (HSVS) method.
+Aside from the extensive tracts linking the brain to the body, intricate neural circuits are constituted by connections between various cortical and subcortical regions. Employing computational reconstruction methods grounded in diffusion-weighted magnetic resonance imaging (dMRI), facilitates the visualization and mapping of the pathways of white matter tracts within the brain \cite{maier2017challenge}.
+
+\bigskip
+To reconstruct the structural connectivity matrices, a technique known as "Multishell-multitissue constrain spherical deconvolution" was use. In the next paragraphs, we will aim to briefly explain the concepts on which it is based, but we invite the reader to refer to the citated works for deeper explanations.
+
+\bigskip Diffusion-weighted MRI is a non-invasive technique sensitive to the microscopic motion (diffusion process) of water molecules. In biologic tissues, the diffusion process is influenced by the presence of biologic membranes and macromolecules (Walter and Hope, 1971), which can hinder and/or restrict the molecular random walk in both isotropic and anisotropic fashions, unraveling the geometry of the underlying structure. 
+
+\bigskip
+In 1905, Einstein demonstrate that the Brownian motion of a particle in a fluid is characterized by the diffusion coefficient,
+
+\begin{equation}
+D=\frac{k_BT}{6\pi\mu_{sol}rA}
+\end{equation}  
+
+where $k_B$ is the Boltzmann constant, $\mu$ is the viscosity and $rA$ is the size of the particle. For the case of free diffusion, the probability distribution function for the motion 
+\begin{equation}
+p(\mathbf{r,t})=\frac{1}{\sqrt{(4\pi t)^3D}}exp\left( \frac{\mathbf{r}^T\mathbf{r}}{4tD} \right)
+\end{equation}
+
+This Gaussian property remain true only in case of the boundless and free environment. Unfortunately, this is not the preserved in the human brain, which large part of it consists of bounds of parallel fibers interconnecting various functional areas of the cortex. Hence, diffusion in no longer free.
+
+\bigskip
+In order to measure the level of anisotropy and reconstruct the tracts, one can take advantage of the electromagnetic properties of the water molecule: By generating a strong enough magnetic field, the protons can be aligned parallel to the field precessing at 
+
+\begin{equation}
+\omega = \gamma B
+\end{equation}
+
+as describe by the Larmor equation where, $\gamma$ is the gyromagnetic constant, and $B$ is the strength of the static magnetic field. If one now apply a magnetic diffusion-sensitizing gradient $\mathbf{G}$ instead of a static field, the protons precess frequency will slightly differ across $\mathbf{G}$.
+
+\bigskip
+If, after a $\Delta t$, $-\mathbf{G}$ is applied, two things may happen: If there is little to non displacement, gradient will nullify, molecules will precess at the same frequency and the signal $\mathbf{S}$ produce by the synchronized protons will be maximum. On the other hand, if the protons have displacement due to the lack of tissue hindering the particle movement, these will experience $\mathbf{G}$ and $-\mathbf{G}$ in different spatial positions which will increase the inhomogeneities in the precessions abolishing $\mathbf{S}$. 
+
+\bigskip
+$\mathbf{G}$ is not bounded to one direction, actually, to reconstruct the tracts in all possible directions, $\mathbf{G}$ can take as many directions as needed in a 3D space, forming a discrete spherical grid or shell. The strength and timing of the diffusion-sensitizing gradients applied during the imaging sequence is parametrized by the b-value defined as:
+
+\begin{equation}
+b = \gamma^2 |\mathbf{G}|\delta^2\left( D \frac{\delta}{3} \right)
+\end{equation}
+
+where $\gamma$ is the gyromagnetic constant, $\mathbf{G}|$ is the intensity of the gradient and $\delta$ is the duration of the gradient pulse. It is easy to see that by modifying b, a different shell will be created. If multiple b-values are used to reconstruct $\mathbf{S}$, then the approach will get the name of "multishell".
+
+\bigskip
+In practice a static repulsion algorithm \cite{jones1999optimal} can be used to generate $N$ quasi-uniformly distributed points on the sphere where the gradient directions $\mathbf{g}_i=(\theta_i,\phi_i), 1\ge i \ge N $ define the sampling directions to generate the signal $\mathbf{S}(\mathbf{g_i})$, for each imaging voxel. %This technique is know as High Angular Resolution Diffusion Imaging (HARDI)%
+
+
+\bigskip
+To model $\mathbf{S}$, spherical harmonic (SH) transform can be use. The SH \cite{nikiforov1988special} is the equivalent of the Fourier transform in the plane but on the sphere. Spherical harmonics consist of a set of functions of order $l$ and phase $m$, $Y_l^m (\theta,\phi): S_2 \rightarrow \mathbf{C} $, where $S_2$ is the unit sphere in 3D, which we parametrize by $\theta \in [0,\pi)$ and $\phi \in [0, 2\pi)$, the angles of latitude and longitude, respectively; $\mathbf{C}$ is the set of complex numbers. Hence, the problem is to find the best coefficients of the modified SH basis that describe the HARDI signal $\mathbf{S}$ at each of the $N$ diffusion-weighted gradient encoding directions $\mathbf{g}_i$.
+
+\bigskip
+Thus, the truncated smooth estimation of the HARDI signal $\mathbf{S}$ can be formulated as:
+
+\begin{equation}
+\label{SignalS}
+S(\theta_i,\phi_i)=\sum_{l=0}^\infty \sum_{m=-l}^l C_l^m Y_l^m(\theta_i,\phi_i)
+\end{equation}
+
+Due to orthonormality of the SH basis, the coefficients of the SH series $C_l^m$ can be calculated by forming the inner product of $\mathbf{S}$ with the spherical harmonics, given by:
+
+\begin{equation}
+\begin{split}
+C_l^m = \langle S(\theta_i,\phi_i),Y_l^{m\ast}(\theta_i,\phi_i) \rangle &= \\ \int_0^{2\pi} \int_0^\pi S(\theta_i,\phi_i)Y_l^{m\ast}(\theta_i,\phi_i) sin \theta d\theta d\phi
+\end{split}
+\end{equation}
+
+where $\ast$ denotes  the  complex conjugate. The estimated signal is then simply recovered by evaluating \ref{SignalS}. The next natural question is how to transform the diffusion signal to a real spherical function, the Orientation Distribution Function (ODF), that we can use to perform fiber tractography. This reconstruction is based on the Funk-Radon transform (FRT) \cite{funk1915geometrische}.Given a three-dimensional function $f(x)$, where $x$ is a three-dimensional vector, the FRT at a particular radius $r$ for a direction $u$ is:
+
+\begin{equation}
+F[f(x)](u,r)=\int f(x)\delta(x^T u)\delta(|x|-r)dx
+\end{equation} 
+
+Intuitively, the FRT at a given spherical point is the great circle integral of the signal on the sphere defined by the plane through the origin equatorial to the point of evaluation. Analytically, the ODF can be obtained from the spherical harmonics estimation of HARDI signal $\mathbf{S}$ \cite{descoteaux2007regularized, hess2006q, anderson2005measurement}:
+
+
+\begin{equation}
+\Psi(\theta,\phi)=\sum_{j=1}^R 2\pi\frac{c_j}{S_0}P_{l(j)}Y_j(\theta,\phi)
+\end{equation}
+
+where $P_{l(j)}$ is the Legendre polynomial of order $l$ corresponding to the $j$th coefficient. The reader interested in the underlying mathematics and proof for this solution is referred to \cite{descoteaux2008high} for all the details. 
+
+\bigskip
+Finally, in order to improve the the angular resolution of the ODF, since they are "blurry" in nature, a new object is needed for fiber tractography purposes. This object was called the the fiber orientation distribution (FOD) and is computed using a spherical deconvolution \cite{tournier2004direct}.  
+
+\bigskip
+The idea is that $\mathbf{S}(\theta,\phi)$  that would be measured from a sample containing several distinct fiber populations is then given by the
+sum of the axially symmetric response function $R(\theta)$, which is the expected diffusion properties of white matter (WM), gray matter (GM) and cerebro-spinal fluid (CSF) tissue, weighted by their respective volume fractions, and rotated such that they are aligned along their respective orientations ($\phi$ is the azimuthal angle in spherical coordinates):
+
+\begin{equation}
+\mathbf{S}(\theta,\phi)=\sum_i f_i \hat{A}_iR(\theta)
+\end{equation}
+
+where $f_i$ is the volume fraction for the $i$th fiber population, and $\hat{A}_i$ is the operator representing a rotation onto the direction ($\theta,\phi$). This can be expressed as the convolution over the unit sphere of the response function $R(\theta)$ with a fiber orientation density function $F(\theta,\phi)$:
+
+\begin{equation}
+\mathbf{S}(\theta,\phi)= F(\theta,\phi)\circledast R(\theta)
+\end{equation} 
+
+However is the the $F(\theta,\phi)$ what we want to construct. To do this, it is as simple as deconvolve: $F(\theta,\phi)= \mathbf{S}(\theta,\phi) \circledast^{-1} R(\theta)$.   
+
+%https://carpentries-incubator.github.io/SDC-BIDS-dMRI/instructor/probabilistic_tractography.html
+procesamiento connectividad
+GCN
+Related work
+Results 
+Citas
+
+The estimation of tissue fiber response functions, which is the expected diffusion properties of white matter (WM), gray matter (GM) and cerebro-spinal fluid (CSF) tissue, was carried out using the dhollander algorithm, and fiber orientation distributions (FODs) were estimated using the multi-shell multi-tissue constrained spherical deconvolution (MSMT-CSD) algorithm. Probability tractography was implemented using the iFOD2 probabilistic tracking method. Anatomically-constrained tractography (ACT) was applied, incorporating T1-weighted (T1w) segmentation constraints. The T1w segmentation utilized FreeSurfer outputs from the anatomical processing steps, enabling the hybrid surface 
+volume segmentation (HSVS) method.
+
+, we employed the \texttt{mrtrix\_multishell\_msmt\_ACT-hsvs} pipeline
 
 \bigskip
 Streamline weights for the structural connectivity matrix were calculated using the SIFT2 algorithm, ensuring a refined representation of white matter connections. For a comprehensive understanding of the original preprocessing details executed by QSIprep, we direct readers to Supplementary X, where a detailed documentation of the preprocessing steps is available. This supplementary information serves as a valuable reference, providing transparency and reproducibility insights into the diffusion MRI preprocessing procedures applied in this study.

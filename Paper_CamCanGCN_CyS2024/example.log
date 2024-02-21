@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.5.31)  8 FEB 2024 20:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.5.31)  21 FEB 2024 07:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -757,73 +757,114 @@ LaTeX Font Info:    Trying to load font information for TS1+phv on input line 1
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1phv.fd
 File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
-) [2] [3] [4] [5]
-<foto.JPG, id=112, 94.85437pt x 88.83188pt>
+) [2] [3] [4]
+Underfull \hbox (badness 10000) in paragraph at lines 245--247
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 253--255
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 270--272
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 274--276
+
+ []
+
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 282--286
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 292--295
+
+ []
+
+[6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 420--421
+[]\OT1/phv/m/n/9 , we em-ployed the
+ []
+
+<foto.JPG, id=154, 94.85437pt x 88.83188pt>
 File: foto.JPG Graphic file (type jpg)
 <use foto.JPG>
-Package pdftex.def Info: foto.JPG  used on input line 317.
+Package pdftex.def Info: foto.JPG  used on input line 427.
 (pdftex.def)             Requested size: 47.206pt x 44.2098pt.
 LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <10> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 331.
-
-[6 <./foto.JPG>]
-No file example.bbl.
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 441.
+(./example.bbl
+LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <9> not available
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 17.
+ [8 <./foto.JPG>])
 LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <8> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 372.
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 482.
+[leftcolumn badness]: 1000000 on 11.08609pt
+[rightcolumn badness]: 1000000 on 11.08609pt
+[leftcolumn badness]: 1000000 on 11.08609pt
+[rightcolumn badness]: 1000000 on 11.08609pt
 - LAST -
 Extra skip:0.0pt
-Left:103.6094pt/0.14842pt
-Right:86.06982pt/0.0pt
-Split: 104.65883pt
-Output:104.65883pt
+Left:209.0pt/1.95293pt
+Right:199.59802pt/0.0pt
+Split: 206.79901pt
+Output:206.79901pt
 Pageshrink: 0.0pt
 Pagestretch: 0.0pt
 @colht:581.57433pt
-FLUSHEND [output]: 104.65883pt
-FLUSHEND [leftcolumn badness]: 0
-FUSHEND [rightcolumn badness]: 8
-[7] (./example.aux)
+FLUSHEND [output]: 206.79901pt
+FLUSHEND [leftcolumn badness]: 39
+FUSHEND [rightcolumn badness]: 1
+ [9] (./example.aux)
 Package rerunfilecheck Info: File `example.out' has not changed.
 (rerunfilecheck)             Checksum: B7B0B14B602FF14E2643F07C10639B79;2203.
  )
 (\end occurred inside a group at level 1)
 
-### simple group (level 1) entered at line 371 ({)
+### simple group (level 1) entered at line 481 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 13916 strings out of 478287
- 217732 string characters out of 5849289
- 528110 words of memory out of 5000000
- 31867 multiletter control sequences out of 15000+600000
- 492503 words of font info for 76 fonts, out of 8000000 for 9000
+ 13959 strings out of 478287
+ 218402 string characters out of 5849289
+ 528526 words of memory out of 5000000
+ 31886 multiletter control sequences out of 15000+600000
+ 494389 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 70i,9n,77p,1031b,434s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 70i,15n,77p,1031b,515s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share
-/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf
--dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.p
-fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmtt9.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb
-8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on example.pdf (7 pages, 261943 bytes).
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx6.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cmextra/cmex9.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmtt9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/
+msam10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on example.pdf (9 pages, 307018 bytes).
 PDF statistics:
- 240 PDF objects out of 1000 (max. 8388607)
- 182 compressed objects within 2 object streams
- 40 named destinations out of 1000 (max. 500000)
+ 292 PDF objects out of 1000 (max. 8388607)
+ 227 compressed objects within 3 object streams
+ 61 named destinations out of 1000 (max. 500000)
  110 words of extra memory for PDF output out of 10000 (max. 10000000)
 

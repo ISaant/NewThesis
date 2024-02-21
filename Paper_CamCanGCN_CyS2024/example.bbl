@@ -1,0 +1,76 @@
+\makeatletter\@ifundefined{bibsep}{}{\setlength{\bibsep}{2pt plus
+  0.3ex}}\makeatother
+\begin{thebibliography}{1}
+\small\renewcommand\newblock{}
+\makeatletter\@ifundefined{bibsep}{\setlength{\parskip}{2pt plus
+  0.3ex}}{}\makeatother
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+
+\bibitem{anderson2005measurement}
+\textbf{Anderson, A.~W.}\textbf{ (2005).}
+\newblock Measurement of fiber orientation distributions using high angular
+  resolution diffusion imaging.
+\newblock \emph{Magnetic Resonance in Medicine: An Official Journal of the
+  International Society for Magnetic Resonance in Medicine}, Vol.~54, No.~5,
+  pp.~1194--1206.
+
+\bibitem{descoteaux2008high}
+\textbf{Descoteaux, M.}\textbf{ (2008).}
+\newblock \emph{High angular resolution diffusion MRI: from local estimation to
+  segmentation and tractography}.
+\newblock Ph.D. thesis, Universit{\'e} Nice Sophia Antipolis.
+
+\bibitem{descoteaux2007regularized}
+\textbf{Descoteaux, M., Angelino, E., Fitzgibbons, S., \& Deriche, R.}\textbf{
+  (2007).}
+\newblock Regularized, fast, and robust analytical q-ball imaging.
+\newblock \emph{Magnetic Resonance in Medicine: An Official Journal of the
+  International Society for Magnetic Resonance in Medicine}, Vol.~58, No.~3,
+  pp.~497--510.
+
+\bibitem{funk1915geometrische}
+\textbf{Funk, P.}\textbf{ (1915).}
+\newblock Uber eine geometrische anwendung der abelschen integralgleichung.
+\newblock \emph{Mathematische Annalen}, Vol.~77, No.~1, pp.~129--135.
+
+\bibitem{hess2006q}
+\textbf{Hess, C.~P., Mukherjee, P., Han, E.~T., Xu, D., \& Vigneron,
+  D.~B.}\textbf{ (2006).}
+\newblock Q-ball reconstruction of multimodal fiber orientations using the
+  spherical harmonic basis.
+\newblock \emph{Magnetic Resonance in Medicine: An Official Journal of the
+  International Society for Magnetic Resonance in Medicine}, Vol.~56, No.~1,
+  pp.~104--117.
+
+\bibitem{jones1999optimal}
+\textbf{Jones, D.~K., Horsfield, M.~A., \& Simmons, A.}\textbf{ (1999).}
+\newblock Optimal strategies for measuring diffusion in anisotropic systems by
+  magnetic resonance imaging.
+\newblock \emph{Magnetic Resonance in Medicine: An Official Journal of the
+  International Society for Magnetic Resonance in Medicine}, Vol.~42, No.~3,
+  pp.~515--525.
+
+\bibitem{maier2017challenge}
+\textbf{Maier-Hein, K.~H., Neher, P.~F., Houde, J.-C., C{\^o}t{\'e}, M.-A.,
+  Garyfallidis, E., Zhong, J., Chamberland, M., Yeh, F.-C., Lin, Y.-C., Ji, Q.,
+  et~al.}\textbf{ (2017).}
+\newblock The challenge of mapping the human connectome based on diffusion
+  tractography.
+\newblock \emph{Nature communications}, Vol.~8, No.~1, pp.~1349.
+
+\bibitem{nikiforov1988special}
+\textbf{Nikiforov, A.~F. \& Uvarov, B., Vasili}\textbf{ (1988).}
+\newblock \emph{Special functions of mathematical physics}, volume 205.
+\newblock Springer.
+
+\bibitem{tournier2004direct}
+\textbf{Tournier, J.-D., Calamante, F., Gadian, D.~G., \& Connelly, A.}\textbf{
+  (2004).}
+\newblock Direct estimation of the fiber orientation density function from
+  diffusion-weighted mri data using spherical deconvolution.
+\newblock \emph{Neuroimage}, Vol.~23, No.~3, pp.~1176--1185.
+
+\end{thebibliography}
