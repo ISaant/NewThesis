@@ -104,7 +104,7 @@ freqsCropped=freqs[columns]
 SortingIndex_AP = scipy.io.loadmat('/home/isaac/Documents/Doctorado_CIC/NewThesis/Matlab_Fun/Index2Sort_Anterioposterior.mat')['Index'].flatten()-1
 Idx4SortingAP=np.array([SortingIndex_AP[0::2],SortingIndex_AP[1::2]]).flatten()
 psd2use, restStatePCA=PSD_Feat (path2psd,mainDir_psd,restStateDir,emptyRoomDir,columns, row_idx, Idx4SortingAP)
-
+psdAgeRangePlot(freqsCropped,psd2use,age,'',True)
 sleep(1)
 plt.close('all')
 #%% Read PSD s200
@@ -118,6 +118,42 @@ psd2use_s200, restStatePCA_s200 = PSD_Feat_s200(path2psd_s200, PSDFile_s200, sub
 
 sleep(1)
 plt.close('all')
+
+#%%
+
+nPCA=10
+varAcumTot=[]
+
+
+Sub,PSD,ROI=psd2use_s200.shape
+for roi in range(ROI):
+    pca_df, pca2use, prop_varianza_acum= myPCA(np.log(psd2use_s200[:,:180,roi]),False,nPCA)
+    if roi == 0:
+        plt.plot(prop_varianza_acum[:21],'orange',alpha=.2, label = 'ROI "n" s200')
+    else:
+        plt.plot(prop_varianza_acum[:21],'orange',alpha=.2)
+
+    varAcumTot.append(prop_varianza_acum)
+
+Sub,PSD,ROI=psd2use.shape
+for roi in range(ROI):
+    pca_df, pca2use, prop_varianza_acum= myPCA(np.log(psd2use[:,:,roi]),False,nPCA)
+    if roi == 0:
+        plt.plot(prop_varianza_acum[:21],'yellowgreen',alpha=.2, label = 'ROI "n" DK')
+    else:
+        plt.plot(prop_varianza_acum[:21],'yellowgreen',alpha=.2)
+
+    varAcumTot.append(prop_varianza_acum)
+
+
+plt.plot(np.mean(varAcumTot,0)[:21],'darkslategray',linewidth=3, label = 'Mean explain variance')
+plt.legend()
+plt.vlines(10,0.88, 0.92, 'k', '-')
+plt.hlines(.9,9, 11, 'k','-')
+restStatePCA=RestoreShape(restStatePCA)
+plt.ylabel('Explainded varince ratio')
+plt.xlabel('PCA')
+
 #%% Read Anat & run stadistics
 
 anat2use, anatPCA= Anat_Feat(path2anat,AnatFile,row_idx,scoreDf_noNan,Idx4SortingAP)
@@ -144,7 +180,7 @@ print('All the subjects are sorted equal between the datasets: '+str(any(boolarr
 
 # delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = Fc_Feat(FcFile,path2fc,thresh_vec[2])
 # delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = read_Fc(FcFile,path2fc,.25) #nt = no threshold
-connectomes_fc, ROIs = read_Fc(FcFile,path2fc, subjects,100) #nt = no threshold
+connectomes_fc, ROIs = read_Fc(FcFile,path2fc, subjects,thresholding='Per', per=.25) #nt = no threshold
 # connectomes_nt, ROIs = read_Fc(FcFile,path2fc,subjects, 1) #nt = no threshold
 
 delta = connectomes_fc['delta']

@@ -29,11 +29,23 @@ def PSD_Feat (path,mainDir,restStateDir,emptyRoomDir,columns, row_idx, sort_idx)
     Sub,PSD,ROI=psd2use.shape
     nPCA=10
     restStatePCA=np.zeros((Sub,nPCA,ROI))
+    varAcumTot=[]
+    
     for roi in range(ROI):
         pca_df, pca2use, prop_varianza_acum= myPCA(np.log(psd2use[:,:,roi]),False,nPCA)
-        plt.plot(prop_varianza_acum[:10])
+        if roi == 0:
+            plt.plot(prop_varianza_acum[:21],'mediumseagreen',alpha=.2, label = 'ROI "n"')
+        else:
+            plt.plot(prop_varianza_acum[:21],'mediumseagreen',alpha=.2)
+
+        varAcumTot.append(prop_varianza_acum)
         restStatePCA[:,:,roi]=np.array(pca2use)
-        
+    plt.plot(np.mean(varAcumTot,0)[:21],'darkslategray',linewidth=3, label = 'Mean explain variance')
+    plt.legend()
+    plt.vlines(10,0.88, 0.92, 'k', '-')
+    plt.hlines(.9,9, 11, 'k','-')
     restStatePCA=RestoreShape(restStatePCA)
+    plt.ylabel('Explainded varince ratio')
+    plt.xlabel('PCA')
     
     return psd2use, restStatePCA

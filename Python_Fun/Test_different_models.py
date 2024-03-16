@@ -19,9 +19,11 @@ from torch.utils.data import random_split
 from torch.utils.data import Dataset, DataLoader
 import torch.optim as optim
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+import pickle
 device = torch.device ('cuda' if torch.cuda.is_available() else 'cpu')
-
-psd2use, restStatePCA, anat2use, anatPCA, DiagFc, restStatePCA_s200, anatPCA_s200, structConn, local, glob, ROIs, scores = Generate()
+# device = 'cpu'
+psd2use, restStatePCA, anat2use, anatPCA, DiagFc,connectomes_fc, restStatePCA_s200, anatPCA_s200, structConn, local, glob, ROIs, scores = Generate()
 
 #%% Prepare dataset
 
@@ -79,11 +81,11 @@ output_size = scores.shape[1]
 
 #%% Prepare dataset for GCN
 from torch_geometric.loader import DataLoader as DataLoader_gometric
-print ('Generating Dataset for GCN with Structural connectivity...')
+print ('Generating Dataset for GCN with Functional Connectivity Alpha...')
 
-def select_feat_psdPca(psdPCA,anatFeat):
-    psdPCA = myReshape(psdPCA,rois=200)
-    anatFeat = myReshape(anatFeat,rois=200)
+def select_feat_psdPca(psdPCA,anatFeat, rois):
+    psdPCA = myReshape(psdPCA,rois=rois)
+    anatFeat = myReshape(anatFeat,rois=rois)
     # anatFeat=np.tile(anatFeat,numBandsUsed)
     if len(psdPCA)!=0 and len(anatFeat)!=0:
 
@@ -96,29 +98,54 @@ def select_feat_psdPca(psdPCA,anatFeat):
     else:
         return list(myReshape(anatFeat))
     
-features_pca= select_feat_psdPca(restStatePCA_s200, anatPCA_s200)
+def return_dataloaders(features, connectome, scores, test_size, deadnodes_idx, random_state=12, batch_size=1):
+    
+    if deadnodes_idx != None: 
+        feat_train, feat_test, conn_train, conn_test, y_train, y_test, idx_train, idx_test = train_test_split(
+            features, connectome, scores, deadnodes_idx, test_size=test_size,random_state=random_state)
+    
+        feat_train, feat_val, conn_train, conn_val, y_train, y_val, idx_train, idx_val = train_test_split(
+            feat_train, conn_train, y_train, idx_train, test_size=.1, random_state=random_state)
+    
+    else:
+        # print(features[0].shape)
+        feat_train, feat_test, conn_train, conn_test, y_train, y_test = train_test_split(
+            features, connectome, scores, test_size=test_size,random_state=random_state)
+    
+        feat_train, feat_val, conn_train, conn_val, y_train, y_val = train_test_split(
+            feat_train, conn_train, y_train, test_size=.1, random_state=random_state)
+        
+        idx_train = None
+        idx_test = None
+        idx_val = None
+    
+    dataloader_train = DataLoader_gometric(Dataset_graph(feat_train, ROIs, conn_train, y_train, idx=idx_train), batch_size=1,
+                                  shuffle=True) # no estoy usando los ROIs para nada ... modificar codigo mas adelante
+    dataloader_test = DataLoader_gometric(Dataset_graph(feat_test, ROIs, conn_test, y_test, idx=idx_test), batch_size=batch_size)
 
-feat_train, feat_test, sc_train, sc_test, y_train, y_test = train_test_split(
-    features_pca, structConn, scores, test_size=.2,random_state=12)
+    dataloader_val = DataLoader_gometric(Dataset_graph(feat_val, ROIs, conn_val, y_val, idx=idx_val), batch_size=batch_size)
 
-feat_train, feat_val, sc_train, sc_val, y_train, y_val = train_test_split(
-    feat_train, sc_train, y_train, test_size=.1, random_state=12)
+    dataset_all=Dataset_graph(features, ROIs, connectome, scores, deadnodes_idx)
+    
+    return dataloader_train, dataloader_test, dataloader_val, dataset_all
+    
+features_pca= select_feat_psdPca(restStatePCA, anatPCA,rois=68)
+features_pca_s200= select_feat_psdPca(restStatePCA_s200, anatPCA_s200, rois=200)
 
-dataloader_train = DataLoader_gometric(Dataset_graph(feat_train, ROIs, sc_train, y_train), batch_size=1,
-                              shuffle=True)
-dataloader_test = DataLoader_gometric(Dataset_graph(feat_test, ROIs, sc_test, y_test), batch_size=1)
-
-dataloader_val = DataLoader_gometric(Dataset_graph(feat_val, ROIs, sc_val, y_val), batch_size=1)
-
-dataset_all=Dataset_graph(features_pca, ROIs, structConn, scores)
+# alpha_fc=DiagFc[:,68*2:68*3,68*2:68*3]
+# connectomes_mod = kill_deadNodes(connectomes_fc)
+# alpha_mod, alpha_idx = connectomes_mod['alpha']
+alpha = connectomes_fc['alpha']
+dataloader_train_fc, dataloader_test_fc, dataloader_val_fc, dataset_all_fc= return_dataloaders(features_pca, alpha, scores, test_size=.2, deadnodes_idx=None)
+dataloader_train_sc, dataloader_test_sc, dataloader_val_sc, dataset_all_sc= return_dataloaders(features_pca_s200, structConn, scores, test_size=.2, deadnodes_idx=None)
 
 for i in range(10):
-    data = dataset_all[i]
+    data = dataset_all_sc[i]
     print(data)
 
 
 #%%
-iterations = 30
+iterations = 10
 model = []
 import FunClassifiers4newThesis_pytorch
 reload(FunClassifiers4newThesis_pytorch)
@@ -174,7 +201,7 @@ for i in tqdm(range(iterations)):
     train_loader, test_loader, val_loader = dataloaders(dataset, train_size, test_size, val_size, batch_size, seed=i)
     dataiter = iter(test_loader)
     test_data = next(dataiter)
-    model = NeuralNet(input_size_psd, output_size).to(device)
+    model = NeuralNet(input_size_psd, output_size).to('cuda')
     if 'model' in globals():
         model.apply(weight_reset)
     print(model._get_name())
@@ -380,34 +407,47 @@ plt.ylabel('Performance')
 plt.title('Boxplot Acc')
 
 #%%
-model1 = GCN(data.x.shape[1],hidden_channels=12, lin=True)
-model2 = SAGE_GCN (data.x.shape[1],hidden_channels=32, lin=True)
+model1 = GCN(data.x.shape[1],hidden_channels=36, lin=True)
+model2 = SAGE_GCN (data.x.shape[1],hidden_channels=36, lin=True)
 model3 = GNN_DiffPool(data.x.shape[1])
+model4 = GCN_flatt(data.x.shape[1],hidden_channels=36,num_nodes=68,lin=True)
 
 models = [model1,model2,model3]
-models_acc=[]
+bands_acc=[]
 num_epochs= 200
 models_loss= np.zeros((3,num_epochs))
+NNPred_list_CustomModel_Fc=[]
 
-for i in tqdm(range(3)):
-
-    feat_train, feat_test, sc_train, sc_test, y_train, y_test = train_test_split(
-        features_pca, structConn, scores, test_size=.2,random_state=12)
-
-    feat_train, feat_val, sc_train, sc_val, y_train, y_val = train_test_split(
-        feat_train, sc_train, y_train, test_size=.1, random_state=12)
-
-    dataloader_train = DataLoader_gometric(Dataset_graph(feat_train, ROIs, sc_train, y_train), batch_size=1,
-                                  shuffle=True)
-    dataloader_test = DataLoader_gometric(Dataset_graph(feat_test, ROIs, sc_test, y_test), batch_size=1)
-
-    dataloader_val = DataLoader_gometric(Dataset_graph(feat_val, ROIs, sc_val, y_val), batch_size=1)
-    # Derive ratio of correct predictions.
-
+keys = connectomes_fc.keys()
+for band in keys:
+    conn = connectomes_fc[band]
     NNPred_list_CustomModel_Fc=[]
-    for mm, model in enumerate(models):
+    print(band)
+    for i in tqdm(range(10)):
+        dataloader_train, dataloader_test, dataloader_val, dataset_all= return_dataloaders(features_pca, conn, scores, test_size=.2, deadnodes_idx=None, random_state=i,batch_size=1 )
+        
+        # for i in range(10):
+        #     data = dataset_all[i]
+        #     print(data)
+    
+        # feat_train, feat_test, sc_train, sc_test, y_train, y_test = train_test_split(
+        #     features_pca, structConn, scores, test_size=.2,random_state=12)
+    
+        # feat_train, feat_val, sc_train, sc_val, y_train, y_val = train_test_split(
+        #     feat_train, sc_train, y_train, test_size=.1, random_state=12)
+        # dataloader_train = DataLoader_gometric(Dataset_graph(feat_train, ROIs, sc_train, y_train), batch_size=1,
+        #                               shuffle=True)
+        # dataloader_test = DataLoader_gometric(Dataset_graph(feat_test, ROIs, sc_test, y_test), batch_size=1)
+    
+        # dataloader_val = DataLoader_gometric(Dataset_graph(feat_val, ROIs, sc_val, y_val), batch_size=1)
+        # Derive ratio of correct predictions.
+    
+        # NNPred_list_CustomModel_Fc=[]
+        model = model4
+        # for mm, model in enumerate(models):
         print(model._get_name())
         model = model.to(device)
+        # model = model.to('cpu')
         optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=5e-4)
         criterion = nn.MSELoss()
         if 'model' in globals():
@@ -415,5 +455,61 @@ for i in tqdm(range(3)):
         train_GNN(model, criterion, optimizer, dataloader_train, dataloader_val, num_epochs)
         mse_test, pred, test_acc = test_GNN(model, dataloader_test, True)
         print(f'Test_Acc: {test_acc:4f}, Test_MSE: {mse_test}')
-        NNPred_list_CustomModel_Fc.append(test_acc)
-    models_acc.append(NNPred_list_CustomModel_Fc)
+        NNPred_list_CustomModel_Fc.append([test_acc,mse_test])
+    bands_acc.append(NNPred_list_CustomModel_Fc)
+        # models_acc.append(NNPred_list_CustomModel_Fc)
+print('Guardando resultados...')
+with open(os.getcwd()+'/GCN_flattened_01.pickle', 'wb') as f:
+    pickle.dump([model,bands_acc], f)
+#%%
+
+with open('GCN_flattened_01.pickle','rb') as f:
+    check_pickle = pickle.load(f)
+    
+#%%
+model4 = GCN_flatt(data.x.shape[1],hidden_channels=36,num_nodes=200,lin=True)
+
+# models = [model1,model2,model3]
+bands_acc=[]
+num_epochs= 200
+models_loss= np.zeros((3,num_epochs))
+NNPred_list_CustomModel_Sc=[]
+
+
+for i in tqdm(range(10)):
+    dataloader_train, dataloader_test, dataloader_val, dataset_all= return_dataloaders(features_pca_s200, structConn, scores, test_size=.2, deadnodes_idx=None, random_state=i,batch_size=1 )
+    
+    for i in range(10):
+        data = dataset_all[i]
+        print(data)
+
+    # feat_train, feat_test, sc_train, sc_test, y_train, y_test = train_test_split(
+    #     features_pca, structConn, scores, test_size=.2,random_state=12)
+
+    # feat_train, feat_val, sc_train, sc_val, y_train, y_val = train_test_split(
+    #     feat_train, sc_train, y_train, test_size=.1, random_state=12)
+    # dataloader_train = DataLoader_gometric(Dataset_graph(feat_train, ROIs, sc_train, y_train), batch_size=1,
+    #                               shuffle=True)
+    # dataloader_test = DataLoader_gometric(Dataset_graph(feat_test, ROIs, sc_test, y_test), batch_size=1)
+
+    # dataloader_val = DataLoader_gometric(Dataset_graph(feat_val, ROIs, sc_val, y_val), batch_size=1)
+    # Derive ratio of correct predictions.
+
+    # NNPred_list_CustomModel_Fc=[]
+    model = model4
+    # for mm, model in enumerate(models):
+    print(model._get_name())
+    model = model.to(device)
+    # model = model.to('cpu')
+    optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=5e-4)
+    criterion = nn.MSELoss()
+    if 'model' in globals():
+        model.apply(weight_reset)
+    train_GNN(model, criterion, optimizer, dataloader_train, dataloader_val, num_epochs)
+    mse_test, pred, test_acc = test_GNN(model, dataloader_test, True)
+    print(f'Test_Acc: {test_acc:4f}, Test_MSE: {mse_test}')
+    NNPred_list_CustomModel_Sc.append([test_acc,mse_test])
+    # models_acc.append(NNPred_list_CustomModel_Fc)
+print('Guardando resultados...')
+with open(os.getcwd()+'/GCN_flattened_Sc.pickle', 'wb') as f:
+    pickle.dump([model,NNPred_list_CustomModel_Sc], f)

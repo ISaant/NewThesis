@@ -25,7 +25,7 @@ from read_Fc import read_Fc
 from read_Sc import read_Sc
 import Connectivity_Features
 import node2vec_embedding
-device = torch.device ('cuda' if torch.cuda.is_available() else 'cpu')
+# device = torch.device ('cuda' if torch.cuda.is_available() else 'cpu')
 
 # plt.ioff()
 
@@ -133,7 +133,7 @@ def Generate():
 
     # delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = Fc_Feat(FcFile,path2fc,thresh_vec[2])
     # delta, theta, alpha, beta, gamma_low, gamma_high, ROIs = read_Fc(FcFile,path2fc,.25) #nt = no threshold
-    connectomes_fc, ROIs = read_Fc(FcFile,path2fc, subjects,40) #nt = no threshold
+    connectomes_fc, ROIs = read_Fc(FcFile,path2fc, subjects,thresholding='MST', per=40) #nt = no threshold
     # connectomes_nt, ROIs = read_Fc(FcFile,path2fc,subjects, 1) #nt = no threshold
 
     delta = connectomes_fc['delta']
@@ -221,4 +221,4 @@ def Generate():
 
 
 
-    return psd2use, restStatePCA, anat2use, anatPCA, DiagFc, restStatePCA_s200, anatPCA_s200, connectomes, local_PCA, glob_PCA, ROIs, scores
+    return psd2use, restStatePCA, anat2use, anatPCA, DiagFc, connectomes_fc, restStatePCA_s200, anatPCA_s200, connectomes, local_PCA, glob_PCA, ROIs, scores

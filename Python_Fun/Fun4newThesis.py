@@ -213,6 +213,82 @@ def PltDistDemographics(demographics):
 
     plt.show()
     # return line_age, line_predCatell
+    
+#%% ==========================================================================
+def psdAgeRangePlot(freqs,Data,Age,plusTitle,loglog,AgeStep=2.5):
+
+    Sub,PSD,ROI=Data.shape
+    fig = plt.figure(figsize=(10,7))
+    plt.suptitle('PSD por groupo de edad '+plusTitle)
+    Data=Data[Age.argsort(),:,:]
+    AgeSorted=np.sort(Age)
+    AgeStep=5
+    SubGroup=np.arange(min(Age-5.5),max(Age-5.5),AgeStep)
+    colors=linear_gradient('#ffd89b', '#19547b', np.floor(len(SubGroup)-1).astype(int)+1)
+    grid = plt.GridSpec(2, 12, wspace=0.4, hspace=0.3)
+    freqRange1=np.where((freqs>=5)*(freqs<=35))[0]
+    freqRange2=np.where((freqs>49)*(freqs<51))[0]
+    for i,s in enumerate(tqdm(SubGroup)):
+        # s=int(np.round(s))
+        # print(i)
+        AgeRange=np.where((AgeSorted>=s)*(AgeSorted<s+AgeStep))[0]
+        mean=np.mean(np.mean(Data[AgeRange,:,:],axis=2),axis=0)
+        # meanAge=np.round(np.mean(Age[s:s+SubGroup]))
+        plt.subplot(grid[0, :-2])
+        if loglog:
+            plt.plot(freqs[:PSD],np.log(mean),color=colors['hex'][i], label = str(s+AgeStep))
+            plt.xscale('log')
+            plt.subplot(grid[1, :-2])
+            plt.plot(freqs[freqRange1],np.log(mean[freqRange1]),color=colors['hex'][i])
+            plt.xscale('log')
+
+            #plt.subplot(grid[1, 10:])
+            #plt.plot(np.log(freqs[freqRange2]),np.log(mean[freqRange2]),color=colors['hex'][i])
+            #plt.yticks([])
+            # plot(freqs[:PSD],mean,color=colors['hex'][i],alpha=.7, label = str(s+AgeStep))
+        else:
+            plt.plot(freqs[:PSD],mean,color=colors['hex'][i], label = str(s+AgeStep))
+            plt.subplot(grid[1, :-2])
+            plt.plot(freqs[freqRange1],mean[freqRange1],color=colors['hex'][i])
+            #plt.subplot(grid[1, 10:])
+            #plt.plot(freqs[freqRange2],mean[freqRange2],color=colors['hex'][i])
+            #plt.yticks([])
+        if i == 0:
+            Mean=mean
+            continue
+        Mean+=mean
+    Mean/=(i+1)
+    plt.subplot(grid[0, :-2])
+    if loglog:
+        plt.plot(freqs[:PSD],np.log(Mean),'k',label='mean')
+        plt.xscale('log')
+        # plt.title('freqs [0:150]')
+        plt.xlabel('[Hz]')
+        # plt.ylabel('log(Power)')
+        plt.legend(bbox_to_anchor=(1.3, 1))
+        plt.subplot(grid[1, :-2])
+        plt.plot(freqs[freqRange1],np.log(Mean[freqRange1]),'k',)
+        plt.xscale('log')
+        plt.xlabel('[Hz]')
+        # plt.ylabel('log(Potencia)')
+        #plt.subplot(grid[1, 10:])
+        #plt.plot(np.log(freqs[freqRange2]),np.log(Mean[freqRange2]),'k',)
+        #plt.xlabel('log(Frec [49:51]Hz)')
+    else:
+        plt.plot(freqs[:PSD],Mean,'k',label='mean')
+        # plt.title('freqs [0:150]')
+        plt.xlabel('Frequencias  [0:150] Hz')
+        plt.ylabel('Potencia')
+        plt.legend(bbox_to_anchor=(15, 10))
+        plt.subplot(grid[1, :-2])
+        plt.plot(freqs[freqRange1],Mean[freqRange1],'k',)
+        plt.xlabel('Frequencias [5:35]Hz')
+        plt.ylabel('Potencia')
+        # plt.subplot(grid[1, 10:])
+        # plt.plot(freqs[freqRange2],Mean[freqRange2],'k',)
+        # plt.xlabel('Frec [49:51]Hz')
+    # plot(freqs[:PSD],Mean,'k',label='mean')
+    # plt.subplot(grid[:, 3])
 
 #%% ==========================================================================
 def returnResuduals(df, Variables, model):

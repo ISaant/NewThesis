@@ -1,69 +1,69 @@
 region,Acc,name,network,hemi
-bankssts,0.46475091360429593,bankssts L,dmn,left
-bankssts,0.5792518299275833,bankssts R,somatomotor,right
-caudal anterior cingulate,0.3587422049707733,caudalanteriorcingulate L,ventral_attention,left
-caudal anterior cingulate,0.4842344187167904,caudalanteriorcingulate R,ventral_attention,right
-caudal middle frontal,0.6687259298727796,caudalmiddlefrontal L,dmn,left
-caudal middle frontal,0.649222441791389,caudalmiddlefrontal R,frontoparietal,right
-cuneus,0.40677250404127946,cuneus L,visual,left
-cuneus,0.48915785617351,cuneus R,visual,right
-entorhinal,0.2713918642263714,entorhinal L,limbic,left
-entorhinal,0.2099466822668813,entorhinal R,limbic,right
-frontal pole,0.35790166000164414,frontalpole L,limbic,left
-frontal pole,0.243081463094038,frontalpole R,limbic,right
-fusiform,0.6394454954291033,fusiform L,visual,left
-fusiform,0.6289964559595194,fusiform R,visual,right
-inferior parietal,0.6760133783627958,inferiorparietal L,dmn,left
-inferior parietal,0.7137936584768069,inferiorparietal R,dmn,right
-inferior temporal,0.6244254145257088,inferiortemporal L,limbic,left
-inferior temporal,0.5432764137729919,inferiortemporal R,limbic,right
-insula,0.5873957044770459,insula L,ventral_attention,left
-insula,0.6305137062554402,insula R,ventral_attention,right
-isthmus cingulate,0.610182076703395,isthmuscingulate L,dmn,left
-isthmus cingulate,0.5823873236197439,isthmuscingulate R,dmn,right
-lateral occipital,0.5504487094619048,lateraloccipital L,visual,left
-lateral occipital,0.5305431546561717,lateraloccipital R,visual,right
-lateral orbitofrontal,0.6057348513134206,lateralorbitofrontal L,limbic,left
-lateral orbitofrontal,0.582624971723428,lateralorbitofrontal R,limbic,left
-lingual,0.4827282344205676,lingual L,visual,right
-lingual,0.4580660816245985,lingual R,visual,left
-medial orbitofrontal,0.47118068988893996,medialorbitofrontal L,limbic,right
-medial orbitofrontal,0.5769349264923368,medialorbitofrontal R,limbic,left
-middle temporal,0.6661007393816674,middletemporal L,dmn,right
-middle temporal,0.6412807837432025,middletemporal R,dmn,left
-paracentral,0.6120192451544767,paracentral L,somatomotor,right
-paracentral,0.5597764148729961,paracentral R,somatomotor,left
-parahippocampal,0.4152485579046006,parahippocampal L,dmn,right
-parahippocampal,0.5047280742730248,parahippocampal R,visual,left
-pars opercularis,0.6930665881071097,parsopercularis L,ventral_attention,right
-pars opercularis,0.6673790794461602,parsopercularis R,ventral_attention,left
-pars orbitalis,0.5285429241518252,parsorbitalis L,dmn,right
-pars orbitalis,0.5812383469019309,parsorbitalis R,dmn,left
-pars triangularis,0.6357155958350322,parstriangularis L,dmn,right
-pars triangularis,0.6939176711045938,parstriangularis R,ventral_attention,left
-pericalcarine,0.3311572186430557,pericalcarine L,visual,left
-pericalcarine,0.4040976068394047,pericalcarine R,visual,right
-postcentral,0.6221370175386666,postcentral L,somatomotor,left
-postcentral,0.6574479308199662,postcentral R,somatomotor,right
-posterior cingulate,0.6526310559975124,posteriorcingulate L,ventral_attention,left
-posterior cingulate,0.6272732566862614,posteriorcingulate R,ventral_attention,right
-precentral,0.6800453557210854,precentral L,somatomotor,left
-precentral,0.6516512987660442,precentral R,somatomotor,right
-precuneus,0.6962026079077642,precuneus L,dmn,left
-precuneus,0.6918780800889313,precuneus R,dmn,right
-rostral anterior cingulate,0.5812950411360874,rostralanteriorcingulate L,dmn,left
-rostral anterior cingulate,0.5112864651725091,rostralanteriorcingulate R,dmn,right
-rostral middle frontal,0.6944500201861081,rostralmiddlefrontal L,frontoparietal,left
-rostral middle frontal,0.683161367706526,rostralmiddlefrontal R,frontoparietal,right
-superior frontal,0.7528392412250675,superiorfrontal L,dmn,left
-superior frontal,0.7329760624025663,superiorfrontal R,dmn,right
-superior parietal,0.6832289378959497,superiorparietal L,dorsal_attention,left
-superior parietal,0.6940793454467749,superiorparietal R,dorsal_attention,right
-superior temporal,0.6941951699625022,superiortemporal L,somatomotor,left
-superior temporal,0.725326041370596,superiortemporal R,somatomotor,right
-supramarginal,0.6961370567522338,supramarginal L,ventral_attention,left
-supramarginal,0.6728315037879249,supramarginal R,ventral_attention,right
-temporal pole,0.3516348402957336,temporalpole L,limbic,left
-temporal pole,0.2340978784529929,temporalpole R,limbic,right
-transverse temporal,0.5126939965225946,transversetemporal L,somatomotor,left
-transverse temporal,0.571203377613693,transversetemporal R,somatomotor,right
+bankssts,0.47588247833186265,bankssts L,dmn,left
+bankssts,0.5746845758889301,bankssts R,somatomotor,right
+caudal anterior cingulate,0.3550603938068172,caudalanteriorcingulate L,ventral_attention,left
+caudal anterior cingulate,0.47526796271667643,caudalanteriorcingulate R,ventral_attention,right
+caudal middle frontal,0.6729857287291314,caudalmiddlefrontal L,dmn,left
+caudal middle frontal,0.6444405210714582,caudalmiddlefrontal R,frontoparietal,right
+cuneus,0.4047336420698786,cuneus L,visual,left
+cuneus,0.4772217781929271,cuneus R,visual,right
+entorhinal,0.26376163698286037,entorhinal L,limbic,left
+entorhinal,0.21226675044088217,entorhinal R,limbic,right
+frontal pole,0.3788871750504217,frontalpole L,limbic,left
+frontal pole,0.2435245683646555,frontalpole R,limbic,right
+fusiform,0.6338429546398011,fusiform L,visual,left
+fusiform,0.628076459916429,fusiform R,visual,right
+inferior parietal,0.6780516526032919,inferiorparietal L,dmn,left
+inferior parietal,0.7080176201867603,inferiorparietal R,dmn,right
+inferior temporal,0.6232930550174887,inferiortemporal L,limbic,left
+inferior temporal,0.5441100239127092,inferiortemporal R,limbic,right
+insula,0.5859873134465169,insula L,ventral_attention,left
+insula,0.6347403785357999,insula R,ventral_attention,right
+isthmus cingulate,0.6019456033277447,isthmuscingulate L,dmn,left
+isthmus cingulate,0.5849531282925011,isthmuscingulate R,dmn,right
+lateral occipital,0.5436965569485317,lateraloccipital L,visual,left
+lateral occipital,0.5391711144530613,lateraloccipital R,visual,right
+lateral orbitofrontal,0.6077670166318053,lateralorbitofrontal L,limbic,left
+lateral orbitofrontal,0.569895784625873,lateralorbitofrontal R,limbic,left
+lingual,0.4838982043816536,lingual L,visual,right
+lingual,0.47073937556897344,lingual R,visual,left
+medial orbitofrontal,0.4809280466099016,medialorbitofrontal L,limbic,right
+medial orbitofrontal,0.5792802574893868,medialorbitofrontal R,limbic,left
+middle temporal,0.6492745596232481,middletemporal L,dmn,right
+middle temporal,0.6550429268195527,middletemporal R,dmn,left
+paracentral,0.6140036526644136,paracentral L,somatomotor,right
+paracentral,0.5723995705647792,paracentral R,somatomotor,left
+parahippocampal,0.4014883164710923,parahippocampal L,dmn,right
+parahippocampal,0.5081055488176914,parahippocampal R,visual,left
+pars opercularis,0.6915332896788481,parsopercularis L,ventral_attention,right
+pars opercularis,0.6684883722860283,parsopercularis R,ventral_attention,left
+pars orbitalis,0.5274517015141875,parsorbitalis L,dmn,right
+pars orbitalis,0.5836886616746282,parsorbitalis R,dmn,left
+pars triangularis,0.6434902314081924,parstriangularis L,dmn,right
+pars triangularis,0.6909973261769963,parstriangularis R,ventral_attention,left
+pericalcarine,0.33894316121550544,pericalcarine L,visual,left
+pericalcarine,0.4080220019175574,pericalcarine R,visual,right
+postcentral,0.6109387748324537,postcentral L,somatomotor,left
+postcentral,0.6543562923605778,postcentral R,somatomotor,right
+posterior cingulate,0.6383808647373608,posteriorcingulate L,ventral_attention,left
+posterior cingulate,0.6288540770030915,posteriorcingulate R,ventral_attention,right
+precentral,0.680167320505103,precentral L,somatomotor,left
+precentral,0.6442169912479427,precentral R,somatomotor,right
+precuneus,0.6861795394778825,precuneus L,dmn,left
+precuneus,0.6943794304579022,precuneus R,dmn,right
+rostral anterior cingulate,0.5891659092829845,rostralanteriorcingulate L,dmn,left
+rostral anterior cingulate,0.5086200005022421,rostralanteriorcingulate R,dmn,right
+rostral middle frontal,0.6995428362181532,rostralmiddlefrontal L,frontoparietal,left
+rostral middle frontal,0.6846703499318495,rostralmiddlefrontal R,frontoparietal,right
+superior frontal,0.7574640511361629,superiorfrontal L,dmn,left
+superior frontal,0.7392782606191054,superiorfrontal R,dmn,right
+superior parietal,0.6695869111497977,superiorparietal L,dorsal_attention,left
+superior parietal,0.6895593190759313,superiorparietal R,dorsal_attention,right
+superior temporal,0.6943023296204721,superiortemporal L,somatomotor,left
+superior temporal,0.7286504968932668,superiortemporal R,somatomotor,right
+supramarginal,0.6883635769703134,supramarginal L,ventral_attention,left
+supramarginal,0.6956938253225871,supramarginal R,ventral_attention,right
+temporal pole,0.3681782669933238,temporalpole L,limbic,left
+temporal pole,0.23053294532877644,temporalpole R,limbic,right
+transverse temporal,0.5092636935047062,transversetemporal L,somatomotor,left
+transverse temporal,0.5625082781356605,transversetemporal R,somatomotor,right

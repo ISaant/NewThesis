@@ -1,6 +1,6 @@
 \makeatletter\@ifundefined{bibsep}{}{\setlength{\bibsep}{2pt plus
   0.3ex}}\makeatother
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \small\renewcommand\newblock{}
 \makeatletter\@ifundefined{bibsep}{\setlength{\parskip}{2pt plus
   0.3ex}}{}\makeatother
@@ -17,6 +17,74 @@
   International Society for Magnetic Resonance in Medicine}, Vol.~54, No.~5,
   pp.~1194--1206.
 
+\bibitem{baecker2021machine}
+\textbf{Baecker, L., Garcia-Dias, R., Vieira, S., Scarpazza, C., \& Mechelli,
+  A.}\textbf{ (2021).}
+\newblock Machine learning for brain age prediction: Introduction to methods
+  and clinical applications.
+\newblock \emph{EBioMedicine}, Vol.~72.
+
+\bibitem{bi2024prediction}
+\textbf{Bi, S., Guan, Y., \& Tian, L.}\textbf{ (2024).}
+\newblock Prediction of individual brain age using movie and resting-state
+  fmri.
+\newblock \emph{Cerebral Cortex}, Vol.~34, No.~1, pp.~bhad407.
+
+\bibitem{borkar2022ayu}
+\textbf{Borkar, K., Chaturvedi, A., Vinod, P., \& Bapi, R.~S.}\textbf{ (2022).}
+\newblock Ayu-characterization of healthy aging from neuroimaging data with
+  deep learning and rsfmri.
+\newblock \emph{Frontiers in Computational Neuroscience}, Vol.~16, pp.~940922.
+
+\bibitem{campbell2005flow}
+\textbf{Campbell, J.~S., Siddiqi, K., Rymar, V.~V., Sadikot, A.~F., \& Pike,
+  G.~B.}\textbf{ (2005).}
+\newblock Flow-based fiber tracking with diffusion tensor and q-ball data:
+  validation and comparison to principal diffusion direction techniques.
+\newblock \emph{NeuroImage}, Vol.~27, No.~4, pp.~725--736.
+
+\bibitem{chen2020generalization}
+\textbf{Chen, C.-L., Hsu, Y.-C., Yang, L.-Y., Tung, Y.-H., Luo, W.-B., Liu,
+  C.-M., Hwang, T.-J., Hwu, H.-G., \& Tseng, W.-Y.~I.}\textbf{ (2020).}
+\newblock Generalization of diffusion magnetic resonance imaging--based brain
+  age prediction model through transfer learning.
+\newblock \emph{NeuroImage}, Vol.~217, pp.~116831.
+
+\bibitem{cole2017brain}
+\textbf{Cole, J.~H., Annus, T., Wilson, L.~R., Remtulla, R., Hong, Y.~T.,
+  Fryer, T.~D., Acosta-Cabronero, J., Cardenas-Blanco, A., Smith, R., Menon,
+  D.~K., et~al.}\textbf{ (2017).}
+\newblock Brain-predicted age in down syndrome is associated with beta amyloid
+  deposition and cognitive decline.
+\newblock \emph{Neurobiology of aging}, Vol.~56, pp.~41--49.
+
+\bibitem{cole2015prediction}
+\textbf{Cole, J.~H., Leech, R., Sharp, D.~J., \& Initiative, A. D.~N.}\textbf{
+  (2015).}
+\newblock Prediction of brain age suggests accelerated atrophy after traumatic
+  brain injury.
+\newblock \emph{Annals of neurology}, Vol.~77, No.~4, pp.~571--581.
+
+\bibitem{cole2017increased}
+\textbf{Cole, J.~H., Underwood, J., Caan, M.~W., De~Francesco, D., Van~Zoest,
+  R.~A., Leech, R., Wit, F.~W., Portegies, P., Geurtsen, G.~J., Schmand, B.~A.,
+  et~al.}\textbf{ (2017).}
+\newblock Increased brain-predicted aging in treated hiv disease.
+\newblock \emph{Neurology}, Vol.~88, No.~14, pp.~1349--1357.
+
+\bibitem{de2022mind}
+\textbf{de~Lange, A.-M.~G., Anat{\"u}rk, M., Rokicki, J., Han, L.~K., Franke,
+  K., Aln{\ae}s, D., Ebmeier, K.~P., Draganski, B., Kaufmann, T., Westlye,
+  L.~T., et~al.}\textbf{ (2022).}
+\newblock Mind the gap: Performance metric evaluation in brain-age prediction.
+\newblock \emph{Human Brain Mapping}, Vol.~43, No.~10, pp.~3113--3129.
+
+\bibitem{descoteaux1999high}
+\textbf{Descoteaux, M.}\textbf{ (1999).}
+\newblock High angular resolution diffusion imaging (hardi).
+\newblock \emph{Wiley encyclopedia of electrical and electronics engineering},
+  pp.~1--25.
+
 \bibitem{descoteaux2008high}
 \textbf{Descoteaux, M.}\textbf{ (2008).}
 \newblock \emph{High angular resolution diffusion MRI: from local estimation to
@@ -31,10 +99,82 @@
   International Society for Magnetic Resonance in Medicine}, Vol.~58, No.~3,
   pp.~497--510.
 
+\bibitem{dinsdale2021learning}
+\textbf{Dinsdale, N.~K., Bluemke, E., Smith, S.~M., Arya, Z., Vidaurre, D.,
+  Jenkinson, M., \& Namburete, A.~I.}\textbf{ (2021).}
+\newblock Learning patterns of the ageing brain in mri using deep convolutional
+  networks.
+\newblock \emph{NeuroImage}, Vol.~224, pp.~117401.
+
+\bibitem{engemann2022reusable}
+\textbf{Engemann, D.~A., Mellot, A., H{\"o}chenberger, R., Banville, H.,
+  Sabbagh, D., Gemein, L., Ball, T., \& Gramfort, A.}\textbf{ (2022).}
+\newblock A reusable benchmark of brain-age prediction from m/eeg resting-state
+  signals.
+\newblock \emph{Neuroimage}, Vol.~262, pp.~119521.
+
+\bibitem{feng2020estimating}
+\textbf{Feng, X., Lipton, Z.~C., Yang, J., Small, S.~A., Provenzano, F.~A.,
+  Initiative, A. D.~N., Initiative, F. L. D.~N., et~al.}\textbf{ (2020).}
+\newblock Estimating brain age based on a uniform healthy population with deep
+  learning and structural magnetic resonance imaging.
+\newblock \emph{Neurobiology of aging}, Vol.~91, pp.~15--25.
+
+\bibitem{franke2012longitudinal}
+\textbf{Franke, K. \& Gaser, C.}\textbf{ (2012).}
+\newblock Longitudinal changes in individual brainage in healthy aging, mild
+  cognitive impairment, and alzheimer’s disease.
+\newblock \emph{GeroPsych}.
+
 \bibitem{funk1915geometrische}
 \textbf{Funk, P.}\textbf{ (1915).}
 \newblock Uber eine geometrische anwendung der abelschen integralgleichung.
 \newblock \emph{Mathematische Annalen}, Vol.~77, No.~1, pp.~129--135.
+
+\bibitem{gao2022brain}
+\textbf{Gao, X. \& Pang, Y.}\textbf{ (2022).}
+\newblock Brain age prediction with 3d resnet34 model in healthy control, mild
+  cognitive impairment, and alzheimer's disease.
+\newblock \emph{2022 3rd International Conference on Electronic Communication
+  and Artificial Intelligence (IWECAI)}, IEEE, pp.~490--494.
+
+\bibitem{gaser2013brainage}
+\textbf{Gaser, C., Franke, K., Kl{\"o}ppel, S., Koutsouleris, N., Sauer, H., \&
+  Initiative, A. D.~N.}\textbf{ (2013).}
+\newblock Brainage in mild cognitive impaired patients: predicting the
+  conversion to alzheimer’s disease.
+\newblock \emph{PloS one}, Vol.~8, No.~6, pp.~e67346.
+
+\bibitem{gemein2023brain}
+\textbf{Gemein, L.~A., Schirrmeister, R.~T., Boedecker, J., \& Ball,
+  T.}\textbf{ (2023).}
+\newblock Brain age revisited: Investigating the state vs. trait hypotheses of
+  eeg-derived brain-age dynamics with deep learning.
+\newblock \emph{arXiv preprint arXiv:2310.07029}.
+
+\bibitem{gianchandani2023multitask}
+\textbf{Gianchandani, N., Ospel, J., MacDonald, E., \& Souza, R.}\textbf{
+  (2023).}
+\newblock A multitask deep learning model for voxel-level brain age estimation.
+\newblock \emph{International Workshop on Machine Learning in Medical Imaging},
+  Springer, pp.~283--292.
+
+\bibitem{girard2023tractography}
+\textbf{Girard, G., Rafael-Pati{\~n}o, J., Truffet, R., Aydogan, D.~B., Adluru,
+  N., Nair, V.~A., Prabhakaran, V., Bendlin, B.~B., Alexander, A.~L.,
+  Bosticardo, S., et~al.}\textbf{ (2023).}
+\newblock Tractography passes the test: Results from the diffusion-simulated
+  connectivity (disco) challenge.
+\newblock \emph{NeuroImage}, Vol.~277, pp.~120231.
+
+\bibitem{gonneaud2020functional}
+\textbf{Gonneaud, J., Baria, A.~T., Binette, A.~P., Gordon, B.~A., Chhatwal,
+  J.~P., Cruchaga, C., Jucker, M., Levin, J., Salloway, S., Farlow, M.,
+  et~al.}\textbf{ (2020).}
+\newblock Functional brain age prediction suggests accelerated aging in
+  preclinical familial alzheimer’s disease, irrespective of fibrillar
+  amyloid-beta pathology.
+\newblock \emph{bioRxiv}, pp.~2020--05.
 
 \bibitem{hess2006q}
 \textbf{Hess, C.~P., Mukherjee, P., Han, E.~T., Xu, D., \& Vigneron,
@@ -45,6 +185,29 @@
   International Society for Magnetic Resonance in Medicine}, Vol.~56, No.~1,
   pp.~104--117.
 
+\bibitem{hollersignal}
+\textbf{Holler, V.~M.}, \textbf{.}
+\newblock “from signal to age-using machine learning to predict brain age
+  from meg data” masterarbeit.
+
+\bibitem{isaev2018accelerated}
+\textbf{Isaev, N.~K., Genrikhs, E.~E., Oborina, M.~V., \& Stelmashook,
+  E.~V.}\textbf{ (2018).}
+\newblock Accelerated aging and aging process in the brain.
+\newblock \emph{Reviews in the Neurosciences}, Vol.~29, No.~3, pp.~233--240.
+
+\bibitem{jeurissen2014multi}
+\textbf{Jeurissen, B., Tournier, J.-D., Dhollander, T., Connelly, A., \&
+  Sijbers, J.}\textbf{ (2014).}
+\newblock Multi-tissue constrained spherical deconvolution for improved
+  analysis of multi-shell diffusion mri data.
+\newblock \emph{NeuroImage}, Vol.~103, pp.~411--426.
+
+\bibitem{jones2010diffusion}
+\textbf{Jones, D.~K.}\textbf{ (2010).}
+\newblock \emph{Diffusion mri}.
+\newblock Oxford University Press.
+
 \bibitem{jones1999optimal}
 \textbf{Jones, D.~K., Horsfield, M.~A., \& Simmons, A.}\textbf{ (1999).}
 \newblock Optimal strategies for measuring diffusion in anisotropic systems by
@@ -52,6 +215,75 @@
 \newblock \emph{Magnetic Resonance in Medicine: An Official Journal of the
   International Society for Magnetic Resonance in Medicine}, Vol.~42, No.~3,
   pp.~515--525.
+
+\bibitem{joo2023brain}
+\textbf{Joo, Y., Namgung, E., Jeong, H., Kang, I., Kim, J., Oh, S., Lyoo,
+  I.~K., Yoon, S., \& Hwang, J.}\textbf{ (2023).}
+\newblock Brain age prediction using combined deep convolutional neural network
+  and multi-layer perceptron algorithms.
+\newblock \emph{Scientific Reports}, Vol.~13, No.~1, pp.~22388.
+
+\bibitem{koch2002investigation}
+\textbf{Koch, M.~A., Norris, D.~G., \& Hund-Georgiadis, M.}\textbf{ (2002).}
+\newblock An investigation of functional and anatomical connectivity using
+  magnetic resonance imaging.
+\newblock \emph{Neuroimage}, Vol.~16, No.~1, pp.~241--250.
+
+\bibitem{koutsouleris2014accelerated}
+\textbf{Koutsouleris, N., Davatzikos, C., Borgwardt, S., Gaser, C., Bottlender,
+  R., Frodl, T., Falkai, P., Riecher-R{\"o}ssler, A., M{\"o}ller, H.-J.,
+  Reiser, M., et~al.}\textbf{ (2014).}
+\newblock Accelerated brain aging in schizophrenia and beyond: a
+  neuroanatomical marker of psychiatric disorders.
+\newblock \emph{Schizophrenia bulletin}, Vol.~40, No.~5, pp.~1140--1153.
+
+\bibitem{kuhn2018augmented}
+\textbf{Kuhn, T., Kaufmann, T., Doan, N.~T., Westlye, L.~T., Jones, J., Nunez,
+  R.~A., Bookheimer, S.~Y., Singer, E.~J., Hinkin, C.~H., \& Thames,
+  A.~D.}\textbf{ (2018).}
+\newblock An augmented aging process in brain white matter in hiv.
+\newblock \emph{Human brain mapping}, Vol.~39, No.~6, pp.~2532--2540.
+
+\bibitem{lancaster2018bayesian}
+\textbf{Lancaster, J., Lorenz, R., Leech, R., \& Cole, J.~H.}\textbf{ (2018).}
+\newblock Bayesian optimization for neuroimaging pre-processing in brain age
+  classification and prediction.
+\newblock \emph{Frontiers in aging neuroscience}, Vol.~10, pp.~28.
+
+\bibitem{lee2023choice}
+\textbf{Lee, W.~H.}\textbf{ (2023).}
+\newblock The choice of machine learning algorithms impacts the association
+  between brain-predicted age difference and cognitive function.
+\newblock \emph{Mathematics}, Vol.~11, No.~5, pp.~1229.
+
+\bibitem{li2018brain}
+\textbf{Li, H., Satterthwaite, T.~D., \& Fan, Y.}\textbf{ (2018).}
+\newblock Brain age prediction based on resting-state functional connectivity
+  patterns using convolutional neural networks.
+\newblock \emph{2018 ieee 15th international symposium on biomedical imaging
+  (isbi 2018)}, IEEE, pp.~101--104.
+
+\bibitem{li2022brain}
+\textbf{Li, Y., Zhang, X., Nie, J., Zhang, G., Fang, R., Xu, X., Wu, Z., Hu,
+  D., Wang, L., Zhang, H., et~al.}\textbf{ (2022).}
+\newblock Brain connectivity based graph convolutional networks and its
+  application to infant age prediction.
+\newblock \emph{IEEE Transactions on Medical Imaging}, Vol.~41, No.~10,
+  pp.~2764--2776.
+
+\bibitem{lin2016predicting}
+\textbf{Lin, L., Jin, C., Fu, Z., Zhang, B., Bin, G., \& Wu, S.}\textbf{
+  (2016).}
+\newblock Predicting healthy older adult's brain age based on structural
+  connectivity networks using artificial neural networks.
+\newblock \emph{Computer methods and programs in biomedicine}, Vol.~125,
+  pp.~8--17.
+
+\bibitem{luders2016estimating}
+\textbf{Luders, E., Cherbuin, N., \& Gaser, C.}\textbf{ (2016).}
+\newblock Estimating brain age using high-resolution pattern recognition:
+  Younger brains in long-term meditation practitioners.
+\newblock \emph{Neuroimage}, Vol.~134, pp.~508--513.
 
 \bibitem{maier2017challenge}
 \textbf{Maier-Hein, K.~H., Neher, P.~F., Houde, J.-C., C{\^o}t{\'e}, M.-A.,
@@ -61,10 +293,84 @@
   tractography.
 \newblock \emph{Nature communications}, Vol.~8, No.~1, pp.~1349.
 
+\bibitem{massett2023regional}
+\textbf{Massett, R.~J., Maher, A.~S., Imms, P.~E., Amgalan, A., Chaudhari,
+  N.~N., Chowdhury, N.~F., Irimia, A., \& Initiative, A. D.~N.}\textbf{
+  (2023).}
+\newblock Regional neuroanatomic effects on brain age inferred using magnetic
+  resonance imaging and ridge regression.
+\newblock \emph{The Journals of Gerontology: Series A}, Vol.~78, No.~6,
+  pp.~872--881.
+
+\bibitem{monti2020interpretable}
+\textbf{Monti, R.~P., Gibberd, A., Roy, S., Nunes, M., Lorenz, R., Leech, R.,
+  Ogawa, T., Kawanabe, M., \& Hyv{\"a}rinen, A.}\textbf{ (2020).}
+\newblock Interpretable brain age prediction using linear latent variable
+  models of functional connectivity.
+\newblock \emph{Plos one}, Vol.~15, No.~6, pp.~e0232296.
+
+\bibitem{more2023brain}
+\textbf{More, S., Antonopoulos, G., Hoffstaedter, F., Caspers, J., Eickhoff,
+  S.~B., Patil, K.~R., Initiative, A. D.~N., et~al.}\textbf{ (2023).}
+\newblock Brain-age prediction: A systematic comparison of machine learning
+  workflows.
+\newblock \emph{NeuroImage}, Vol.~270, pp.~119947.
+
+\bibitem{nguyen2024brain}
+\textbf{Nguyen, H.-D., Cl{\'e}ment, M., Mansencal, B., \& Coup{\'e},
+  P.}\textbf{ (2024).}
+\newblock Brain structure ages—a new biomarker for multi-disease
+  classification.
+\newblock \emph{Human Brain Mapping}, Vol.~45, No.~1, pp.~e26558.
+
 \bibitem{nikiforov1988special}
 \textbf{Nikiforov, A.~F. \& Uvarov, B., Vasili}\textbf{ (1988).}
 \newblock \emph{Special functions of mathematical physics}, volume 205.
 \newblock Springer.
+
+\bibitem{onaolapo2019brain}
+\textbf{Onaolapo, A.~Y., Obelawo, A.~Y., \& Onaolapo, O.~J.}\textbf{ (2019).}
+\newblock Brain ageing, cognition and diet: a review of the emerging roles of
+  food-based nootropics in mitigating age-related memory decline.
+\newblock \emph{Current aging science}, Vol.~12, No.~1, pp.~2--14.
+
+\bibitem{pardoe2017structural}
+\textbf{Pardoe, H.~R., Cole, J.~H., Blackmon, K., Thesen, T., Kuzniecky, R.,
+  Investigators, H. E.~P., et~al.}\textbf{ (2017).}
+\newblock Structural brain changes in medically refractory focal epilepsy
+  resemble premature brain aging.
+\newblock \emph{Epilepsy research}, Vol.~133, pp.~28--32.
+
+\bibitem{parker2005probabilistic}
+\textbf{Parker, G.~J. \& Alexander, D.~C.}\textbf{ (2005).}
+\newblock Probabilistic anatomical connectivity derived from the microscopic
+  persistent angular structure of cerebral tissue.
+\newblock \emph{Philosophical transactions of the Royal Society B: Biological
+  sciences}, Vol.~360, No.~1457, pp.~893--902.
+
+\bibitem{shafto2014cambridge}
+\textbf{Shafto, M.~A., Tyler, L.~K., Dixon, M., Taylor, J.~R., Rowe, J.~B.,
+  Cusack, R., Calder, A.~J., Marslen-Wilson, W.~D., Duncan, J., Dalgleish, T.,
+  et~al.}\textbf{ (2014).}
+\newblock The cambridge centre for ageing and neuroscience (cam-can) study
+  protocol: a cross-sectional, lifespan, multidisciplinary examination of
+  healthy cognitive ageing.
+\newblock \emph{BMC neurology}, Vol.~14, pp.~1--25.
+
+\bibitem{steffener2016differences}
+\textbf{Steffener, J., Habeck, C., O'Shea, D., Razlighi, Q., Bherer, L., \&
+  Stern, Y.}\textbf{ (2016).}
+\newblock Differences between chronological and brain age are related to
+  education and self-reported physical activity.
+\newblock \emph{Neurobiology of aging}, Vol.~40, pp.~138--144.
+
+\bibitem{taylor2017cambridge}
+\textbf{Taylor, J.~R., Williams, N., Cusack, R., Auer, T., Shafto, M.~A.,
+  Dixon, M., Tyler, L.~K., Henson, R.~N., et~al.}\textbf{ (2017).}
+\newblock The cambridge centre for ageing and neuroscience (cam-can) data
+  repository: Structural and functional mri, meg, and cognitive data from a
+  cross-sectional adult lifespan sample.
+\newblock \emph{neuroimage}, Vol.~144, pp.~262--269.
 
 \bibitem{tournier2004direct}
 \textbf{Tournier, J.-D., Calamante, F., Gadian, D.~G., \& Connelly, A.}\textbf{
@@ -72,5 +378,39 @@
 \newblock Direct estimation of the fiber orientation density function from
   diffusion-weighted mri data using spherical deconvolution.
 \newblock \emph{Neuroimage}, Vol.~23, No.~3, pp.~1176--1185.
+
+\bibitem{vecchio2018neuroprotective}
+\textbf{Vecchio, L.~M., Meng, Y., Xhima, K., Lipsman, N., Hamani, C., \&
+  Aubert, I.}\textbf{ (2018).}
+\newblock The neuroprotective effects of exercise: maintaining a healthy brain
+  throughout aging.
+\newblock \emph{Brain plasticity}, Vol.~4, No.~1, pp.~17--52.
+
+\bibitem{xu2023siamese}
+\textbf{Xu, L., Ma, H., Guan, Y., Liu, J., Huang, H., Zhang, Y., \& Tian,
+  L.}\textbf{ (2023).}
+\newblock A siamese network with node convolution for individualized
+  predictions based on connectivity maps extracted from resting-state fmri
+  data.
+\newblock \emph{IEEE Journal of Biomedical and Health Informatics}.
+
+\bibitem{yankner2008aging}
+\textbf{Yankner, B.~A., Lu, T., \& Loerch, P.}\textbf{ (2008).}
+\newblock The aging brain.
+\newblock \emph{Annu. Rev. Pathol. Mech. Dis.}, Vol.~3, pp.~41--66.
+
+\bibitem{zeighami2021association}
+\textbf{Zeighami, Y. \& Evans, A.~C.}\textbf{ (2021).}
+\newblock Association vs. prediction: the impact of cortical surface smoothing
+  and parcellation on brain age.
+\newblock \emph{Frontiers in big Data}, Vol.~4, pp.~637724.
+
+\bibitem{zhuang1997event}
+\textbf{Zhuang, P., Toro, C., Grafman, J., Manganotti, P., Leocani, L., \&
+  Hallett, M.}\textbf{ (1997).}
+\newblock Event-related desynchronization (erd) in the alpha frequency during
+  development of implicit and explicit learning.
+\newblock \emph{Electroencephalography and clinical neurophysiology}, Vol.~102,
+  No.~4, pp.~374--381.
 
 \end{thebibliography}
