@@ -416,7 +416,7 @@ models = [model1,model2,model3]
 bands_acc=[]
 num_epochs= 200
 models_loss= np.zeros((3,num_epochs))
-NNPred_list_CustomModel_Fc=[]
+
 
 keys = connectomes_fc.keys()
 for band in keys:
@@ -459,19 +459,19 @@ for band in keys:
     bands_acc.append(NNPred_list_CustomModel_Fc)
         # models_acc.append(NNPred_list_CustomModel_Fc)
 print('Guardando resultados...')
-with open(os.getcwd()+'/GCN_flattened_01.pickle', 'wb') as f:
+with open(os.getcwd()+'/GCN_flattened_Fc.pickle', 'wb') as f:
     pickle.dump([model,bands_acc], f)
 #%%
 
 with open('GCN_flattened_01.pickle','rb') as f:
-    check_pickle = pickle.load(f)
+    check_pickle_fc = pickle.load(f)
     
 #%%
 model4 = GCN_flatt(data.x.shape[1],hidden_channels=36,num_nodes=200,lin=True)
 
 # models = [model1,model2,model3]
 bands_acc=[]
-num_epochs= 200
+num_epochs= 100
 models_loss= np.zeros((3,num_epochs))
 NNPred_list_CustomModel_Sc=[]
 
@@ -479,9 +479,9 @@ NNPred_list_CustomModel_Sc=[]
 for i in tqdm(range(10)):
     dataloader_train, dataloader_test, dataloader_val, dataset_all= return_dataloaders(features_pca_s200, structConn, scores, test_size=.2, deadnodes_idx=None, random_state=i,batch_size=1 )
     
-    for i in range(10):
-        data = dataset_all[i]
-        print(data)
+    # for i in range(10):
+    #     data = dataset_all[i]
+    #     print(data)
 
     # feat_train, feat_test, sc_train, sc_test, y_train, y_test = train_test_split(
     #     features_pca, structConn, scores, test_size=.2,random_state=12)
@@ -502,6 +502,8 @@ for i in tqdm(range(10)):
     model = model.to(device)
     # model = model.to('cpu')
     optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=5e-4)
+    # optimizer = optim.Adam(model.parameters(), lr=0.0005)
+
     criterion = nn.MSELoss()
     if 'model' in globals():
         model.apply(weight_reset)
@@ -511,5 +513,10 @@ for i in tqdm(range(10)):
     NNPred_list_CustomModel_Sc.append([test_acc,mse_test])
     # models_acc.append(NNPred_list_CustomModel_Fc)
 print('Guardando resultados...')
-with open(os.getcwd()+'/GCN_flattened_Sc.pickle', 'wb') as f:
+with open(os.getcwd()+'/GCN_flattened_Sc_02.pickle', 'wb') as f:
     pickle.dump([model,NNPred_list_CustomModel_Sc], f)
+    
+#%%
+
+with open('GCN_flattened_Sc_02.pickle','rb') as f:
+    check_pickle_sc = pickle.load(f)

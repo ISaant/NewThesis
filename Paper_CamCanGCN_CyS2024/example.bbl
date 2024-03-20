@@ -24,6 +24,13 @@
   and clinical applications.
 \newblock \emph{EBioMedicine}, Vol.~72.
 
+\bibitem{basser1994estimation}
+\textbf{Basser, P.~J., Mattiello, J., \& LeBihan, D.}\textbf{ (1994).}
+\newblock Estimation of the effective self-diffusion tensor from the nmr spin
+  echo.
+\newblock \emph{Journal of Magnetic Resonance, Series B}, Vol.~103, No.~3,
+  pp.~247--254.
+
 \bibitem{bi2024prediction}
 \textbf{Bi, S., Guan, Y., \& Tian, L.}\textbf{ (2024).}
 \newblock Prediction of individual brain age using movie and resting-state
@@ -35,6 +42,12 @@
 \newblock Ayu-characterization of healthy aging from neuroimaging data with
   deep learning and rsfmri.
 \newblock \emph{Frontiers in Computational Neuroscience}, Vol.~16, pp.~940922.
+
+\bibitem{bruns2000amplitude}
+\textbf{Bruns, A., Eckhorn, R., Jokeit, H., \& Ebner, A.}\textbf{ (2000).}
+\newblock Amplitude envelope correlation detects coupling among incoherent
+  brain signals.
+\newblock \emph{Neuroreport}, Vol.~11, No.~7, pp.~1509--1514.
 
 \bibitem{campbell2005flow}
 \textbf{Campbell, J.~S., Siddiqi, K., Rymar, V.~V., Sadikot, A.~F., \& Pike,
@@ -49,6 +62,11 @@
 \newblock Generalization of diffusion magnetic resonance imaging--based brain
   age prediction model through transfer learning.
 \newblock \emph{NeuroImage}, Vol.~217, pp.~116831.
+
+\bibitem{cohen2014analyzing}
+\textbf{Cohen, M.~X.}\textbf{ (2014).}
+\newblock \emph{Analyzing neural time series data: theory and practice}.
+\newblock MIT press.
 
 \bibitem{cole2017brain}
 \textbf{Cole, J.~H., Annus, T., Wilson, L.~R., Remtulla, R., Hong, Y.~T.,
@@ -71,6 +89,24 @@
   et~al.}\textbf{ (2017).}
 \newblock Increased brain-predicted aging in treated hiv disease.
 \newblock \emph{Neurology}, Vol.~88, No.~14, pp.~1349--1357.
+
+\bibitem{da2021brief}
+\textbf{da~Silva~Castanheira, J., Orozco~Perez, H.~D., Misic, B., \& Baillet,
+  S.}\textbf{ (2021).}
+\newblock Brief segments of neurophysiological activity enable individual
+  differentiation.
+\newblock \emph{Nature communications}, Vol.~12, No.~1, pp.~5713.
+
+\bibitem{dale1999cortical}
+\textbf{Dale, A.~M., Fischl, B., \& Sereno, M.~I.}\textbf{ (1999).}
+\newblock Cortical surface-based analysis: I. segmentation and surface
+  reconstruction.
+\newblock \emph{Neuroimage}, Vol.~9, No.~2, pp.~179--194.
+
+\bibitem{damoiseaux2017effects}
+\textbf{Damoiseaux, J.~S.}\textbf{ (2017).}
+\newblock Effects of aging on functional and structural brain connectivity.
+\newblock \emph{Neuroimage}, Vol.~160, pp.~32--40.
 
 \bibitem{de2022mind}
 \textbf{de~Lange, A.-M.~G., Anat{\"u}rk, M., Rokicki, J., Han, L.~K., Franke,
@@ -119,6 +155,13 @@
 \newblock Estimating brain age based on a uniform healthy population with deep
   learning and structural magnetic resonance imaging.
 \newblock \emph{Neurobiology of aging}, Vol.~91, pp.~15--25.
+
+\bibitem{fingelkurts2005functional}
+\textbf{Fingelkurts, A.~A., Fingelkurts, A.~A., \& K{\"a}hk{\"o}nen,
+  S.}\textbf{ (2005).}
+\newblock Functional connectivity in the brain—is it an elusive concept?
+\newblock \emph{Neuroscience \& Biobehavioral Reviews}, Vol.~28, No.~8,
+  pp.~827--836.
 
 \bibitem{franke2012longitudinal}
 \textbf{Franke, K. \& Gaser, C.}\textbf{ (2012).}
@@ -176,6 +219,13 @@
   amyloid-beta pathology.
 \newblock \emph{bioRxiv}, pp.~2020--05.
 
+\bibitem{gross2013good}
+\textbf{Gross, J., Baillet, S., Barnes, G.~R., Henson, R.~N., Hillebrand, A.,
+  Jensen, O., Jerbi, K., Litvak, V., Maess, B., Oostenveld, R., et~al.}\textbf{
+  (2013).}
+\newblock Good practice for conducting and reporting meg research.
+\newblock \emph{Neuroimage}, Vol.~65, pp.~349--363.
+
 \bibitem{hess2006q}
 \textbf{Hess, C.~P., Mukherjee, P., Han, E.~T., Xu, D., \& Vigneron,
   D.~B.}\textbf{ (2006).}
@@ -185,10 +235,23 @@
   International Society for Magnetic Resonance in Medicine}, Vol.~56, No.~1,
   pp.~104--117.
 
+\bibitem{hipp2012large}
+\textbf{Hipp, J.~F., Hawellek, D.~J., Corbetta, M., Siegel, M., \& Engel,
+  A.~K.}\textbf{ (2012).}
+\newblock Large-scale cortical correlation structure of spontaneous oscillatory
+  activity.
+\newblock \emph{Nature neuroscience}, Vol.~15, No.~6, pp.~884--890.
+
 \bibitem{hollersignal}
 \textbf{Holler, V.~M.}, \textbf{.}
 \newblock “from signal to age-using machine learning to predict brain age
   from meg data” masterarbeit.
+
+\bibitem{huang1999sensor}
+\textbf{Huang, M., Mosher, J.~C., \& Leahy, R.}\textbf{ (1999).}
+\newblock A sensor-weighted overlapping-sphere head model and exhaustive head
+  model comparison for meg.
+\newblock \emph{Physics in Medicine \& Biology}, Vol.~44, No.~2, pp.~423.
 
 \bibitem{isaev2018accelerated}
 \textbf{Isaev, N.~K., Genrikhs, E.~E., Oborina, M.~V., \& Stelmashook,
@@ -236,6 +299,13 @@
 \newblock Accelerated brain aging in schizophrenia and beyond: a
   neuroanatomical marker of psychiatric disorders.
 \newblock \emph{Schizophrenia bulletin}, Vol.~40, No.~5, pp.~1140--1153.
+
+\bibitem{kruskal1956shortest}
+\textbf{Kruskal, J.~B.}\textbf{ (1956).}
+\newblock On the shortest spanning subtree of a graph and the traveling
+  salesman problem.
+\newblock \emph{Proceedings of the American Mathematical society}, Vol.~7,
+  No.~1, pp.~48--50.
 
 \bibitem{kuhn2018augmented}
 \textbf{Kuhn, T., Kaufmann, T., Doan, N.~T., Westlye, L.~T., Jones, J., Nunez,
@@ -348,6 +418,13 @@
 \newblock \emph{Philosophical transactions of the Royal Society B: Biological
   sciences}, Vol.~360, No.~1457, pp.~893--902.
 
+\bibitem{sala2015reorganization}
+\textbf{Sala-Llonch, R., Bartr{\'e}s-Faz, D., \& Junqu{\'e}, C.}\textbf{
+  (2015).}
+\newblock Reorganization of brain networks in aging: a review of functional
+  connectivity studies.
+\newblock \emph{Frontiers in psychology}, Vol.~6, pp.~136321.
+
 \bibitem{shafto2014cambridge}
 \textbf{Shafto, M.~A., Tyler, L.~K., Dixon, M., Taylor, J.~R., Rowe, J.~B.,
   Cusack, R., Calder, A.~J., Marslen-Wilson, W.~D., Duncan, J., Dalgleish, T.,
@@ -364,6 +441,13 @@
   education and self-reported physical activity.
 \newblock \emph{Neurobiology of aging}, Vol.~40, pp.~138--144.
 
+\bibitem{tadel2011brainstorm}
+\textbf{Tadel, F., Baillet, S., Mosher, J.~C., Pantazis, D., \& Leahy,
+  R.~M.}\textbf{ (2011).}
+\newblock Brainstorm: a user-friendly application for meg/eeg analysis.
+\newblock \emph{Computational intelligence and neuroscience}, Vol.~2011,
+  pp.~1--13.
+
 \bibitem{taylor2017cambridge}
 \textbf{Taylor, J.~R., Williams, N., Cusack, R., Auer, T., Shafto, M.~A.,
   Dixon, M., Tyler, L.~K., Henson, R.~N., et~al.}\textbf{ (2017).}
@@ -379,12 +463,25 @@
   diffusion-weighted mri data using spherical deconvolution.
 \newblock \emph{Neuroimage}, Vol.~23, No.~3, pp.~1176--1185.
 
+\bibitem{uusitalo1997signal}
+\textbf{Uusitalo, M.~A. \& Ilmoniemi, R.~J.}\textbf{ (1997).}
+\newblock Signal-space projection method for separating meg or eeg into
+  components.
+\newblock \emph{Medical and biological engineering and computing}, Vol.~35,
+  pp.~135--140.
+
 \bibitem{vecchio2018neuroprotective}
 \textbf{Vecchio, L.~M., Meng, Y., Xhima, K., Lipsman, N., Hamani, C., \&
   Aubert, I.}\textbf{ (2018).}
 \newblock The neuroprotective effects of exercise: maintaining a healthy brain
   throughout aging.
 \newblock \emph{Brain plasticity}, Vol.~4, No.~1, pp.~17--52.
+
+\bibitem{wold1987principal}
+\textbf{Wold, S., Esbensen, K., \& Geladi, P.}\textbf{ (1987).}
+\newblock Principal component analysis.
+\newblock \emph{Chemometrics and intelligent laboratory systems}, Vol.~2,
+  No.~1-3, pp.~37--52.
 
 \bibitem{xu2023siamese}
 \textbf{Xu, L., Ma, H., Guan, Y., Liu, J., Huang, H., Zhang, Y., \& Tian,
@@ -399,11 +496,25 @@
 \newblock The aging brain.
 \newblock \emph{Annu. Rev. Pathol. Mech. Dis.}, Vol.~3, pp.~41--66.
 
+\bibitem{yeo2011organization}
+\textbf{Yeo, B.~T., Krienen, F.~M., Sepulcre, J., Sabuncu, M.~R., Lashkari, D.,
+  Hollinshead, M., Roffman, J.~L., Smoller, J.~W., Z{\"o}llei, L., Polimeni,
+  J.~R., et~al.}\textbf{ (2011).}
+\newblock The organization of the human cerebral cortex estimated by intrinsic
+  functional connectivity.
+\newblock \emph{Journal of neurophysiology}.
+
 \bibitem{zeighami2021association}
 \textbf{Zeighami, Y. \& Evans, A.~C.}\textbf{ (2021).}
 \newblock Association vs. prediction: the impact of cortical surface smoothing
   and parcellation on brain age.
 \newblock \emph{Frontiers in big Data}, Vol.~4, pp.~637724.
+
+\bibitem{zhang2015linearly}
+\textbf{Zhang, J. \& Liu, C.}\textbf{ (2015).}
+\newblock On linearly constrained minimum variance beamforming.
+\newblock \emph{The Journal of Machine Learning Research}, Vol.~16, No.~1,
+  pp.~2099--2145.
 
 \bibitem{zhuang1997event}
 \textbf{Zhuang, P., Toro, C., Grafman, J., Manganotti, P., Leocani, L., \&

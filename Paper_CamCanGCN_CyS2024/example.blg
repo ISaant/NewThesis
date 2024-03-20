@@ -4,45 +4,45 @@ The top-level auxiliary file: example.aux
 The style file: cys.bst
 Database file #1: biblio.bib
 Warning--empty journal in hollersignal
-You've used 58 entries,
+You've used 75 entries,
             2690 wiz_defined-function locations,
-            923 strings with 19954 characters,
-and the built_in function-call counts, 33914 in all, are:
-= -- 2393
-> -- 1777
+            1020 strings with 23405 characters,
+and the built_in function-call counts, 42606 in all, are:
+= -- 3028
+> -- 2150
 < -- 1
-+ -- 713
-- -- 644
-* -- 2716
-:= -- 4582
-add.period$ -- 173
-call.type$ -- 58
-change.case$ -- 480
++ -- 862
+- -- 774
+* -- 3400
+:= -- 5736
+add.period$ -- 224
+call.type$ -- 75
+change.case$ -- 593
 chr.to.int$ -- 0
-cite$ -- 59
-duplicate$ -- 2709
-empty$ -- 2577
-format.name$ -- 695
-if$ -- 6660
+cite$ -- 76
+duplicate$ -- 3439
+empty$ -- 3297
+format.name$ -- 839
+if$ -- 8380
 int.to.chr$ -- 0
-int.to.str$ -- 58
-missing$ -- 709
-newline$ -- 298
-num.names$ -- 116
-pop$ -- 1193
+int.to.str$ -- 75
+missing$ -- 889
+newline$ -- 383
+num.names$ -- 150
+pop$ -- 1479
 preamble$ -- 1
-purify$ -- 425
+purify$ -- 522
 quote$ -- 0
-skip$ -- 475
+skip$ -- 601
 stack$ -- 0
-substring$ -- 1425
-swap$ -- 1843
+substring$ -- 1836
+swap$ -- 2333
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 228
+type$ -- 294
 warning$ -- 1
-while$ -- 204
-width$ -- 60
-write$ -- 640
+while$ -- 265
+width$ -- 77
+write$ -- 825
 (There was 1 warning)

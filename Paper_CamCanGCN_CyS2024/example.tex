@@ -84,13 +84,9 @@ The human brain undergoes dynamic changes throughout life, with the aging proces
 Understanding and identifying biomarkers that define healthy aging is crucial to detect early-stage neurodegeneration and predicting age-related cognitive decline. One promising approach involves leveraging neuroimaging and electrophysiological data to capture the multivariate patterns of age-related brain change and formulate high-dimensional regression boundaries to accurately predict the age of healthy individuals. Machine learning (ML) models, trained on neurotypical subjects, can then be applied to clinical samples, revealing aberrant age-related changes, and offering a population-level tool for assessing brain aging. This approach has been employed in various disorders, such as Alzheimer’s\cite{franke2012longitudinal, gaser2013brainage,gonneaud2020functional, gao2022brain}, traumatic brain injury\cite{cole2015prediction}, schizophrenia \cite{koutsouleris2014accelerated, zhuang1997event}, HIV \cite{kuhn2018augmented, cole2017increased} , epilepsy \cite{pardoe2017structural}, and Down’s syndrome\cite{cole2017brain}. Additionally, predicting brain age has extended beyond neurological disorders, showing positive impacts of meditation\cite{luders2016estimating}, diet \cite{onaolapo2019brain}, increased education and physical exercise \cite{steffener2016differences,vecchio2018neuroprotective}  on brain age. 
 
 \bigskip
-The aforementioned studies have focused mainly on estimating brain age based primarily on gray matter morphometry or spectral features from different brain regions of interest (ROIs) independently. Nevertheless, the brain is a network of interleaved neural circuits, 
+The aforementioned studies have predominantly focused on estimating brain age by analyzing gray matter morphometry or spectral features from various brain regions of interest (ROIs). However, it's crucial to recognize that the brain operates as a complex network of interconnected neural circuits, facilitated by white matter tracts that directly link different brain regions \cite{basser1994estimation}, and functionaly supported by the coordinated activity between these distinct, separated brain regions \cite{sala2015reorganization}. Both structural and functional connectivity within this neural network undergo significant age-related changes during healthy aging \cite{damoiseaux2017effects}, and exhibit distinct patterns in various neuropathologies \cite{monti2020interpretable, li2018brain, lin2016predicting}. Surprisingly, these properties have often been overlooked as potential features for predicting brain age.
 
-\bigskip
-The aforementioned studies have focused mainly on estimating brain age based primarily on structural features, extracted from magnetic resonance imaging (T1-weighted MRI). Nevertheless, the brain is a network of interleaved neural circuits, where its the majority of functions are supported by coordinated activity between distinct, separated brain regions \cite{sala2015reorganization}, %and only using the morphometric features neglects the underlying topology and functional aspect of the brain, such as information about the neighborhood, the connectivity, or the distribution of power and frequencies among ROIs.
-
-\bigskip
-Connectivity measures, which models the brain interleaved neural circuits and represent it as a graph, exhibits important changes during healthy aging and presents specific patterns for different neuropathologies \cite{monti2020interpretable, li2018brain, lin2016predicting}. In the context of incorporating functional, structural, and connectivity information for age prediction, Graph Convolutional Networks (GCN) provide a more suitable architecture since they enable feature embedding in graph nodes, transforming these features while considering the graph topology. To delve into the role of brain topology in age prediction, we implemented a GCN architecture on graphs generated derived from resting-state MEG and structural connectivity measures derived from diffusion MRI, to predict brain age. Each node was annotated by their gray matter morphometry  and spectral features. %Our exploration of age-related brain changes involved utilizing MEG electrophysiological recordings and MRI structural features of each brain region as features for the graph nodes.
+To explore the significance of brain topology and in the pursuit of integrate it with functional and structural information into age prediction models, we employed a Graph Convolutional Networks (GCN) architecture on graphs generated from resting-state MEG data and structural connectivity measures derived from diffusion MRI. Within this framework, each node was annotated with both gray matter morphometry and spectral features. %Our exploration of age-related brain changes involved utilizing MEG electrophysiological recordings and MRI structural features of each brain region as features for the graph nodes.
 
 
 
@@ -149,31 +145,42 @@ Prediction of individual brain age using movie and resting-state fMRI           
 \section{Materials and Methods}
 \label{sec:Materials}
 
-This section summarizes the feature extraction techniques and Deep Learning algorithm used to address the problem apropos the age prediction, along with the dataset description. The algorithmic proposal was developed in Python 3.9 on the Ubuntu 20.04 distribution. In particular, the deep learning algorithm was built using Pytorch 2.0.1.
+This section encapsulates the feature extraction techniques and Deep Learning algorithm employed to tackle the challenge of age prediction, accompanied by a detailed description of the dataset. The proposed algorithm was implemented in Python 3.9 on the Ubuntu 20.04 distribution. Specifically, the deep learning model was constructed utilizing PyTorch version 2.0.1.
 
 \subsection{Dataset}
 \label{subsec: Dataset}
-We conducted an analysis using data sourced from the open-access Cambridge Center for Aging Neuroscience (Cam-CAN) repository (refer to \cite{shafto2014cambridge, taylor2017cambridge}, for detailed information on the dataset and acquisition protocols). The dataset is accessible at \url{http://www.mrc-cbu.cam.ac.uk/datasets/camcan/}.
+We conducted the analysis using data sourced from the open-access Cambridge Center for Aging Neuroscience (Cam-CAN) repository (refer to \cite{shafto2014cambridge, taylor2017cambridge}, for detailed information on the dataset and acquisition protocols). The dataset is accessible at \url{http://www.mrc-cbu.cam.ac.uk/datasets/camcan/}.
 
 \bigskip 
-Specifically, our investigation utilized both structural (T1-weighted MRI) and functional (resting-state MEG) neuroimaging data from a cohort of 652 healthy subjects (male/female = 322/330, mean age = 54.3 ± 18.6, age range 18–88 years).The T1-weighted MRI images were acquired using a 3T Siemens TIM Trio scanner equipped with a 32-channel head coil. The imaging parameters for the MPRAGE sequence were: TR = 2250 ms, TE = 2.99 ms, Flip angle = 9°, Field of View = 256 × 240 × 192 mm³, and voxel size = 1 mm isotropic.Resting-state MEG data were recorded using a 306-channel Elekta Neuromag Vectorview (102 magnetometers and 204 planar gradiometers) at a sampling rate of 1 kHz. During the resting-state scan, subjects were instructed to lie still, remain awake, and keep their eyes closed for approximately 9 minutes. 
+Specifically, our investigation utilized neuroimaging and electrophysiological data from a cohort of 652 healthy subjects (male/female = 322/330, mean age = 54.3 ± 18.6, age range 18–88 years). After exclusions, which involved subjects lacking both MRI and MEG data, unsatisfactory preprocessing results or failure to extract the cortical surface for source reconstruction, our final dataset comprised 606 subjects.
 
-\bigskip 
-After exclusions, which involved subjects lacking both MRI and MEG data, unsatisfactory preprocessing results or failure to extract the cortical surface for source reconstruction, our final dataset comprised 606 subjects.
+\subsubsection{Magnetic Resonance Imaging}
+All Magnetic Resonance Imaging (MRI) datasets were collected at a single site (MRC-CBSU) using a 3T Siemens TIM Trio scanner with a 32-channel head coil.For the T1-weighted MRI the imaging parameters of the MPRAGE sequence were: TR = 2250 ms, TE = 2.99 ms, Flip angle = 9°, Field of View = 256 × 240 × 192 mm³, and voxel size = 1 mm isotropic.
+
+\bigskip
+For the multi-shell diffusion-weighted MRI (dMRI) (b=0,1000,2000), the imaging parameters of the Twice-refocused SE sequence were: TR = 9100 ms, TE = 104 ms, Field of View = 192 × 192 mm² , and voxel size = 2 mm isotropic. 
+
+\subsubsection{Magnetoencephalography}
+
+Resting-state magnetoencephalography (MEG) data were captured utilizing a 306-channel Elekta Neuromag Vectorview system, comprising 102 magnetometers and 204 planar gradiometers. The recordings took place in a well-lit magnetically shielded room, with a sampling rate of 1 kHz and a highpass filter set at 0.03 Hz. Throughout the resting-state scan, participants were instructed to maintain stillness, stay awake, and keep their eyes closed for approximately 9 minutes. Continuous estimation of head position within the MEG helmet was conducted using four Head-Position Indicator (HPI) coils, enabling offline correction of any head movement. Additionally, two pairs of bipolar electrodes were employed to capture vertical and horizontal electrooculogram (VEOG, HEOG) signals, facilitating the monitoring of blinks and eye movements. Furthermore, one pair of bipolar electrodes recorded the electrocardiogram (ECG) signal to monitor pulse-related artifacts.
+
+\bigskip
+
+
 
 \bigskip
 \subsection{MEG data preprocessing and feature extraction}
 
-MEG preprocessing procedures closely followed the methodology outlined by da Silva Castanheira et al. (2021). Brainstorm in MATLAB 2020b (Mathworks, Inc., Massachusetts, USA) was employed for MEG data preprocessing, adhering to established good-practice guidelines. All steps below, unless specified otherwise, were executed using the Brainstorm toolkit.
+MEG preprocessing procedures closely followed the methodology outlined in \cite{da2021brief}, adhering to established good-practice guidelines \cite{gross2013good}. Data analysis was performed with Brainstorm\cite{tadel2011brainstorm} in MATLAB 2020b (Mathworks, Inc., Massachusetts, USA), which is documented and freely available for download online under the GNU general public license (\url{http://neuroimage.usc.edu/brainstorm}).
 
 \bigskip
-Firstly, a notch filter bank was applied to eliminate the line noise artifact (60 Hz) and 10 of its harmonics. Slow-wave and DC-offset artifacts were then removed using a highpass FIR filter with a 0.3-Hz cutoff. Signal-Space Projections (SSPs) were derived to effectively remove cardiac and ocular artifacts. This involved defining signal projectors based on electrocardiogram and electroculogram recordings around identified artifact occurrences. SSPs were also applied to attenuate low-frequency (1–7 Hz) and high-frequency noisy components (40–400 Hz) related to saccades and muscle activity, respectively.
+Firstly, a notch filter bank was applied to eliminate the line noise artifact (60 Hz) and 3 of its harmonics. Slow-wave and DC-offset artifacts were then removed using a highpass FIR filter with a 0.3-Hz cutoff. Signal-Space Projections (SSPs) \cite{uusitalo1997signal} were derived to effectively remove cardiac and ocular artifacts. This involved defining signal projectors based on electrocardiogram and electroculogram recordings around identified artifact occurrences. SSPs were also applied to attenuate low-frequency (1–7 Hz) and high-frequency noisy components (40–400 Hz) related to saccades and muscle activity, respectively.
 
 \bigskip
-Subsequently, distinct brain source models were generated for all narrowband versions of the MEG sensor data. Individual T1-weighted MRI data were automatically segmented and labeled with Freesurfer. Coregistration with MEG sensor locations was established using digitized head points collected during each MEG session. MEG forward head models were created for each participant using the overlapping spheres approach, and cortical source models were developed with linearly constrained minimum-variance (LCMV) beamforming. Data covariance regularization was performed, and to mitigate the impact of variable source depth, the estimated source variance was normalized by the noise covariance matrix. Elementary MEG source orientations were constrained normal to the surface at 15,000 locations of the cortex. Noise statistics for source modeling were estimated from two-minute empty-room recordings collected as closely as possible in time to each participant’s MEG session.
+Subsequently, distinct brain source models were generated for all narrowband versions of the MEG sensor data. Individual T1-weighted MRI data were automatically segmented and labeled with Freesurfer \cite{dale1999cortical}. Co-registration with MEG sensor locations was established using digitized head points collected during each MEG session. MEG forward head models were created for each participant using the overlapping spheres approach \cite{huang1999sensor}, and cortical source models were developed with linearly constrained minimum-variance (LCMV) beamforming \cite{zhang2015linearly}. Data covariance regularization was performed, and to mitigate the impact of variable source depth, the estimated source variance was normalized by the noise covariance matrix. Elementary MEG source orientations were constrained normal to the surface at 15,000 locations of the cortex. Noise statistics for source modeling were estimated from two-minute empty-room recordings collected as closely as possible in time to each participant’s MEG session.
 
 \bigskip
-Finally, the source time series were organized into 68 and 200 cortical regions of interest (ROIs) based on the Desikan-Killiany(DK) and Schaefer-200 (s200) atlases, respectively, which constitute the nodes of the graphs. To streamline the time series within each ROI, dimension reduction was performed using the first principal component. To standardize the intersubject variability duration in the recordings, the time series were uniformly cropped to a duration of 300 seconds.
+Finally, the source time series were organized into 68 and 200 cortical regions of interest (ROIs) based on the Desikan-Killiany(DK) and Schaefer-200 (s200) atlases, respectively, which constitute the nodes of the graphs. To streamline the time series within each ROI, dimension reduction was performed using the first principal component computed using principal component analysis (PCA) \cite{wold1987principal}. To standardize the intersubject variability duration in the recordings, the time series were uniformly cropped to a duration of 300 seconds.
 
 
 \subsubsection{Power Spectrum Density}
@@ -182,13 +189,6 @@ Finally, the source time series were organized into 68 and 200 cortical regions 
 
 \bigskip
 Formally, the estimation method is as follows. For each segment of length $L$, a modified periodogram is computed by selecting a data window $W(j), j = 0,\ldots , L-1$, and forming the sequences $X_1(j)W(j),\ldots , X_K(j)W(j)$. The finite Fourier transforms $A_1(n),\ldots , A_K(n)$ of these sequences are then obtained:
-
-\begin{figure}[H]
-\centering
-	\includegraphics[width=0.47\textwidth]{PSD+PCA}
-	\caption{A. }
-	\label{CSD}
-\end{figure}
 
 \begin{equation}
 A_k(n) = \frac{1}{L} \sum_{j=0}^{L-1}X_k(j)W(j)e^{-i{\frac{2kj}{L}}}
@@ -223,23 +223,32 @@ Finally, the spectral estimate is the average of these periodograms, i.e.,
 \end{equation}
 
 
-Given the sample frequency and the recording length, a two-second window with a 50\% overlap was employed for computing the PSD. This encodes the power of frequencies between 0 and 500 Hz with a 0.5 Hz resolution, resulting in arrays of 1000 features per ROI. Multiplying the number of ROIs in each parcellation gives the feature dimensionality of 68,000 and 200,000 for DK and s200 parcellations, respectively.
+%To capture the ROI-wise spectral features, a two-second window with a 50\% overlap was employed for computing the PSD. This encodes the power of frequencies between 0 and 500 Hz with a 0.5 Hz resolution, resulting in arrays of 1000 features per ROI. Figure \ref{PSD}.A shows the cropped plot of the mean global PSD averaged in 5 years intervals. Giving the number of ROIs in each parcellation, the feature dimensionality arise to 68,000 and 200,000 for DK and s200, respectively.
 
+
+To capture the ROI-wise spectral features, a two-second window with a 50\% overlap was employed for computing the PSD, effectively encoding the frequencies between 0 and 500 Hz with a 0.5 Hz resolution.  In Figure \ref{PSD}.A, the mean global PSD (averaging across all ROIs) is depicted averaged across subjects over 5-year intervals. Particular emphasis is placed on frequencies ranging from 5 to 35 Hz (alpha and beta bands), as this range prominently showcases age-related changes in power distribution.
+
+\begin{figure}[H]
+\centering
+	\includegraphics[width=0.47\textwidth]{PSD+PCA}
+	\caption{A. Mean Global PSD: The global PSD was computed by averaging the PSD within each parcellated brain region. The mean global PSD represents the average across all subjects, grouped in intervals of 5 years. B. PCA per ROI. Each curve represents the explained variance for each ROI within the \textcolor{Green}{DK},  \textcolor{Orange}{s200} atlases, as function of the number of principal components. The solid black curve is the mean explained variance.}
+	\label{PSD}
+\end{figure}
 
 \bigskip
-Since the disparity between the number of participants and the number of features, the data points may become sparse, increasing the challenge for the model to discern meaningful patterns. Therefore, PCA was chosen as the dimensional reduction technique. Figure x illustrates the explained variance for the first x components for each ROI. It is evident that the first 10 components explain at least 90\% of the variance for all ROIs, resulting in a 99\% reduction in the volume of the searching space.
+Given the disparity between the participant count and the number of spectral features (ROIs x PSD), there is a risk of data sparsity, complicating the model's ability to discern meaningful patterns. Hence, PCA was chosen as the dimensional reduction technique. Figure \ref{PSD}.B illustrates the explained variance for the first 20 components for each ROI within each atlas. As the cross indicates, the first 10 components are sufficient to explain at least 90\% of the variance for all ROIs, resulting in a 99\% reduction in the volume of the searching space.
 \subsubsection{Functional Connectivity}
 
 \smallskip
-Functional connectivity entails examining the statistical relationships and temporal dependencies among distinct brain regions or neuronal populations. Employed in neuroimaging, it gauges the extent to which the activities in various brain areas correlate or synchronize over time.
+Functional connectivity entails examining the statistical relationships and temporal dependencies among distinct brain regions or neuronal populations \cite{fingelkurts2005functional}. Employed in neuroimaging, it gauges the extent to which the activities in various brain areas correlate or synchronize over time.
 
 \bigskip
-The observed co-activation patterns between brain regions serve as indicators of the brain's functional network organization. High synchronization implies the participation of spatially separated regions of interest (ROIs) in similar neural processes, while low connectivity suggests diminished coordination among these regions. Aberrant connectivity may indicate the presence of diverse neurological and psychiatric conditions. To calculate the degree of synchronization, the amplitude envelope correlation (AEC) was employed.  
+The observed co-activation patterns between brain regions serve as indicators of the brain's functional network organization \cite{yeo2011organization}. High synchronization implies the participation of spatially separated regions of interest (ROIs) in similar neural processes, while low connectivity suggests diminished coordination among these regions. Aberrant connectivity may indicate the presence of diverse neurological and psychiatric conditions. To calculate the degree of synchronization, the amplitude envelope correlation (AEC) \cite{bruns2000amplitude} was employed.  
 
 
 
 \bigskip
-As it's name implies, the AEC uses the amplitude envelopes to derive the corresponding Pearson correlation coefficients between all pair of ROIs. Firstly, the Hilbert transform was employed to decompose time series into the time-frequency domain for envelope computation. The Hilbert transform $\mathcal{H}[x(t)]$ of a signal $x(t)$ is expressed as:
+As it's name implies, the AEC uses the amplitude envelopes to derive the corresponding Pearson correlation coefficients between all pair of ROIs. Firstly, the Hilbert transform \cite{cohen2014analyzing} was employed to decompose time series into the time-frequency domain for envelope computation. The Hilbert transform $\mathcal{H}[x(t)]$ of a signal $x(t)$ is expressed as:
 
 \begin{equation}
 \mathcal{H}[x(t)]=\frac{1}{\pi}\int_{-\infty}^{\infty}\frac{x(t-\tau)}{\tau}d\tau=a_{\tilde{x}}(t)e^{j\phi_{\tilde{x}}(t)}
@@ -252,7 +261,7 @@ As it's name implies, the AEC uses the amplitude envelopes to derive the corresp
 The result, often denoted as $\tilde{x}(t)$, is an analytic signal—a complex time series uniquely associated with the original data time series, $x(t)$, where the modulus $a_{\tilde{x}}(t)$ and phase $\phi_{\tilde{x}}(t)$ of $\tilde{x}(t)$ correspond to the instantaneous amplitude (or envelope) and instantaneous phase of the original time series $x(t)$, respectively.
 
 \bigskip
-However, in the process of deriving power envelopes for correlation analysis, a crucial step involves orthogonalizing the two signals that may be correlated. This ensures that the signals do not share trivial co-variability in power, arising from measuring the same sources, while preserving co-variation related to measuring different sources.
+However, in the process of deriving power envelopes for correlation analysis, a crucial step involves orthogonalizing the two signals that may be correlated \cite{hipp2012large}. This ensures that the signals do not share trivial co-variability in power, arising from measuring the same sources, while preserving co-variation related to measuring different sources.
 
 \bigskip
 By employing ordinary least squares, the instantaneous linear relation between two signals in the frequency domain can be derived. Let $X(t,f)$ and $Y(t,f)$ represent the frequency domain representations of two time series $x$ and $y$, where $t$ and $t'$ are the time points of the center of the windows for spectral analysis, and $f$ is the frequency of interest. The part of a complex time series $Y$ that can be instantaneously and linearly predicted from $X$, denoted as $Y_{||X}$, is expressed as:
@@ -275,14 +284,17 @@ Y_{\perp X}(t,f) = Y(t,f)-Y_{||X}(t,f)
 \end{equation}
 
 \smallskip
-The orthogonalized AEC where used to compute the individual connectomes derived for each one of the typical frequency bands of electrophysiology to understand whether the expression of certain ranges of brain rhythms would explain better the age differentiation. We bandpass ﬁltered MEG signals in the delta (1–4 Hz), theta (4–8 Hz), alpha (8–13 Hz), beta (13–30 Hz), gamma (30–50 Hz), and high gamma (50–150 Hz) frequency bands. 
+The orthogonalized AEC where used to compute the individual connectomes derived for each one of the typical frequency bands of electrophysiology to understand whether the expression of certain ranges of brain rhythms would explain better the age differentiation as shown if Figure \ref{FunctionalConnectivity}. We bandpass ﬁltered MEG signals in the delta (1–4 Hz), theta (4–8 Hz), alpha (8–13 Hz), beta (13–30 Hz), gamma (30–50 Hz), and high gamma (50–150 Hz) frequency bands. 
 
 \begin{figure}[H]
 \centering
 	\includegraphics[width=0.47\textwidth]{FCDK}
-	\caption{\textcolor{DarkOrchid}{Mean} and \textcolor{Aquamarine}{Standard Deviation} connectome calculated for the 606 subjects}
+	\caption{Functional connectivity: The connectomes where computed using the orthogonalized AEC for each one of the six canonical bands (delta, theta, alpha, beta, low-gamma and high-gamma). This heatmap, build using diagonalizing the mean connectomes for each band, is only for visualization purposes. Each one of the connectomes where used individually.}
 	\label{FunctionalConnectivity}
 \end{figure}
+
+\bigskip
+Given that the AEC returns the pairwise correlation value, the resulting connectome is a fully connected graph containing non-relevant connections, with low correlation values. To generate a sparse graph, the connectomes were thresholded using Kruskal's Minimum Spanning Tree (MST) algorithm \cite{kruskal1956shortest}. Finally the diagonal of the each one of the connectomes (autocorrelation) were set to zero.
 
 
 \bigskip
@@ -290,12 +302,46 @@ The calculation of the Pearson correlation for all pairwise regions has a comput
 
 \bigskip
 The correlation 
-\subsection{Anatomical Features and Structural Connectivity}
+\subsection{Gray Matter Morphometry and Structural Connectivity}
 
 The preprocessing of the raw NIfTI data in Brain Imaging Data Structure (BIDS) format from the CamCAN repository were executed utilizing the official singularity container images. The adoption of singularity container images was pivotal in ensuring the reproducibility of the entire preprocessing process. This rigorous approach adheres to established standards and safeguards the integrity and consistency of the data processing workflows.
 
 \bigskip
-\subsubsection{Anatomical Statistics}
+\subsubsection{Gray Matter Morphometry}
+
+Magnetic resonance imaging (MRI) is a technique used in medical imaging that generates images that provide contrast between different tissues, taking advantage of the magnetic moment and spin of hydrogen protons present in the tissue.
+
+Hydrogen has a non-zero net spin and can be affected by an external magnetic field $B_{0_{\hat{z}}}$. In the presence of $B_{0_{\hat{z}}}$, the protons will align and precede around the axis defined by the magnetic field with a frequency defined by
+
+\begin{equation}
+\omega = \gamma B_{0_{\hat{z}}}
+\end{equation}
+
+as described by the Larmor equation where, $\gamma$ is the gyromagnetic constant. The sum of the magnetic moments of the proton $i$, within a volume $V$ (voxel), will define the local magnetic moment, or magnetization vector, as
+
+\begin{equation}
+\vec{M} = \frac{1}{V} \sum_i \vec{\mu}_i
+\end{equation}
+
+where $V$ must be small enough for $B_{0_{\hat{z}}}$ to be constant, but large enough to contain a sufficient number of protons.
+
+\bigskip
+If the interactions of the protons with their surroundings are ignored, the sum of the equations of motion for individual spins gives
+
+\begin{equation}
+\frac{1}{V}\sum_i \frac{d\vec{\mu_i}}{dt} = \frac{\gamma}{V}\sum_i \mu_i \times B_{0_{\hat{z}} }
+\end{equation}
+
+which can be rewritten as
+
+\begin{equation}
+\frac{d\vec{M}}{dt} = \gamma \vec{M} \times B_{0_{\hat{z}}}
+\end{equation}
+
+If only the B0 field exists, this longitudinal magnetization will be in equilibrium and will be called $M0$. However, if a second pulse $B1$ is applied, perpendicular to B0, in resonance with the precession frequency, the magnetization vector will move away from z, towards the transverse plane, with an angle defined by:
+
+where tau is the exposure time to B1. Once pulse B1 is removed and as a result of the continued presence of the static field, the magnetization returns to its equilibrium magnetization vector M0zˆ. The relaxation of the magnetization vector from the transverse to the longitudinal plane is dependent on the interactions of the spins with the medium, where the moment will tend to align parallel to the field to reach its minimum energy state, as long as the energy can be transferred.
+
 
 
 The preprocessing of anatomical MRI data was conducted utilizing fMRIPrep version 23.0.1, as outlined by Esteban et al. (2019). fMRIPrep is a tool specialized in preprocessing magnetic resonance imaging (MRI) data, that incorporates a series of steps for the thorough processing of T1-weighted (T1w) anatomical images. In a nutshell, the preprocessing involves addressing intensity nonuniformities (INU) in the T1w images to ensure consistency, removal of non-brain tissues achieved through the process of skull-stripping, tissue segmentation to delineate different anatomical structures and surface reconstruction for detailed cortical and subcortical analyses. Finally, a spatial normalization aligns T1w images to a standard space, facilitating cross-subject comparisons. For a more detailed account of the original preprocessing steps executed by fMRIPrep, interested readers are encouraged to refer to tool's documentation, facilitating adaptability to varying experimental needs.
@@ -354,8 +400,7 @@ surrounding the vertex).
 GI=\frac{\sum_{j=1}^{M_P}A_P^j}{\sum_{j=1}^{M_O}A_O^j}
 \end{equation}
 
-where $A_P^j$ and $A_O^j$ are the area of the face $j$ in the 3-D mesh
-of the pial surface and of the outer surface, respectively, and $M_P$ and are $M_O$ the total number of faces in the pial and outer mesh, respectively.
+where $A_P^j$ and $A_O^j$ are the area of the face $j$ in the 3-D mesh of the pial surface and of the outer surface, respectively, and $M_P$ and are $M_O$ the total number of faces in the pial and outer mesh, respectively.
 \\
 \item \textbf{Number of vertices}: As the name implies, it is the number of vertices of the reconstructed cortical surface inside each ROI.
 
@@ -415,7 +460,7 @@ $\mathbf{G}$ is not bounded to one direction, actually, to reconstruct the tract
 b = \gamma^2 |\mathbf{G}|\delta^2\left( D \frac{\delta}{3} \right)
 \end{equation}
 
-where $\gamma$ is the gyromagnetic constant, $\mathbf{G}|$ is the intensity of the gradient and $\delta$ is the duration of the gradient pulse. It is easy to see that by modifying b, a different shell will be created. If multiple b-values are used to reconstruct $\mathbf{S}$, then the approach will get the name of "multishell".
+where $\mathbf|{G}|$ is the intensity of the gradient and $\delta$ is the duration of the gradient pulse. It is easy to see that by modifying b, a different shell will be created. If multiple b-values are used to reconstruct $\mathbf{S}$, then the approach will get the name of "multishell".
 
 \bigskip
 In practice a static repulsion algorithm \cite{jones1999optimal} can be used to generate $N$ quasi-uniformly distributed points on the sphere where the gradient directions $\mathbf{g}_i=(\theta_i,\phi_i), 1\ge i \ge N $ define the sampling directions to generate the signal $\mathbf{S}(\mathbf{g_i})$, for each imaging voxel. %This technique is know as High Angular Resolution Diffusion Imaging (HARDI)%
@@ -555,6 +600,7 @@ Streamline weights for the structural connectivity matrix were calculated using 
 %\bigskip
 
 
+%all of this is from Graph convolutional networks: a comprehensive review
 
 Classic convolutional neural network (CNN) models designed for grid-like data, such as images, have demonstrated considerable success in various applications, including image classification [46,47,48], object detection [18, 49], and semantic segmentation [50, 51]. The efficacy of these models relies on inherent properties of grid-like data, specifically: (1) a fixed number of neighboring pixels for each pixel and (2) a naturally determined spatial order when scanning images, i.e., from left to right and top to bottom. However, in arbitrary graph data, unlike images, neither the number of neighboring units nor their spatial order is fixed.
 
@@ -601,6 +647,13 @@ The pooling function $f_p$, which has to be ordering and permutation invariant, 
 
 \section{Results}
 \label{sec:Results}
+
+\begin{figure}[H]
+\centering
+	\includegraphics[width=0.47\textwidth]{Results_Acc_MAE}
+	\caption{caption}
+	\label{Acc_MAE}
+\end{figure}
 
 \section{Conclusion and Future Work}
 \label{sec:conclusionAndFutureWork}
